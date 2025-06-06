@@ -13,7 +13,6 @@
 
 // 5. Animate transition between steps.
 
-"use client";
 
 import React from "react";
 

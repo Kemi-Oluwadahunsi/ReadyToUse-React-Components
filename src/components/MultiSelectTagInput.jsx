@@ -1,17 +1,3 @@
-// Use Case: Filters, tag system, blog categories.
-
-// Steps:
-
-// 1. Use input and display selected tags.
-
-// 2. Enable tag removal on click.
-
-// 3. Filter dropdown options based on input.
-
-// 4. Use Tailwind pill style: bg-gray-200 px-3 py-1 rounded-full.
-
-// 5. Make mobile-friendly dropdown (position absolute with z-10).
-
 import { useState } from "react";
 
 const options = [

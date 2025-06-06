@@ -1,19 +1,3 @@
-// Use Case: Roadmap, education, work history.
-
-// Description: A timeline of events with alternating side content.
-
-// Steps:
-
-// 1. Flex column by default, flex row for md: and up.
-
-// 2. Use circles as markers with line connectors.
-
-// 3. Wrap events in responsive containers.
-
-// 4. Use before: and after: pseudo elements for connecting lines.
-
-// 5. Alternate side content with even:flex-row-reverse.
-
 const timelineData = [
   {
     title: "Started Learning",

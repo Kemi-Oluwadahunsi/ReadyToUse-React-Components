@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { CheckCircle, XCircle, AlertCircle, Info } from "lucide-react";

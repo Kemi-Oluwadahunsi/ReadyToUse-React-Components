@@ -1,4 +1,3 @@
-"use client";
 
 import { useState, useEffect } from "react";
 import { Menu, X, Home, User, Briefcase, Mail, FileText } from "lucide-react";

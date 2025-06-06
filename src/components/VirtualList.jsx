@@ -1,4 +1,3 @@
-"use client";
 
 import { useState, useRef, useMemo } from "react";
 import { Search, User, Mail, Phone, MapPin } from "lucide-react";
