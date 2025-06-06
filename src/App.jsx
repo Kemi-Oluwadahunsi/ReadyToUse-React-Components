@@ -8,7 +8,7 @@ import Accordion from "./components/Accordion";
 import HoverRevealCard from "./components/HoverRevealCard";
 import TimeLine from "./components/TimeLine";
 import MultiSelectTagInput from "./components/MultiSelectTagInput";
-import CommandPalette from "./components/CommandPallete";
+import CommandPalette from "./components/VirtualList";
 import ScrollCarousel from "./components/ScrollCarousel";
 import Page from "./components/darkMode/Page";
 import NotificationPage from "./components/Notification-bell/NotificationPage";
@@ -22,6 +22,7 @@ import PricingCards from "./components/PricingCards";
 import ToastNotificationDemo from "./components/ToastNotification";
 import SearchBarSuggestions from "./components/SearchBar";
 import FilterComponent from "./components/FilterComponent";
+import VirtualList from "./components/VirtualList";
 
 
 function App() {
@@ -37,7 +38,7 @@ function App() {
         <Route path="/hover-reveal" element={<HoverRevealCard />} />
         <Route path="/timeline" element={<TimeLine />} />
         <Route path="/multi-select" element={<MultiSelectTagInput />} />
-        <Route path="/command" element={<CommandPalette />} />
+        <Route path="/virtual-list" element={<VirtualList />} />
         <Route path="/carousel" element={<ScrollCarousel />} />
         <Route path="/darkmode" element={<Page />} />
         <Route path="/notification" element={<NotificationPage />} />

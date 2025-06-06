@@ -41,9 +41,9 @@ const Home = () => {
               Multi-Select Tag
             </button>
           </Link>
-          <Link to="/command">
+          <Link to="/virtual-list">
             <button className="bg-cyan-700 text-white px-6 py-2 rounded cursor-pointer">
-              Command Pallete
+              Virtual List
             </button>
           </Link>
           <Link to="/carousel">
