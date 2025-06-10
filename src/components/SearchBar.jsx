@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Search, Clock, TrendingUp } from "lucide-react";
 
@@ -34,7 +33,7 @@ const trendingSearches = [
   "Blockchain basics",
 ];
 
-export default function SearchBarSuggestions() {
+const SearchBarSuggestions = () => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -268,4 +267,6 @@ export default function SearchBarSuggestions() {
       </div>
     </div>
   );
-}
+};
+
+export default SearchBarSuggestions;

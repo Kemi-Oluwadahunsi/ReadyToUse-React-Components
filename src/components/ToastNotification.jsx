@@ -2,7 +2,7 @@ import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { CheckCircle, XCircle, AlertCircle, Info } from "lucide-react";
 
-export default function ToastNotificationDemo() {
+const ToastNotificationDemo = () => {
   const [message, setMessage] = useState("");
 
   // Custom toast styles
@@ -213,4 +213,6 @@ export default function ToastNotificationDemo() {
       />
     </div>
   );
-}
+};
+
+export default ToastNotificationDemo;

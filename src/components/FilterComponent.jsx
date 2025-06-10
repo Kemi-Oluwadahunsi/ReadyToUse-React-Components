@@ -58,10 +58,7 @@ const filterOptions = {
   },
 };
 
-export default function FilterComponent({
-  onFiltersChange,
-  initialFilters = {},
-}) {
+const FilterComponent = ({ onFiltersChange, initialFilters = {} }) => {
   const [filters, setFilters] = useState(initialFilters);
   const [openDropdowns, setOpenDropdowns] = useState(new Set());
 
@@ -390,4 +387,6 @@ export default function FilterComponent({
       )}
     </div>
   );
-}
+};
+
+export default FilterComponent;

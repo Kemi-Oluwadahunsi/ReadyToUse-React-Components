@@ -1,20 +1,14 @@
-// import about from '../assets/aboutImage.webp';
-// const HoverRevealCard = () => {
-//   return (
-//     <div className="group relative rounded-lg overflow-hidden shadow-lg">
-//       <img src={about} className="w-full h-48 object-cover" />
-//       <div className="absolute bottom-0 left-0 w-full bg-black/60 p-4 transform translate-y-full group-hover:translate-y-0 transition-all text-white">
-//         <h3>Project Name</h3>
-//         <button className="mt-2 underline">View More</button>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default HoverRevealCard
-
-import { useState } from "react"
-import { ExternalLink, Eye, Heart, Share2, Star, Calendar, User, Tag } from "lucide-react"
+import { useState } from "react";
+import {
+  ExternalLink,
+  Eye,
+  Heart,
+  Share2,
+  Star,
+  Calendar,
+  User,
+  Tag,
+} from "lucide-react";
 
 // Sample project data
 const sampleProjects = [
@@ -96,39 +90,48 @@ const sampleProjects = [
     views: 567,
     featured: false,
   },
-]
+];
 
 // Individual card component
 function ProjectCard({ project, onLike, onShare, onView }) {
-  const [isLiked, setIsLiked] = useState(false)
-  const [imageLoaded, setImageLoaded] = useState(false)
+  const [isLiked, setIsLiked] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleLike = (e) => {
-    e.stopPropagation()
-    setIsLiked(!isLiked)
-    onLike?.(project.id)
-  }
+    e.stopPropagation();
+    setIsLiked(!isLiked);
+    onLike?.(project.id);
+  };
 
   const handleShare = (e) => {
-    e.stopPropagation()
-    onShare?.(project)
-  }
+    e.stopPropagation();
+    onShare?.(project);
+  };
 
   const handleView = () => {
-    onView?.(project)
-  }
+    onView?.(project);
+  };
 
   const getCategoryColor = (category) => {
     const colors = {
-      "Web Development": "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400",
-      "Mobile App": "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400",
-      "Data Science": "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400",
-      "UI/UX Design": "bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400",
-      Blockchain: "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400",
-      Entertainment: "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400",
-    }
-    return colors[category] || "bg-gray-100 dark:bg-gray-900/30 text-gray-600 dark:text-gray-400"
-  }
+      "Web Development":
+        "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400",
+      "Mobile App":
+        "bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400",
+      "Data Science":
+        "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400",
+      "UI/UX Design":
+        "bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400",
+      Blockchain:
+        "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400",
+      Entertainment:
+        "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400",
+    };
+    return (
+      colors[category] ||
+      "bg-gray-100 dark:bg-gray-900/30 text-gray-600 dark:text-gray-400"
+    );
+  };
 
   return (
     <div
@@ -206,7 +209,9 @@ function ProjectCard({ project, onLike, onShare, onView }) {
         {/* Category Badge */}
         <div className="mb-3">
           <span
-            className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(project.category)}`}
+            className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(
+              project.category
+            )}`}
           >
             <Tag className="h-3 w-3" />
             {project.category}
@@ -214,18 +219,27 @@ function ProjectCard({ project, onLike, onShare, onView }) {
         </div>
 
         {/* Title and Description */}
-        <h3 className="text-lg font-semibold mb-2 line-clamp-1">{project.title}</h3>
-        <p className="text-sm text-gray-200 mb-4 line-clamp-2">{project.description}</p>
+        <h3 className="text-lg font-semibold mb-2 line-clamp-1">
+          {project.title}
+        </h3>
+        <p className="text-sm text-gray-200 mb-4 line-clamp-2">
+          {project.description}
+        </p>
 
         {/* Tags */}
         <div className="flex flex-wrap gap-1 mb-4">
           {project.tags.slice(0, 3).map((tag) => (
-            <span key={tag} className="px-2 py-1 bg-white/20 backdrop-blur-sm rounded text-xs">
+            <span
+              key={tag}
+              className="px-2 py-1 bg-white/20 backdrop-blur-sm rounded text-xs"
+            >
               {tag}
             </span>
           ))}
           {project.tags.length > 3 && (
-            <span className="px-2 py-1 bg-white/20 backdrop-blur-sm rounded text-xs">+{project.tags.length - 3}</span>
+            <span className="px-2 py-1 bg-white/20 backdrop-blur-sm rounded text-xs">
+              +{project.tags.length - 3}
+            </span>
           )}
         </div>
 
@@ -248,32 +262,37 @@ function ProjectCard({ project, onLike, onShare, onView }) {
         </button>
       </div>
     </div>
-  )
+  );
 }
 
 // Main component
-export default function HoverRevealCard() {
-  const [selectedCategory, setSelectedCategory] = useState("All")
-  const [likedProjects, setLikedProjects] = useState(new Set())
+const HoverRevealCard = () => {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [likedProjects, setLikedProjects] = useState(new Set());
 
-  const categories = ["All", ...new Set(sampleProjects.map((project) => project.category))]
+  const categories = [
+    "All",
+    ...new Set(sampleProjects.map((project) => project.category)),
+  ];
 
   const filteredProjects =
     selectedCategory === "All"
       ? sampleProjects
-      : sampleProjects.filter((project) => project.category === selectedCategory)
+      : sampleProjects.filter(
+          (project) => project.category === selectedCategory
+        );
 
   const handleLike = (projectId) => {
     setLikedProjects((prev) => {
-      const newSet = new Set(prev)
+      const newSet = new Set(prev);
       if (newSet.has(projectId)) {
-        newSet.delete(projectId)
+        newSet.delete(projectId);
       } else {
-        newSet.add(projectId)
+        newSet.add(projectId);
       }
-      return newSet
-    })
-  }
+      return newSet;
+    });
+  };
 
   const handleShare = (project) => {
     if (navigator.share) {
@@ -281,24 +300,27 @@ export default function HoverRevealCard() {
         title: project.title,
         text: project.description,
         url: window.location.href,
-      })
+      });
     } else {
-      navigator.clipboard.writeText(window.location.href)
-      console.log("Link copied to clipboard!")
+      navigator.clipboard.writeText(window.location.href);
+      console.log("Link copied to clipboard!");
     }
-  }
+  };
 
   const handleView = (project) => {
-    console.log("Viewing project:", project.title)
-  }
+    console.log("Viewing project:", project.title);
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       {/* Header */}
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Hover Reveal Cards</h2>
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          Hover Reveal Cards
+        </h2>
         <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          Discover amazing projects with smooth hover animations and detailed overlays
+          Discover amazing projects with smooth hover animations and detailed
+          overlays
         </p>
       </div>
 
@@ -338,14 +360,20 @@ export default function HoverRevealCard() {
           <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center">
             <Tag className="h-8 w-8 text-gray-400" />
           </div>
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No projects found</h3>
-          <p className="text-gray-600 dark:text-gray-400">Try selecting a different category</p>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+            No projects found
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400">
+            Try selecting a different category
+          </p>
         </div>
       )}
 
       {/* Features Info */}
       <div className="mt-12 bg-white dark:bg-zinc-800 rounded-lg shadow p-6">
-        <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Card Features:</h3>
+        <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
+          Card Features:
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600 dark:text-gray-400">
           <ul className="space-y-1">
             <li>• Smooth hover reveal animations</li>
@@ -362,5 +390,7 @@ export default function HoverRevealCard() {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
+
+export default HoverRevealCard;

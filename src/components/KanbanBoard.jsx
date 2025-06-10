@@ -245,7 +245,7 @@ function Column({ column, tasks }) {
 }
 
 // Main Kanban Board Component
-export default function KanbanBoard() {
+const KanbanBoard = () => {
   const [data, setData] = useState(initialData);
   const [activeId, setActiveId] = useState(null);
 
@@ -417,4 +417,6 @@ export default function KanbanBoard() {
       </div>
     </div>
   );
-}
+};
+
+export default KanbanBoard;

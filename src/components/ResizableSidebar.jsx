@@ -13,7 +13,7 @@ import {
   Menu,
 } from "lucide-react";
 
-export default function ResizableSidebar() {
+const ResizableSidebar = () => {
   const [sidebarWidth, setSidebarWidth] = useState(280);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
@@ -135,9 +135,7 @@ export default function ResizableSidebar() {
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             {!isCollapsed && (
-              <h1 className="text-lg font-semibold text-gray-900">
-                Dashboard
-              </h1>
+              <h1 className="text-lg font-semibold text-gray-900">Dashboard</h1>
             )}
             <button
               onClick={toggleCollapse}
@@ -260,4 +258,6 @@ export default function ResizableSidebar() {
       </div>
     </>
   );
-}
+};
+
+export default ResizableSidebar;

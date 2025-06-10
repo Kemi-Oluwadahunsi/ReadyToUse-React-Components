@@ -2,7 +2,7 @@ import { Moon, Sun } from "lucide-react";
 import { useDarkMode } from "../../contexts/DarkmodeContext";
 import { Link } from "react-router-dom";
 
-export default function DarkModePage() {
+const DarkModePage = () => {
   const { isDark, toggle } = useDarkMode();
 
   return (
@@ -37,4 +37,6 @@ export default function DarkModePage() {
       </Link>
     </div>
   );
-}
+};
+
+export default DarkModePage;

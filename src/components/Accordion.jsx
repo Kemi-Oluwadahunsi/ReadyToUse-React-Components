@@ -53,10 +53,7 @@ const faqData = [
   },
 ];
 
-export default function Accordion({
-  data = faqData,
-  allowMultiple = false,
-}) {
+const Accordion = ({ data = faqData, allowMultiple = false }) => {
   const [openItems, setOpenItems] = useState(new Set());
 
   const toggleItem = (id) => {
@@ -168,4 +165,6 @@ export default function Accordion({
       </div>
     </div>
   );
-}
+};
+
+export default Accordion;

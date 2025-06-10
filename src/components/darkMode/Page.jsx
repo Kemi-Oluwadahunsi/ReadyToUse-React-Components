@@ -1,7 +1,7 @@
 import DarkModeToggle from "./DarkModeToggle";
 import DemoContent from "./DemoContent";
 
-export default function Page() {
+const Page = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 transition-colors duration-500">
       {/* Header with Dark Mode Toggle */}
@@ -35,4 +35,6 @@ export default function Page() {
       </footer>
     </div>
   );
-}
+};
+
+export default Page;

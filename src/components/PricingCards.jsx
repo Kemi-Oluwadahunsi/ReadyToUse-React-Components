@@ -54,7 +54,7 @@ const pricingPlans = [
   },
 ];
 
-export default function PricingCards() {
+const PricingCards = () => {
   const [isYearly, setIsYearly] = useState(false);
 
   const handleBillingToggle = () => {
@@ -200,4 +200,6 @@ export default function PricingCards() {
       </div>
     </div>
   );
-}
+};
+
+export default PricingCards;

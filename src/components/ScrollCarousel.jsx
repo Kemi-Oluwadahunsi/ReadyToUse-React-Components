@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 
@@ -51,9 +50,9 @@ const testimonials = [
 ];
 
 const ScrollCarousel = () => {
-    const [currentPage, setCurrentPage] = useState(0);
-    const [isAutoScrolling, setIsAutoScrolling] = useState(true);
-    const [itemsPerPage, setItemsPerPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+  const [itemsPerPage, setItemsPerPage] = useState(1);
   const scrollContainerRef = useRef(null);
   const autoScrollRef = useRef(null);
 
@@ -101,7 +100,7 @@ const ScrollCarousel = () => {
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
       const cardWidth = container.children[0]?.offsetWidth || 0;
-      const gap = 16; 
+      const gap = 16;
       const scrollPosition = pageIndex * (cardWidth + gap);
 
       container.scrollTo({
@@ -257,6 +256,6 @@ const ScrollCarousel = () => {
       </div>
     </div>
   );
-}
+};
 
 export default ScrollCarousel;

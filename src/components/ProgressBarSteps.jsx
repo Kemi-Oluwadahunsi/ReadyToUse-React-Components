@@ -8,7 +8,7 @@ const steps = [
   { id: 5, label: "Complete", description: "Setup complete" },
 ];
 
-export default function ProgressBarSteps({ currentStep = 1, onStepChange }) {
+const ProgressBarSteps = ({ currentStep = 1, onStepChange }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -134,4 +134,6 @@ export default function ProgressBarSteps({ currentStep = 1, onStepChange }) {
       </div>
     </div>
   );
-}
+};
+
+export default ProgressBarSteps;

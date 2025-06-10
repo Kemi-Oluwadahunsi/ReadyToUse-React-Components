@@ -1,4 +1,3 @@
-
 import { useState, useRef, useMemo } from "react";
 import { Search, User, Mail, Phone, MapPin } from "lucide-react";
 
@@ -67,7 +66,7 @@ const ITEM_HEIGHT = 80;
 const CONTAINER_HEIGHT = 400;
 const BUFFER_SIZE = 5;
 
-export default function VirtualList() {
+const VirtualList = () => {
   const [users] = useState(() => generateUsers(10000));
   const [searchQuery, setSearchQuery] = useState("");
   const [scrollTop, setScrollTop] = useState(0);
@@ -232,4 +231,6 @@ export default function VirtualList() {
       </div>
     </div>
   );
-}
+};
+
+export default VirtualList;

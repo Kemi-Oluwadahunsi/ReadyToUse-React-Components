@@ -1,7 +1,7 @@
 import { Moon, Sun } from "lucide-react";
 import { useDarkMode } from "../../contexts/DarkmodeContext";
 
-export default function DarkModeToggle() {
+const DarkModeToggle = () => {
   const { isDark, toggle } = useDarkMode();
 
   return (
@@ -29,4 +29,6 @@ export default function DarkModeToggle() {
       />
     </button>
   );
-}
+};
+
+export default DarkModeToggle;

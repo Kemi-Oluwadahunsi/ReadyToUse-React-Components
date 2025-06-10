@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from "react";
 import { Menu, X, Home, User, Briefcase, Mail, FileText } from "lucide-react";
 
-export default function ScrollAwareNavbar() {
+const ScrollAwareNavbar = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -344,4 +343,6 @@ export default function ScrollAwareNavbar() {
       </div>
     </>
   );
-}
+};
+
+export default ScrollAwareNavbar;

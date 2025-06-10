@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Bell } from "lucide-react";
 
-export default function NotificationBell() {
+const NotificationBell = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -145,4 +145,6 @@ export default function NotificationBell() {
       )}
     </div>
   );
-}
+};
+
+export default NotificationBell;

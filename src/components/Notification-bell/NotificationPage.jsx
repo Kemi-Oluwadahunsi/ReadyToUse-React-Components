@@ -41,6 +41,6 @@ const NotificationPage = () => {
       </main>
     </div>
   );
-}
+};
 
 export default NotificationPage;

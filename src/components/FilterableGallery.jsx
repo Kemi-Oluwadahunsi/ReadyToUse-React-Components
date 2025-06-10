@@ -95,7 +95,7 @@ const allCategories = [
   ...new Set(galleryItems.flatMap((item) => item.categories)),
 ];
 
-export default function FilterableGallery() {
+const FilterableGallery = () => {
   const [activeFilter, setActiveFilter] = useState("all");
   const [filteredItems, setFilteredItems] = useState(galleryItems);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -257,4 +257,6 @@ export default function FilterableGallery() {
       )}
     </div>
   );
-}
+};
+
+export default FilterableGallery;

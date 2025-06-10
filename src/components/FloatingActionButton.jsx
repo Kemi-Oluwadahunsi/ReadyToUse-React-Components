@@ -9,7 +9,7 @@ import {
   Edit,
 } from "lucide-react";
 
-export default function FloatingActionButton() {
+const FloatingActionButton = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -246,4 +246,6 @@ export default function FloatingActionButton() {
       </div>
     </>
   );
-}
+};
+
+export default FloatingActionButton;

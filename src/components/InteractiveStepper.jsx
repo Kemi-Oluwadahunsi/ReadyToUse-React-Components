@@ -13,7 +13,6 @@
 
 // 5. Animate transition between steps.
 
-
 import React from "react";
 
 import { useState } from "react";
@@ -100,7 +99,7 @@ const onboardingSteps = [
   },
 ];
 
-export default function InteractiveStepper() {
+const InteractiveStepper = () => {
   const [currentStepIndex, setCurrentStepIndex] = useState(2); // 0-based index
   const [stepperType, setStepperType] = useState("checkout"); // checkout or onboarding
   const [animationDirection, setAnimationDirection] = useState("forward");
@@ -451,4 +450,6 @@ export default function InteractiveStepper() {
       </div>
     </div>
   );
-}
+};
+
+export default InteractiveStepper;
