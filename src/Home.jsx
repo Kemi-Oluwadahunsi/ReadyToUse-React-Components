@@ -104,7 +104,7 @@ const Home = () => {
             </button>
           </Link>
           <Link to="/filtering">
-            <button className="bg-violet-800 text-white px-6 py-2 rounded cursor-pointer">
+            <button className="bg-orange-800 text-white px-6 py-2 rounded cursor-pointer">
               Filtering
             </button>
           </Link>

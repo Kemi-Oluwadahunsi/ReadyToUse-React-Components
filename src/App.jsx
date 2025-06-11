@@ -8,7 +8,6 @@ import Accordion from "./components/Accordion";
 import HoverRevealCard from "./components/HoverRevealCard";
 import TimeLine from "./components/TimeLine";
 import MultiSelectTagInput from "./components/MultiSelectTagInput";
-import CommandPalette from "./components/VirtualList";
 import ScrollCarousel from "./components/ScrollCarousel";
 import Page from "./components/darkMode/Page";
 import NotificationPage from "./components/Notification-bell/NotificationPage";
@@ -27,7 +26,7 @@ import VirtualList from "./components/VirtualList";
 
 function App() {
   return (
-    <div className="pt-5">
+    <div className="py-5">
       <DarkModePage />
       <Routes>
         <Route path="/" element={<Home />} />

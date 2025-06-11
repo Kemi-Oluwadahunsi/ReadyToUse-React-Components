@@ -1,18 +1,3 @@
-// Use Case: Onboarding, checkout processes.
-// Description: A horizontal stepper with circles and icons.
-
-// Steps:
-
-// 1. Create a flex container with horizontal layout.
-
-// 2. Use circles with icons (e.g., check or edit).
-
-// 3. Use 'stepIndex' to style current/active steps.
-
-// 4. Make it scrollable on mobile: overflow-x-auto.
-
-// 5. Animate transition between steps.
-
 import React from "react";
 
 import { useState } from "react";
