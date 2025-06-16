@@ -199,7 +199,7 @@ const FloatingActionButton = () => {
                 {/* Action Button */}
                 <button
                   onClick={() => handleActionClick(action)}
-                  className={`w-12 h-12 rounded-full shadow-lg text-white transition-all duration-200 transform hover:scale-110 ${action.color}`}
+                  className={`w-12 h-12 cursor-pointer rounded-full shadow-lg text-white transition-all duration-200 transform hover:scale-110 ${action.color}`}
                 >
                   <Icon className="h-5 w-5 mx-auto" />
                 </button>
@@ -211,7 +211,7 @@ const FloatingActionButton = () => {
         {/* Main FAB */}
         <button
           onClick={handleMainClick}
-          className={`w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 ${
+          className={`w-14 h-14 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 ${
             isExpanded ? "rotate-45" : "rotate-0"
           }`}
         >

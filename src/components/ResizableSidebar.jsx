@@ -124,7 +124,7 @@ const ResizableSidebar = () => {
       <div className="flex ">
         <div
           ref={sidebarRef}
-          className={`fixed left-0 top-0 h-full bg-white :bg-zinc-800 border-r border-gray-200 transition-all duration-300 z-50 border-4 ${
+          className={`fixed left-0 top-0 h-full bg-white dark:bg-zinc-800 border-r border-gray-200 dark:border-zinc-700 transition-all duration-300 z-50 ${
             isMobileOpen ? "translate-x-0" : "-translate-x-full"
           } sm:translate-x-0 sm:relative sm:z-auto`}
           style={{
@@ -133,19 +133,19 @@ const ResizableSidebar = () => {
           }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
+          <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-zinc-700">
             {!isCollapsed && (
-              <h1 className="text-lg font-semibold text-gray-900">Dashboard</h1>
+              <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Dashboard</h1>
             )}
             <button
               onClick={toggleCollapse}
-              className="p-1.5 rounded-lg hover:bg-gray-100  transition-colors"
+              className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors"
               aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             >
               {isCollapsed ? (
-                <ChevronRight className="h-4 w-4 text-gray-600" />
+                <ChevronRight className="h-4 w-4 text-gray-600 dark:text-gray-300" />
               ) : (
-                <ChevronLeft className="h-4 w-4 text-gray-600" />
+                <ChevronLeft className="h-4 w-4 text-gray-600 dark:text-gray-300" />
               )}
             </button>
           </div>
@@ -153,11 +153,11 @@ const ResizableSidebar = () => {
           {!isCollapsed && (
             <div className="p-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="w-full pl-10 pr-4 py-2 bg-gray-50 border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-zinc-700 border-gray-200 dark:border-zinc-600 rounded-lg text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
@@ -172,8 +172,8 @@ const ResizableSidebar = () => {
                   href={item.href}
                   className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group ${
                     item.active
-                      ? "bg-blue-50 text-blue-600"
-                      : "text-gray-700 hover:bg-gray-100"
+                      ? "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700"
                   }`}
                   title={isCollapsed ? item.label : undefined}
                 >
@@ -193,17 +193,17 @@ const ResizableSidebar = () => {
             })}
           </nav>
           {/* User profile */}
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-4 border-t border-gray-200 dark:border-zinc-700">
             <div className="flex items-center gap-3">
               <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-medium">
                 JD
               </div>
               {!isCollapsed && (
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate">
+                  <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
                     John Doe
                   </p>
-                  <p className="text-xs text-gray-500 truncate">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                     john@example.com
                   </p>
                 </div>
@@ -216,7 +216,7 @@ const ResizableSidebar = () => {
               className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-blue-500 transition-colors group hidden sm:block"
               onMouseDown={handleMouseDown}
             >
-              <div className="absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2 w-3 h-8 bg-gray-300 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2 w-3 h-8 bg-gray-300 dark:bg-zinc-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
           )}
         </div>
@@ -230,14 +230,14 @@ const ResizableSidebar = () => {
         >
           <div className="p-8">
             <div className="max-w-4xl">
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                 Resizable Sidebar Demo
               </h1>
-              <div className="bg-white rounded-lg shadow p-6">
-                <h2 className="text-lg font-semibold text-gray-900">
+              <div className="bg-white dark:bg-zinc-800 rounded-lg shadow p-6">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                   Features
                 </h2>
-                <ul className="space-y-2 text-gray-600">
+                <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                   <li>• Drag the right edge to resize (desktop only)</li>
                   <li>• Click the arrow to collapse/expand</li>
                   <li>• Width is saved to localStorage</li>
@@ -245,8 +245,8 @@ const ResizableSidebar = () => {
                   <li>• Icons remain visible when collapsed</li>
                   <li>• Smooth transitions and hover effects</li>
                 </ul>
-                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm text-gray-600">
+                <div className="mt-4 p-4 bg-gray-50 dark:bg-zinc-700 rounded-lg">
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
                     Current sidebar width: <strong>{currentWidth}px</strong>
                     {isCollapsed && " (collapsed)"}
                   </p>
