@@ -220,7 +220,7 @@ const InteractiveStepper = () => {
                       {/* Step Circle */}
                       <button
                         onClick={() => goToStep(index)}
-                        className={`w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 transform hover:scale-105 ${styles.circle}`}
+                        className={`w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 transform hover:scale-105 cursor-pointer ${styles.circle}`}
                         disabled={
                           getStepStatus(index) === "pending" &&
                           index > currentStepIndex + 1

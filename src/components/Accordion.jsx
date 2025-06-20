@@ -105,7 +105,7 @@ const Accordion = ({ data = faqData, allowMultiple = false }) => {
             {/* Question Button */}
             <button
               onClick={() => toggleItem(item.id)}
-              className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
+              className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset cursor-pointer"
               aria-expanded={isOpen(item.id)}
               aria-controls={`faq-answer-${item.id}`}
             >

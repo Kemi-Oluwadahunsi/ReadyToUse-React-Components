@@ -202,7 +202,7 @@ const FilterComponent = ({ onFiltersChange, initialFilters = {} }) => {
           <div key={filterKey} className="relative">
             <button
               onClick={() => toggleDropdown(filterKey)}
-              className="w-full flex items-center justify-between px-4 py-3 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 rounded-lg text-left hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full flex items-center justify-between px-4 py-3 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 rounded-lg text-left hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
               aria-expanded={openDropdowns.has(filterKey)}
             >
               <div className="flex-1">
@@ -235,7 +235,7 @@ const FilterComponent = ({ onFiltersChange, initialFilters = {} }) => {
                   <button
                     key={option.value}
                     onClick={() => handleFilterChange(filterKey, option.value)}
-                    className="w-full flex items-center px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
+                    className="w-full flex items-center px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
                   >
                     <div className="flex items-center flex-1">
                       {config.type === "multiple" ? (
@@ -280,7 +280,7 @@ const FilterComponent = ({ onFiltersChange, initialFilters = {} }) => {
           <div key={filterKey} className="relative">
             <button
               onClick={() => toggleDropdown(filterKey)}
-              className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-600 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
               aria-expanded={openDropdowns.has(filterKey)}
             >
               <span className="text-sm font-medium text-gray-900 dark:text-white">
@@ -304,7 +304,7 @@ const FilterComponent = ({ onFiltersChange, initialFilters = {} }) => {
                   <button
                     key={option.value}
                     onClick={() => handleFilterChange(filterKey, option.value)}
-                    className="w-full flex items-center px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
+                    className="w-full flex items-center px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
                   >
                     <div className="flex items-center flex-1">
                       {config.type === "multiple" ? (
