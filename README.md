@@ -1,6 +1,11 @@
 # readyui-react
 
+[![npm version](https://img.shields.io/npm/v/readyui-react.svg)](https://www.npmjs.com/package/readyui-react)
+[![license](https://img.shields.io/npm/l/readyui-react.svg)](https://github.com/Kemi-Oluwadahunsi/ReadyToUse-React-Components/blob/main/LICENSE)
+
 A professional collection of 50+ ready-to-use, configurable React UI components with Tailwind CSS, dark mode support, and smooth animations.
+
+**[Live Storybook Docs](https://kemi-oluwadahunsi.github.io/ReadyToUse-React-Components)**
 
 ## 🚀 Features
 
@@ -77,7 +82,7 @@ dist/
 
 ## 🧩 Components
 
-Accordion · Avatar · Badge · Breadcrumbs · Calendar · ColorPicker · CommandPalette · ConfirmDialog · CopyToClipboard · CustomToggleSwitch · DataTable · DatePicker · Drawer · DualRangeSlider · FileUploader · FilterableGallery · FilterComponent · FloatingActionButton · HoverRevealCard · ImageCropper · InfiniteScroll · InteractiveStepper · KanbanBoard · Modal · MultiSelectTagInput · NotificationBell · OTPInput · Pagination · PasswordStrength · PricingCards · ProgressBarSteps · RangeSlider · RatingInput · ResizableSidebar · ScrollAwareNavbar · ScrollCarousel · SearchBar · Select · Skeleton · Spinner · Tabs · TimeLine · ToastNotification · Tooltip · TreeView · VirtualList · DarkModeToggle
+Accordion · AnimatedCounter · AvatarGroup · Badge · Breadcrumbs · Cards · ColorPicker · CommandPalette · ConfirmDialog · CopyToClipboard · CustomToggleSwitch · DarkModeToggle · DataTable · DatePicker · Drawer · FileUploader · FilterableGallery · FilterComponent · FloatingActionButton · HoverRevealCard · ImageCropper · InfiniteScroll · InteractiveStepper · KanbanBoard · Marquee · Modal · MultiSelectTagInput · NotificationBell · OTPInput · Pagination · PasswordStrength · Popover · ProgressBarSteps · RangeSlider · RatingInput · ResizableSidebar · ScrollAwareNavbar · ScrollCarousel · SearchBar · Select · Skeleton · SortableList · Spinner · SpotlightCard · Tabs · TimeLine · ToastNotification · Tooltip · TreeView · VirtualList · DarkModeToggle
 
 ## 🎨 Styling
 
@@ -119,5 +124,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [Vite](https://vitejs.dev/)
 - [React](https://reactjs.org/)
 - [TailwindCSS](https://tailwindcss.com/)
-- [Framer Motion](https://www.framer.com/motion/)
 - [DND Kit](https://dndkit.com/)
+- [Lucide React](https://lucide.dev/)

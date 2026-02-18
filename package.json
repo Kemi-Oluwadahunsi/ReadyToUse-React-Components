@@ -2,7 +2,7 @@
   "name": "readyui-react",
   "version": "1.0.0",
   "type": "module",
-  "description": "A professional collection of 20+ ready-to-use, configurable React UI components with Tailwind CSS, dark mode support, and smooth animations.",
+  "description": "A professional collection of 50+ ready-to-use, configurable React UI components with Tailwind CSS, dark mode support, and smooth animations.",
   "keywords": [
     "react",
     "components",
@@ -23,14 +23,38 @@
     "gallery",
     "sidebar",
     "navbar",
-    "floating-action-button"
+    "floating-action-button",
+    "modal",
+    "drawer",
+    "datepicker",
+    "color-picker",
+    "file-upload",
+    "command-palette",
+    "data-table",
+    "pagination",
+    "skeleton",
+    "tooltip",
+    "breadcrumbs",
+    "avatar",
+    "badge",
+    "otp-input",
+    "range-slider",
+    "tree-view",
+    "copy-to-clipboard",
+    "animated-counter",
+    "sortable-list",
+    "infinite-scroll"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "Oluwakemi Oluwadahunsi <oluwakemioluwadahunsi@gmail.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/Kemi-Oluwadahunsi/ReadyToUse-React-Components.git"
   },
+  "bugs": {
+    "url": "https://github.com/Kemi-Oluwadahunsi/ReadyToUse-React-Components/issues"
+  },
+  "homepage": "https://kemi-oluwadahunsi.github.io/ReadyToUse-React-Components",
   "main": "./dist/readyui-react.cjs.js",
   "module": "./dist/readyui-react.es.js",
   "exports": {
@@ -41,7 +65,9 @@
     "./styles.css": "./dist/styles.css"
   },
   "files": [
-    "dist",
+    "dist/readyui-react.es.js",
+    "dist/readyui-react.cjs.js",
+    "dist/styles.css",
     "README.md",
     "LICENSE"
   ],
