@@ -1,0 +1,103 @@
+{/* src/stories/GettingStarted.mdx */}
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Getting Started" />
+
+# ReadyUI React
+
+A professional collection of **65+ ready-to-use, configurable React UI components** built with Tailwind CSS, dark mode support, and smooth animations.
+
+---
+
+## Installation
+
+```bash
+npm install readyui-react
+```
+
+## CSS Setup
+
+Import the pre-built stylesheet — **no Tailwind installation required**:
+
+```js
+import "readyui-react/styles.css";
+```
+
+> If your project already uses Tailwind CSS v4, the styles integrate automatically and you can skip this import.
+
+## Quick Example
+
+```jsx
+import { BasicCard, Modal, ToastProvider, useToast } from "readyui-react";
+import "readyui-react/styles.css";
+
+function App() {
+  return (
+    <ToastProvider>
+      <BasicCard
+        title="Welcome"
+        description="Get started with ReadyUI React"
+        image="https://picsum.photos/400/200"
+      />
+    </ToastProvider>
+  );
+}
+```
+
+---
+
+## Component Categories
+
+| Category | Components | Examples |
+|---|---|---|
+| **Layout** | 5 | Accordion, Drawer, Modal, Tabs, ResizableSidebar |
+| **Cards** | 15 | BasicCard, ProfileCard, ProductCard, BlogCard, GlassCard… |
+| **Inputs** | 12 | Select, OTPInput, DatePicker, RangeSlider, FileUploader… |
+| **Data Display** | 12 | DataTable, TreeView, KanbanBoard, VirtualList, Marquee… |
+| **Feedback** | 7 | Toast, Spinner, Skeleton, Tooltip, ConfirmDialog… |
+| **Navigation** | 7 | Breadcrumbs, Pagination, CommandPalette, Stepper… |
+| **Utilities** | 7 | DarkModeToggle, Badge, CopyToClipboard, SortableList… |
+
+---
+
+## Features
+
+- **Dark mode** — Every component supports `dark:` variants out of the box.
+- **Accessible** — Built with ARIA attributes and keyboard navigation.
+- **Tree-shakeable** — Import only what you need; unused components are eliminated.
+- **Pre-built CSS** — Ship `styles.css` so consumers don't need Tailwind installed.
+- **Zero config** — Works with any React 18/19 project.
+
+---
+
+## Dark Mode
+
+ReadyUI components respond to the `dark` class on `<html>`:
+
+```jsx
+// Toggle dark mode
+document.documentElement.classList.toggle("dark");
+```
+
+Or use the built-in toggle:
+
+```jsx
+import { DarkModeToggle } from "readyui-react";
+
+<DarkModeToggle variant="switch" size="md" />
+```
+
+---
+
+## Browser Support
+
+Chrome, Firefox, Safari, Edge — all modern browsers.
+
+---
+
+## Links
+
+- [GitHub Repository](https://github.com/AmanSuryavanshi-1/ReadyToUse-React-Components)
+- [npm Package](https://www.npmjs.com/package/readyui-react)
+
+> Use the **sidebar** to browse every component with live examples, prop tables, and copyable code snippets.

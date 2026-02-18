@@ -1,236 +1,127 @@
-import { useState, useRef, useMemo } from "react";
-import { Search, User, Mail, Phone, MapPin } from "lucide-react";
+import { useState, useRef, useCallback, useMemo } from "react";
+import injectRuiStyles from "./injectRuiStyles";
 
-// Generate large dataset
-const generateUsers = (count) => {
-  const firstNames = [
-    "John",
-    "Jane",
-    "Mike",
-    "Sarah",
-    "David",
-    "Emily",
-    "Chris",
-    "Lisa",
-    "Tom",
-    "Anna",
-  ];
-  const lastNames = [
-    "Smith",
-    "Johnson",
-    "Williams",
-    "Brown",
-    "Jones",
-    "Garcia",
-    "Miller",
-    "Davis",
-    "Rodriguez",
-    "Martinez",
-  ];
-  const domains = [
-    "gmail.com",
-    "yahoo.com",
-    "outlook.com",
-    "company.com",
-    "email.com",
-  ];
-  const cities = [
-    "New York",
-    "Los Angeles",
-    "Chicago",
-    "Houston",
-    "Phoenix",
-    "Philadelphia",
-    "San Antonio",
-    "San Diego",
-    "Dallas",
-    "San Jose",
-  ];
-
-  return Array.from({ length: count }, (_, i) => ({
-    id: i + 1,
-    firstName: firstNames[Math.floor(Math.random() * firstNames.length)],
-    lastName: lastNames[Math.floor(Math.random() * lastNames.length)],
-    email: `user${i + 1}@${
-      domains[Math.floor(Math.random() * domains.length)]
-    }`,
-    phone: `+1 (${Math.floor(Math.random() * 900) + 100}) ${
-      Math.floor(Math.random() * 900) + 100
-    }-${Math.floor(Math.random() * 9000) + 1000}`,
-    city: cities[Math.floor(Math.random() * cities.length)],
-    avatar: `/placeholder.svg?height=40&width=40&text=${i + 1}`,
-  }));
-};
-
-const ITEM_HEIGHT = 80;
-const CONTAINER_HEIGHT = 400;
-const BUFFER_SIZE = 5;
-
-const VirtualList = () => {
-  const [users] = useState(() => generateUsers(10000));
-  const [searchQuery, setSearchQuery] = useState("");
-  const [scrollTop, setScrollTop] = useState(0);
+/**
+ * VirtualList - Efficiently renders large lists by only rendering visible items.
+ */
+/*
+ * @param {Array} items - Full list of items
+ * @param {number} itemHeight - Fixed height of each item in px
+ * @param {number} height - Container height in px
+ * @param {number} overscan - Number of extra items rendered above/below viewport
+ * @param {Function} renderItem - Render function: (item, index, style) => JSX
+ * @param {string} className - Additional CSS classes on the container
+ * @param {Function} onEndReached - Callback when scrolled near the end
+ * @param {number} endReachedThreshold - Px from bottom to trigger onEndReached
+ * @param {boolean} showScrollbar - Show custom scrollbar styling
+ */
+const VirtualList = ({
+  items = [],
+  itemHeight = 60,
+  height = 500,
+  overscan = 5,
+  renderItem,
+  className = "",
+  onEndReached,
+  endReachedThreshold = 200,
+  showScrollbar = true,
+}) => {
+  injectRuiStyles();
   const containerRef = useRef(null);
+  const [scrollTop, setScrollTop] = useState(0);
+  const endReachedRef = useRef(false);
 
-  // Filter users based on search
-  const filteredUsers = useMemo(() => {
-    if (!searchQuery.trim()) return users;
+  const totalHeight = items.length * itemHeight;
+  const visibleCount = Math.ceil(height / itemHeight);
 
-    return users.filter(
-      (user) =>
-        `${user.firstName} ${user.lastName}`
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.city.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [users, searchQuery]);
+  const { startIndex, endIndex, visibleItems } = useMemo(() => {
+    const start = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);
+    const end = Math.min(items.length - 1, Math.floor(scrollTop / itemHeight) + visibleCount + overscan);
+    const visible = [];
+    for (let i = start; i <= end; i++) {
+      visible.push({ item: items[i], index: i });
+    }
+    return { startIndex: start, endIndex: end, visibleItems: visible };
+  }, [scrollTop, items, itemHeight, overscan, visibleCount]);
 
-  // Calculate visible items
-  const visibleItems = useMemo(() => {
-    const startIndex = Math.max(
-      0,
-      Math.floor(scrollTop / ITEM_HEIGHT) - BUFFER_SIZE
-    );
-    const endIndex = Math.min(
-      filteredUsers.length - 1,
-      Math.floor((scrollTop + CONTAINER_HEIGHT) / ITEM_HEIGHT) + BUFFER_SIZE
-    );
+  const handleScroll = useCallback(
+    (e) => {
+      const st = e.target.scrollTop;
+      setScrollTop(st);
 
-    return {
-      startIndex,
-      endIndex,
-      items: filteredUsers.slice(startIndex, endIndex + 1),
-    };
-  }, [filteredUsers, scrollTop]);
+      if (onEndReached) {
+        const remaining = totalHeight - st - height;
+        if (remaining < endReachedThreshold && !endReachedRef.current) {
+          endReachedRef.current = true;
+          onEndReached();
+        } else if (remaining >= endReachedThreshold) {
+          endReachedRef.current = false;
+        }
+      }
+    },
+    [totalHeight, height, endReachedThreshold, onEndReached]
+  );
 
-  // Handle scroll
-  const handleScroll = (e) => {
-    setScrollTop(e.target.scrollTop);
-  };
+  const defaultRenderItem = useCallback(
+    (item, index, style) => (
+      <div
+        key={index}
+        style={style}
+        className="flex items-center px-4 border-b border-gray-100 dark:border-zinc-700/50 hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-colors"
+      >
+        <div className="flex items-center gap-3 w-full">
+          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+            {index + 1}
+          </div>
+          <span className="text-sm text-gray-900 dark:text-white truncate">
+            {typeof item === "string" ? item : item?.label || item?.name || JSON.stringify(item)}
+          </span>
+        </div>
+      </div>
+    ),
+    []
+  );
 
-  // Total height for scrollbar
-  const totalHeight = filteredUsers.length * ITEM_HEIGHT;
+  const renderer = renderItem || defaultRenderItem;
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-lg overflow-hidden">
-        {/* Header */}
-        <div className="p-6 border-b border-gray-200 dark:border-zinc-700">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            Virtual List Demo
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
-            Efficiently rendering {users.length.toLocaleString()} items using
-            virtualization
-          </p>
+    <div className={`relative ${className}`}>
+      {/* Info bar */}
+      <div className="flex items-center justify-between px-4 py-2 bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-700 rounded-t-xl text-xs text-gray-500 dark:text-gray-400">
+        <span>{items.length.toLocaleString()} items</span>
+        <span>
+          Showing {startIndex + 1}–{Math.min(endIndex + 1, items.length)}
+        </span>
+      </div>
 
-          {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search users..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-
-          <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            Showing {filteredUsers.length.toLocaleString()} of{" "}
-            {users.length.toLocaleString()} users
-          </div>
-        </div>
-
-        {/* Virtual List Container */}
-        <div
-          ref={containerRef}
-          className="relative overflow-auto"
-          style={{ height: CONTAINER_HEIGHT }}
-          onScroll={handleScroll}
-        >
-          {/* Total height spacer */}
-          <div style={{ height: totalHeight, position: "relative" }}>
-            {/* Visible items */}
-            <div
-              style={{
-                position: "absolute",
-                top: visibleItems.startIndex * ITEM_HEIGHT,
-                width: "100%",
-              }}
-            >
-              {visibleItems.items.map((user, index) => {
-                const actualIndex = visibleItems.startIndex + index;
-
-                return (
-                  <div
-                    key={user.id}
-                    className="flex items-center gap-4 p-4 border-b border-gray-100 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors"
-                    style={{ height: ITEM_HEIGHT }}
-                  >
-                    {/* Avatar */}
-                    <div className="flex-shrink-0">
-                      <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-medium">
-                        {user.firstName[0]}
-                        {user.lastName[0]}
-                      </div>
-                    </div>
-
-                    {/* User Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <User className="h-4 w-4 text-gray-400" />
-                        <span className="font-medium text-gray-900 dark:text-white">
-                          {user.firstName} {user.lastName}
-                        </span>
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
-                          #{actualIndex + 1}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-                        <div className="flex items-center gap-1">
-                          <Mail className="h-3 w-3" />
-                          <span className="truncate">{user.email}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Phone className="h-3 w-3" />
-                          <span>{user.phone}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <MapPin className="h-3 w-3" />
-                          <span>{user.city}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex-shrink-0">
-                      <button className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs rounded-full hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors">
-                        View
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="p-4 bg-gray-50 dark:bg-zinc-700 border-t border-gray-200 dark:border-zinc-600">
-          <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
-            <span>
-              Rendering items {visibleItems.startIndex + 1}-
-              {Math.min(visibleItems.endIndex + 1, filteredUsers.length)}
-              of {filteredUsers.length.toLocaleString()}
-            </span>
-            <span>Performance: Only {visibleItems.items.length} DOM nodes</span>
-          </div>
+      {/* Scrollable container */}
+      <div
+        ref={containerRef}
+        onScroll={handleScroll}
+        className={`overflow-y-auto bg-white dark:bg-zinc-900 border border-t-0 border-gray-200 dark:border-zinc-700 rounded-b-xl ${
+          showScrollbar ? "rui-scrollbar-thin" : "rui-scrollbar-hide"
+        }`}
+        style={{ height, position: "relative" }}
+      >
+        {/* Spacer for total scroll height */}
+        <div style={{ height: totalHeight, position: "relative" }}>
+          {visibleItems.map(({ item, index }) => {
+            const style = {
+              position: "absolute",
+              top: index * itemHeight,
+              left: 0,
+              right: 0,
+              height: itemHeight,
+            };
+            return renderer(item, index, style);
+          })}
         </div>
       </div>
     </div>
   );
 };
 
+VirtualList.displayName = "VirtualList";
+
+export { VirtualList };
 export default VirtualList;

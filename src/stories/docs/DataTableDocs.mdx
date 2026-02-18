@@ -1,0 +1,67 @@
+{/* src/stories/docs/DataTableDocs.mdx */}
+import { Meta, Canvas, ArgTypes } from "@storybook/addon-docs/blocks";
+import * as DataTableStories from "../DataTable.stories";
+
+<Meta of={DataTableStories} />
+
+# DataTable
+
+A feature-rich data table with sorting, filtering, pagination, row selection, and customizable columns.
+
+## Import
+
+```jsx
+import { DataTable } from "readyui-react";
+```
+
+## Basic Usage
+
+<Canvas of={DataTableStories.Default} />
+
+## With Row Selection
+
+<Canvas of={DataTableStories.WithSelection} />
+
+## Props
+
+<ArgTypes of={DataTableStories} />
+
+## Column Definition
+
+```js
+const columns = [
+  {
+    key: "name",
+    label: "Name",
+    sortable: true,
+    filterable: true,
+  },
+  {
+    key: "email",
+    label: "Email",
+    sortable: true,
+  },
+  {
+    key: "role",
+    label: "Role",
+    render: (value) => <span className="badge">{value}</span>,
+  },
+];
+```
+
+## Features Breakdown
+
+| Feature | Description |
+|---|---|
+| **Sorting** | Click column headers to sort asc/desc |
+| **Filtering** | Per-column search inputs |
+| **Pagination** | Page size selector + prev/next navigation |
+| **Selection** | Checkbox selection with `onSelectionChange` callback |
+| **Custom Render** | Use `render` in column config for custom cell content |
+| **Empty State** | Configurable empty state message |
+
+## Accessibility
+
+- Sortable columns announced via `aria-sort`
+- Pagination uses `nav` landmark with `aria-label`
+- Row selection uses proper checkbox roles

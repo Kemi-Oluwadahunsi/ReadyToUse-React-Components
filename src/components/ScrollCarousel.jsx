@@ -1,261 +1,323 @@
-import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const testimonials = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    role: "CEO, TechStart",
-    content:
-      "This product has completely transformed how we handle our daily operations. The team's support has been exceptional throughout our journey.",
-    rating: 5,
-    avatar: "/1.png?height=60&width=60",
-  },
-  {
-    id: 2,
-    name: "Michael Chen",
-    role: "Product Manager, InnovateCorp",
-    content:
-      "Outstanding quality and attention to detail. We've seen a 40% increase in productivity since implementing this solution.",
-    rating: 5,
-    avatar: "/3.png?height=60&width=60",
-  },
-  {
-    id: 3,
-    name: "Emily Rodriguez",
-    role: "Marketing Director, GrowthLab",
-    content:
-      "The user experience is intuitive and the results speak for themselves. Our team adopted it seamlessly within days.",
-    rating: 5,
-    avatar: "/1.png?height=60&width=60",
-  },
-  {
-    id: 4,
-    name: "David Thompson",
-    role: "CTO, DataFlow",
-    content:
-      "Robust, scalable, and reliable. This is exactly what we needed to take our operations to the next level.",
-    rating: 5,
-    avatar: "/3.png?height=60&width=60",
-  },
-  {
-    id: 5,
-    name: "Lisa Wang",
-    role: "Founder, CreativeStudio",
-    content:
-      "The integration was smooth and the impact was immediate. Highly recommend to any growing business.",
-    rating: 5,
-    avatar: "/1.png?height=60&width=60",
-  },
-];
+/**
+ * ScrollCarousel - A generic, responsive carousel with auto-scroll and snap scrolling.
+ *
+ * Works for any content — images, testimonials, product cards, text blocks, etc.
+ * Pass `renderItem` for full control, or use the built-in default card which
+ * renders any combination of: image, title, description, and footer content.
+ */
+/*
+ * @param {Object[]} items - Array of items to display. Shape is up to you.
+ * @param {Function} renderItem - Custom render: (item, index, isActive) => JSX. When provided, the default card is bypassed entirely.
+ * @param {boolean} autoScroll - Enable auto-scrolling (default true)
+ * @param {number} autoScrollInterval - Auto-scroll interval in ms (default 4000)
+ * @param {boolean} showDots - Show page indicator dots (default true)
+ * @param {boolean} showArrows - Show prev/next arrows (default true)
+ * @param {string} className - Additional CSS classes for the wrapper
+ * @param {number} pauseOnInteract - MS to pause auto-scroll after interaction (default 5000)
+ * @param {number} itemsPerView - Items visible per page. Auto-responsive if not set.
+ * @param {number} gap - Gap between items in px (default 24)
+ * @param {boolean} scaleActive - Scale the center card up when 3+ items visible (default false)
+ * @param {boolean} showEdgeFade - Show gradient fade at left/right edges (default true)
+ * @param {string} cardClassName - Additional CSS classes applied to each default card
+ */
+const ScrollCarousel = ({
+  items = [],
+  renderItem,
+  autoScroll = true,
+  autoScrollInterval = 4000,
+  showDots = true,
+  showArrows = true,
+  className = "",
+  pauseOnInteract = 5000,
+  itemsPerView: fixedPerView,
+  gap = 24,
+  scaleActive = false,
+  showEdgeFade = true,
+  cardClassName = "",
+}) => {
+  const [active, setActive] = useState(0);
+  const [playing, setPlaying] = useState(autoScroll);
+  const [perView, setPerView] = useState(fixedPerView || 1);
+  const [isDragging, setIsDragging] = useState(false);
+  const trackRef = useRef(null);
+  const timerRef = useRef(null);
+  const dragRef = useRef({ startX: 0, scrollLeft: 0 });
 
-const ScrollCarousel = () => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
-  const [itemsPerPage, setItemsPerPage] = useState(1);
-  const scrollContainerRef = useRef(null);
-  const autoScrollRef = useRef(null);
-
-  // Calculate items per page based on screen size
+  /* ── responsive items-per-view ── */
   useEffect(() => {
-    const updateItemsPerPage = () => {
-      if (window.innerWidth >= 1024) {
-        setItemsPerPage(3); // lg: 3 items
-      } else if (window.innerWidth >= 768) {
-        setItemsPerPage(2); // md: 2 items
-      } else {
-        setItemsPerPage(1); // sm: 1 item
-      }
+    if (fixedPerView) return;
+    const onResize = () => {
+      const w = window.innerWidth;
+      setPerView(w >= 1280 ? 3 : w >= 768 ? 2 : 1);
     };
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [fixedPerView]);
 
-    updateItemsPerPage();
-    window.addEventListener("resize", updateItemsPerPage);
-    return () => window.removeEventListener("resize", updateItemsPerPage);
-  }, []);
+  const maxPage = Math.max(0, items.length - perView);
 
-  // Calculate total pages based on items per page
-  const totalPages = Math.max(1, testimonials.length - itemsPerPage + 1);
+  /* ── scroll to active ── */
+  const scrollTo = useCallback(
+    (idx) => {
+      const el = trackRef.current;
+      if (!el || !el.children[0]) return;
+      const card = el.children[0].offsetWidth;
+      el.scrollTo({ left: idx * (card + gap), behavior: "smooth" });
+    },
+    [gap]
+  );
 
-  // Auto-scroll functionality
+  /* ── auto-scroll ── */
   useEffect(() => {
-    if (!isAutoScrolling) return;
-
-    autoScrollRef.current = setInterval(() => {
-      setCurrentPage((prevPage) => {
-        const nextPage = (prevPage + 1) % totalPages;
-        scrollToPage(nextPage);
-        return nextPage;
+    if (!playing || items.length <= perView) return;
+    timerRef.current = setInterval(() => {
+      setActive((p) => {
+        const next = p >= maxPage ? 0 : p + 1;
+        scrollTo(next);
+        return next;
       });
-    }, 3000);
+    }, autoScrollInterval);
+    return () => clearInterval(timerRef.current);
+  }, [playing, maxPage, perView, items.length, autoScrollInterval, scrollTo]);
 
-    return () => {
-      if (autoScrollRef.current) {
-        clearInterval(autoScrollRef.current);
-      }
-    };
-  }, [isAutoScrolling, totalPages]);
-
-  // Scroll to specific page
-  const scrollToPage = (pageIndex) => {
-    if (scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
-      const cardWidth = container.children[0]?.offsetWidth || 0;
-      const gap = 16;
-      const scrollPosition = pageIndex * (cardWidth + gap);
-
-      container.scrollTo({
-        left: scrollPosition,
-        behavior: "smooth",
-      });
-    }
+  const pauseAndGo = (idx) => {
+    const clamped = Math.max(0, Math.min(idx, maxPage));
+    setActive(clamped);
+    scrollTo(clamped);
+    setPlaying(false);
+    clearTimeout(timerRef.current);
+    setTimeout(() => setPlaying(autoScroll), pauseOnInteract);
   };
 
-  // Handle manual navigation
-  const goToPage = (pageIndex) => {
-    setCurrentPage(pageIndex);
-    scrollToPage(pageIndex);
-    pauseAutoScroll();
+  /* ── drag-to-scroll ── */
+  const onPointerDown = (e) => {
+    setIsDragging(true);
+    dragRef.current = { startX: e.clientX, scrollLeft: trackRef.current.scrollLeft };
+    trackRef.current.setPointerCapture(e.pointerId);
+  };
+  const onPointerMove = (e) => {
+    if (!isDragging) return;
+    const dx = e.clientX - dragRef.current.startX;
+    trackRef.current.scrollLeft = dragRef.current.scrollLeft - dx;
+  };
+  const onPointerUp = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    syncFromScroll();
   };
 
-  const goToPrevious = () => {
-    const newPage = currentPage === 0 ? totalPages - 1 : currentPage - 1;
-    goToPage(newPage);
+  /* ── sync scroll position → active page ── */
+  const syncFromScroll = () => {
+    const el = trackRef.current;
+    if (!el?.children[0]) return;
+    const card = el.children[0].offsetWidth;
+    const pg = Math.round(el.scrollLeft / (card + gap));
+    if (pg !== active && pg >= 0 && pg <= maxPage) setActive(pg);
   };
 
-  const goToNext = () => {
-    const newPage = (currentPage + 1) % totalPages;
-    goToPage(newPage);
+  /* ── navigation ── */
+  const goPrev = () => pauseAndGo(active <= 0 ? maxPage : active - 1);
+  const goNext = () => pauseAndGo(active >= maxPage ? 0 : active + 1);
+
+  /* ── generic default card ── */
+  const defaultRender = (item, idx) => {
+    const isCenter = scaleActive && perView >= 3 && idx === active + 1;
+    const img = item.image || item.src || item.avatar;
+    const title = item.title || item.name || item.author;
+    const text = item.description || item.content || item.text || item.quote;
+    const subtitle = item.subtitle || item.role || item.label;
+    const footer = item.footer; // optional JSX or string
+
+    return (
+      <div
+        className={`relative h-full rounded-2xl border border-gray-200/60 dark:border-zinc-700/60 bg-white dark:bg-zinc-800 overflow-hidden flex flex-col ${cardClassName}`}
+        style={{
+          transform: isCenter ? "scale(1.03)" : "scale(1)",
+          boxShadow: isCenter
+            ? "0 20px 50px -12px rgba(0,0,0,.15)"
+            : "0 4px 24px -4px rgba(0,0,0,.06)",
+          transition: "transform .4s cubic-bezier(.4,0,.2,1), box-shadow .4s cubic-bezier(.4,0,.2,1)",
+        }}
+      >
+        {/* Image — rendered if present */}
+        {img && (
+          <div className="w-full overflow-hidden">
+            <img
+              src={img}
+              alt={title || ""}
+              className="w-full h-auto object-cover"
+              style={{ transition: "transform .4s ease" }}
+              draggable={false}
+            />
+          </div>
+        )}
+
+        {/* Body — only when there's title, text, or subtitle */}
+        {(title || text || subtitle || footer) && (
+          <div className="flex flex-col flex-1 p-4 sm:p-6">
+            {title && (
+              <h3 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base mb-1 truncate">
+                {title}
+              </h3>
+            )}
+            {subtitle && (
+              <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 sm:mb-3 truncate">
+                {subtitle}
+              </p>
+            )}
+            {text && (
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-xs sm:text-sm flex-1">
+                {text}
+              </p>
+            )}
+            {footer && (
+              <div className="mt-3 sm:mt-4 pt-2 sm:pt-3 border-t border-gray-100 dark:border-zinc-700/50 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                {footer}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
   };
 
-  // Pause auto-scroll temporarily when user interacts
-  const pauseAutoScroll = () => {
-    setIsAutoScrolling(false);
-    setTimeout(() => setIsAutoScrolling(true), 5000);
+  /* ── item width classes ── */
+  const widthMap = {
+    1: "100%",
+    2: `calc(50% - ${gap / 2}px)`,
+    3: `calc(33.333% - ${(gap * 2) / 3}px)`,
+    4: `calc(25% - ${(gap * 3) / 4}px)`,
   };
-
-  // Handle scroll events to update current page
-  const handleScroll = () => {
-    if (!scrollContainerRef.current) return;
-
-    const container = scrollContainerRef.current;
-    const cardWidth = container.children[0]?.offsetWidth || 0;
-    const gap = 16;
-    const scrollLeft = container.scrollLeft;
-    const newPage = Math.round(scrollLeft / (cardWidth + gap));
-
-    if (newPage !== currentPage && newPage >= 0 && newPage < totalPages) {
-      setCurrentPage(newPage);
-    }
-  };
+  const itemWidth = widthMap[perView] || widthMap[1];
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-8">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">
-          What Our Clients Say
-        </h2>
-        <p className="text-gray-600">
-          Trusted by thousands of businesses worldwide
-        </p>
+    <div className={`relative ${className}`}>
+      {/* Edge fade masks */}
+      {showEdgeFade && (
+        <>
+          <div
+            className="pointer-events-none absolute inset-y-0 left-0 z-10"
+            style={{
+              width: 48,
+              background: "linear-gradient(90deg, var(--rui-carousel-bg, rgb(249 250 251)) 0%, transparent 100%)",
+            }}
+          />
+          <div
+            className="pointer-events-none absolute inset-y-0 right-0 z-10"
+            style={{
+              width: 48,
+              background: "linear-gradient(270deg, var(--rui-carousel-bg, rgb(249 250 251)) 0%, transparent 100%)",
+            }}
+          />
+        </>
+      )}
+
+      {/* Arrows */}
+      {showArrows && items.length > perView && (
+        <>
+          <button
+            type="button"
+            onClick={goPrev}
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-20 w-11 h-11 rounded-full bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 shadow-lg items-center justify-center cursor-pointer hover:scale-105 active:scale-95"
+            style={{ transition: "transform .15s" }}
+            aria-label="Previous"
+          >
+            <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          </button>
+          <button
+            type="button"
+            onClick={goNext}
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-20 w-11 h-11 rounded-full bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 shadow-lg items-center justify-center cursor-pointer hover:scale-105 active:scale-95"
+            style={{ transition: "transform .15s" }}
+            aria-label="Next"
+          >
+            <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          </button>
+        </>
+      )}
+
+      {/* Carousel Track */}
+      <div
+        ref={trackRef}
+        onScroll={syncFromScroll}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+        className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth px-6"
+        style={{
+          gap: `${gap}px`,
+          scrollbarWidth: "none",
+          cursor: isDragging ? "grabbing" : "grab",
+          userSelect: "none",
+        }}
+      >
+        {items.map((item, idx) => (
+          <div
+            key={item.id ?? idx}
+            className="flex-none snap-center"
+            style={{ width: itemWidth, transition: "width .3s ease" }}
+          >
+            {renderItem ? renderItem(item, idx, idx === active) : defaultRender(item, idx)}
+          </div>
+        ))}
       </div>
 
-      <div className="relative">
-        {/* Desktop Navigation Arrows */}
-        <button
-          onClick={goToPrevious}
-          className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-10 h-10 bg-white rounded-full shadow-lg items-center justify-center hover:bg-gray-50 transition-colors cursor-pointer"
-          aria-label="Previous testimonial"
-        >
-          <ChevronLeft className="w-5 h-5 text-gray-600" />
-        </button>
-
-        <button
-          onClick={goToNext}
-          className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-10 h-10 bg-white rounded-full shadow-lg items-center justify-center hover:bg-gray-50 transition-colors cursor-pointer"
-          aria-label="Next testimonial"
-        >
-          <ChevronRight className="w-5 h-5 text-gray-600" />
-        </button>
-
-        {/* Carousel Container */}
-        <div
-          ref={scrollContainerRef}
-          onScroll={handleScroll}
-          className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-smooth"
-          style={{
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-            WebkitScrollbar: { display: "none" },
-          }}
-        >
-          {testimonials.map((testimonial) => (
-            <div
-              key={testimonial.id}
-              className="flex-none w-full md:w-96 snap-center"
-            >
-              <div className="bg-white rounded-xl shadow-lg p-6 h-full border border-gray-100">
-                {/* Rating Stars */}
-                <div className="flex items-center gap-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-4 h-4 fill-yellow-400 text-yellow-400"
-                    />
-                  ))}
-                </div>
-
-                {/* Testimonial Content */}
-                <blockquote className="text-gray-700 mb-6 leading-relaxed">
-                  "{testimonial.content}"
-                </blockquote>
-
-                {/* Author Info */}
-                <div className="flex items-center gap-3">
-                  <img
-                    src={testimonial.avatar || "/placeholder.svg"}
-                    alt={testimonial.name}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-                  <div>
-                    <div className="font-semibold text-gray-900">
-                      {testimonial.name}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      {testimonial.role}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Navigation Dots */}
-        <div className="flex justify-center gap-2 mt-6">
-          {testimonials.map((_, index) => (
+      {/* Dots + Controls */}
+      {(showDots || autoScroll) && items.length > perView && (
+        <div className="flex items-center justify-center gap-3 mt-5 sm:mt-8">
+          {/* Auto-scroll indicator */}
+          {autoScroll && (
             <button
-              key={index}
-              onClick={() => goToPage(index)}
-              className={`w-2 h-2 rounded-full transition-colors cursor-pointer ${
-                index === currentPage ? "bg-blue-600" : "bg-gray-300"
-              }`}
-              aria-label={`Go to testimonial ${index + 1}`}
-            />
-          ))}
-        </div>
-      </div>
+              type="button"
+              onClick={() => setPlaying(!playing)}
+              className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer"
+              style={{ transition: "color .2s" }}
+              aria-label={playing ? "Pause auto-scroll" : "Play auto-scroll"}
+            >
+              <span
+                className="w-2 h-2 rounded-full"
+                style={{
+                  backgroundColor: playing ? "#22c55e" : "#9ca3af",
+                  boxShadow: playing ? "0 0 6px #22c55e80" : "none",
+                  transition: "all .3s",
+                }}
+              />
+              <span>{playing ? "Auto" : "Paused"}</span>
+            </button>
+          )}
 
-      {/* Auto-scroll indicator */}
-      <div className="flex justify-center mt-4">
-        <button
-          onClick={() => setIsAutoScrolling(!isAutoScrolling)}
-          className="text-sm text-gray-500 hover:text-gray-700 transition-colors cursor-pointer"
-        >
-          {isAutoScrolling ? "Pause auto-scroll" : "Resume auto-scroll"}
-        </button>
-      </div>
+          {/* Dot indicators */}
+          {showDots && (
+            <div className="flex items-center gap-1.5">
+              {Array.from({ length: Math.min(maxPage + 1, items.length) }, (_, i) => (
+                <button
+                  type="button"
+                  key={i}
+                  onClick={() => pauseAndGo(i)}
+                  className="rounded-full cursor-pointer"
+                  style={{
+                    width: i === active ? 24 : 8,
+                    height: 8,
+                    backgroundColor: i === active ? "#3b82f6" : "#d1d5db",
+                    transition: "all .3s cubic-bezier(.4,0,.2,1)",
+                  }}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
 
+ScrollCarousel.displayName = "ScrollCarousel";
+
+export { ScrollCarousel };
 export default ScrollCarousel;

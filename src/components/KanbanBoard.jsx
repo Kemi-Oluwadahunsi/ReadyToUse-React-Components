@@ -1,422 +1,235 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import {
-  DndContext,
-  DragOverlay,
-  closestCorners,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
+  DndContext, DragOverlay, closestCorners,
+  KeyboardSensor, PointerSensor, useSensor, useSensors,
 } from "@dnd-kit/core";
 import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
+  arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import {
-  GripVertical,
-  Plus,
-  MoreHorizontal,
-  User,
-  Calendar,
-  Flag,
-} from "lucide-react";
+import { GripVertical, Plus, MoreHorizontal, Flag } from "lucide-react";
 
-// Sample data
-const initialData = {
-  columns: {
-    todo: {
-      id: "todo",
-      title: "To Do",
-      color: "bg-gray-100 dark:bg-zinc-800",
-      taskIds: ["task-1", "task-2", "task-3"],
-    },
-    inprogress: {
-      id: "inprogress",
-      title: "In Progress",
-      color: "bg-blue-50 dark:bg-blue-900/20",
-      taskIds: ["task-4", "task-5"],
-    },
-    done: {
-      id: "done",
-      title: "Done",
-      color: "bg-green-50 dark:bg-green-900/20",
-      taskIds: ["task-6"],
-    },
-  },
-  tasks: {
-    "task-1": {
-      id: "task-1",
-      title: "Design new landing page",
-      description: "Create wireframes and mockups for the new homepage",
-      priority: "high",
-      assignee: "John Doe",
-      dueDate: "2024-01-15",
-      tags: ["Design", "UI/UX"],
-    },
-    "task-2": {
-      id: "task-2",
-      title: "Set up authentication",
-      description: "Implement user login and registration system",
-      priority: "medium",
-      assignee: "Jane Smith",
-      dueDate: "2024-01-20",
-      tags: ["Backend", "Security"],
-    },
-    "task-3": {
-      id: "task-3",
-      title: "Write documentation",
-      description: "Document API endpoints and usage examples",
-      priority: "low",
-      assignee: "Mike Johnson",
-      dueDate: "2024-01-25",
-      tags: ["Documentation"],
-    },
-    "task-4": {
-      id: "task-4",
-      title: "Implement search feature",
-      description: "Add global search functionality with filters",
-      priority: "high",
-      assignee: "Sarah Wilson",
-      dueDate: "2024-01-18",
-      tags: ["Frontend", "Search"],
-    },
-    "task-5": {
-      id: "task-5",
-      title: "Database optimization",
-      description: "Optimize queries and add proper indexing",
-      priority: "medium",
-      assignee: "Tom Brown",
-      dueDate: "2024-01-22",
-      tags: ["Database", "Performance"],
-    },
-    "task-6": {
-      id: "task-6",
-      title: "Deploy to production",
-      description: "Set up CI/CD pipeline and deploy application",
-      priority: "high",
-      assignee: "Alex Davis",
-      dueDate: "2024-01-10",
-      tags: ["DevOps", "Deployment"],
-    },
-  },
-  columnOrder: ["todo", "inprogress", "done"],
-};
+/**
+ * KanbanBoard - A drag-and-drop Kanban board component.
+ */
+/*
+ * @param {Object} data - { columns: { [id]: { id, title, color?, taskIds } }, tasks: { [id]: { id, title, description?, priority?, tags?, ...} }, columnOrder: string[] }
+ * @param {Function} onDataChange - Callback with updated data after drag: (data) => void
+ * @param {Function} renderCard - Custom card renderer: (task) => JSX
+ * @param {Function} onAddTask - Callback when "Add task" is clicked: (columnId) => void
+ * @param {string} className - Additional CSS classes
+ */
 
-// Task Card Component
-function TaskCard({ task, isDragging }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({
-      id: task.id,
-    });
+// Default Task Card
+function TaskCard({ task, renderCard }) {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: task.id });
+  const style = { transform: CSS.Transform.toString(transform), transition };
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
+  if (renderCard) {
+    return (
+      <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+        {renderCard(task)}
+      </div>
+    );
+  }
 
-  const priorityColors = {
-    high: "border-l-red-500 bg-red-50 dark:bg-red-900/10",
-    medium: "border-l-yellow-500 bg-yellow-50 dark:bg-yellow-900/10",
-    low: "border-l-green-500 bg-green-50 dark:bg-green-900/10",
+  const priorityStyles = {
+    high: "border-l-red-500",
+    medium: "border-l-amber-500",
+    low: "border-l-green-500",
   };
 
   return (
     <div
       ref={setNodeRef}
       style={style}
-      className={`bg-white dark:bg-zinc-800 rounded-lg shadow-sm border border-gray-200 dark:border-zinc-700 border-l-4 p-4 cursor-grab active:cursor-grabbing transition-all duration-200 hover:shadow-md ${
-        priorityColors[task.priority]
-      } ${isDragging ? "opacity-50 rotate-2 scale-105" : ""}`}
+      className={`bg-white dark:bg-zinc-800 rounded-lg shadow-sm border border-gray-200 dark:border-zinc-700 border-l-4 p-4 cursor-grab active:cursor-grabbing transition-shadow duration-200 hover:shadow-md ${
+        priorityStyles[task.priority] || "border-l-gray-300"
+      }`}
       {...attributes}
       {...listeners}
     >
-      {/* Task header */}
       <div className="flex items-start justify-between mb-2">
-        <h3 className="font-medium text-gray-900 dark:text-white text-sm leading-tight">
-          {task.title}
-        </h3>
-        <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-          <MoreHorizontal className="h-4 w-4" />
-        </button>
+        <h4 className="font-medium text-gray-900 dark:text-white text-sm leading-tight">{task.title}</h4>
+        <GripVertical className="h-4 w-4 text-gray-300 dark:text-zinc-600 flex-shrink-0" />
       </div>
-
-      {/* Task description */}
-      <p className="text-xs text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
-        {task.description}
-      </p>
-
-      {/* Tags */}
-      <div className="flex flex-wrap gap-1 mb-3">
-        {task.tags.map((tag) => (
-          <span
-            key={tag}
-            className="px-2 py-1 bg-gray-100 dark:bg-zinc-700 text-gray-700 dark:text-gray-300 text-xs rounded-full"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-
-      {/* Task footer */}
-      <div className="flex items-center justify-between text-xs">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
-            <User className="h-3 w-3" />
-            <span>{task.assignee}</span>
-          </div>
+      {task.description && (
+        <p className="text-xs text-gray-500 dark:text-gray-400 mb-3 line-clamp-2">{task.description}</p>
+      )}
+      {task.tags?.length > 0 && (
+        <div className="flex flex-wrap gap-1 mb-3">
+          {task.tags.map((tag) => (
+            <span key={tag} className="px-2 py-0.5 bg-gray-100 dark:bg-zinc-700 text-gray-600 dark:text-gray-300 text-xs rounded-full">{tag}</span>
+          ))}
         </div>
-        <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
-          <Calendar className="h-3 w-3" />
-          <span>{new Date(task.dueDate).toLocaleDateString()}</span>
+      )}
+      {task.priority && (
+        <div className="flex items-center gap-1.5">
+          <Flag className={`h-3 w-3 ${task.priority === "high" ? "text-red-500" : task.priority === "medium" ? "text-amber-500" : "text-green-500"}`} />
+          <span className="text-xs text-gray-500 dark:text-gray-400 capitalize">{task.priority}</span>
         </div>
-      </div>
-
-      {/* Priority indicator */}
-      <div className="flex items-center gap-1 mt-2">
-        <Flag
-          className={`h-3 w-3 ${
-            task.priority === "high"
-              ? "text-red-500"
-              : task.priority === "medium"
-              ? "text-yellow-500"
-              : "text-green-500"
-          }`}
-        />
-        <span className="text-xs text-gray-500 dark:text-gray-400 capitalize">
-          {task.priority} priority
-        </span>
-      </div>
-
-      {/* Drag handle */}
-      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-        <GripVertical className="h-4 w-4 text-gray-400" />
-      </div>
+      )}
     </div>
   );
 }
 
-// Column Component
-function Column({ column, tasks }) {
-  const { setNodeRef } = useSortable({
-    id: column.id,
-  });
+// Column
+function Column({ column, tasks, renderCard, onAddTask }) {
+  const { setNodeRef } = useSortable({ id: column.id });
 
   return (
-    <div className={`${column.color} rounded-lg p-4 min-h-[500px]`}>
-      {/* Column header */}
-      <div className="flex items-center justify-between mb-4">
+    <div className={`rounded-xl p-3 sm:p-4 min-h-[200px] sm:min-h-[400px] ${column.color || "bg-gray-50 dark:bg-zinc-800/50"}`}>
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
         <div className="flex items-center gap-2">
-          <h2 className="font-semibold text-gray-900 dark:text-white">
-            {column.title}
-          </h2>
-          <span className="bg-gray-200 dark:bg-zinc-600 text-gray-700 dark:text-gray-300 text-xs px-2 py-1 rounded-full">
+          <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{column.title}</h3>
+          <span className="bg-gray-200 dark:bg-zinc-600 text-gray-600 dark:text-gray-300 text-xs px-2 py-0.5 rounded-full font-medium">
             {tasks.length}
           </span>
         </div>
-        <button className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
-          <Plus className="h-4 w-4" />
-        </button>
+        {onAddTask && (
+          <button onClick={() => onAddTask(column.id)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+            <Plus className="h-4 w-4" />
+          </button>
+        )}
       </div>
-
-      {/* Tasks list */}
-      <SortableContext
-        items={tasks.map((task) => task.id)}
-        strategy={verticalListSortingStrategy}
-      >
-        <div ref={setNodeRef} className="space-y-3 min-h-[400px]">
+      <SortableContext items={tasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
+        <div ref={setNodeRef} className="space-y-2 sm:space-y-3 min-h-[100px] sm:min-h-[300px]">
           {tasks.map((task) => (
-            <div key={task.id} className="group">
-              <TaskCard task={task} />
-            </div>
+            <TaskCard key={task.id} task={task} renderCard={renderCard} />
           ))}
         </div>
       </SortableContext>
-
-      {/* Add task button */}
-      <button className="w-full mt-3 p-3 border-2 border-dashed border-gray-300 dark:border-zinc-600 rounded-lg text-gray-500 dark:text-gray-400 hover:border-gray-400 dark:hover:border-zinc-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors text-sm">
-        + Add a task
-      </button>
+      {onAddTask && (
+        <button
+          onClick={() => onAddTask(column.id)}
+          className="w-full mt-3 p-2.5 border-2 border-dashed border-gray-300 dark:border-zinc-600 rounded-lg text-gray-400 dark:text-gray-500 hover:border-gray-400 dark:hover:border-zinc-500 hover:text-gray-500 transition-colors text-sm"
+        >
+          + Add task
+        </button>
+      )}
     </div>
   );
 }
 
-// Main Kanban Board Component
-const KanbanBoard = () => {
-  const [data, setData] = useState(initialData);
+const KanbanBoard = ({
+  data: initialData,
+  onDataChange,
+  renderCard,
+  onAddTask,
+  className = "",
+}) => {
+  // Normalize: if columns lack taskIds, derive them from tasks
+  const normalize = (d) => {
+    const needsFix = Object.values(d.columns).some((c) => !Array.isArray(c.taskIds));
+    if (!needsFix) return d;
+    const cols = { ...d.columns };
+    for (const key of Object.keys(cols)) {
+      cols[key] = { ...cols[key], taskIds: cols[key].taskIds || [] };
+    }
+    for (const [tid, task] of Object.entries(d.tasks || {})) {
+      if (task.column && cols[task.column] && !cols[task.column].taskIds.includes(tid)) {
+        cols[task.column] = { ...cols[task.column], taskIds: [...cols[task.column].taskIds, tid] };
+      }
+    }
+    return { ...d, columns: cols };
+  };
+
+  const [data, setData] = useState(() => normalize(initialData));
   const [activeId, setActiveId] = useState(null);
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
-  // Helper function to find which container a task belongs to
-  const findContainer = (id) => {
-    if (id in data.columns) {
-      return id;
-    }
-    return Object.keys(data.columns).find((key) =>
-      data.columns[key].taskIds.includes(id)
-    );
-  };
+  const findContainer = useCallback((id) => {
+    if (id in data.columns) return id;
+    return Object.keys(data.columns).find((key) => (data.columns[key].taskIds || []).includes(id));
+  }, [data.columns]);
 
-  const handleDragStart = (event) => {
-    setActiveId(event.active.id);
-  };
+  const updateData = useCallback((newData) => {
+    setData(newData);
+    onDataChange?.(newData);
+  }, [onDataChange]);
 
-  const handleDragOver = (event) => {
-    const { active, over } = event;
+  const handleDragStart = (e) => setActiveId(e.active.id);
 
+  const handleDragOver = (e) => {
+    const { active, over } = e;
     if (!over) return;
-
-    const activeId = active.id;
-    const overId = over.id;
-
-    // Find the containers
-    const activeContainer = findContainer(activeId);
-    const overContainer = findContainer(overId);
-
-    if (
-      !activeContainer ||
-      !overContainer ||
-      activeContainer === overContainer
-    ) {
-      return;
-    }
+    const ac = findContainer(active.id);
+    const oc = findContainer(over.id);
+    if (!ac || !oc || ac === oc) return;
 
     setData((prev) => {
-      const activeItems = prev.columns[activeContainer].taskIds;
-      const overItems = prev.columns[overContainer].taskIds;
-
-      // Find the indexes for the items
-      // const activeIndex = activeItems.indexOf(activeId);
-      const overIndex = overItems.indexOf(overId);
-
-      let newIndex;
-      if (overId in prev.columns) {
-        // We're at the root droppable of a container
-        newIndex = overItems.length + 1;
-      } else {
-        const isBelowOverItem = over && overIndex < overItems.length - 1;
-        const modifier = isBelowOverItem ? 1 : 0;
-        newIndex = overIndex >= 0 ? overIndex + modifier : overItems.length + 1;
-      }
+      const aItems = prev.columns[ac].taskIds;
+      const oItems = prev.columns[oc].taskIds;
+      const overIdx = oItems.indexOf(over.id);
+      const newIdx = over.id in prev.columns ? oItems.length : Math.max(0, overIdx);
 
       return {
         ...prev,
         columns: {
           ...prev.columns,
-          [activeContainer]: {
-            ...prev.columns[activeContainer],
-            taskIds: activeItems.filter((item) => item !== activeId),
-          },
-          [overContainer]: {
-            ...prev.columns[overContainer],
-            taskIds: [
-              ...overItems.slice(0, newIndex),
-              activeId,
-              ...overItems.slice(newIndex),
-            ],
-          },
+          [ac]: { ...prev.columns[ac], taskIds: aItems.filter((i) => i !== active.id) },
+          [oc]: { ...prev.columns[oc], taskIds: [...oItems.slice(0, newIdx), active.id, ...oItems.slice(newIdx)] },
         },
       };
     });
   };
 
-  const handleDragEnd = (event) => {
-    const { active, over } = event;
+  const handleDragEnd = (e) => {
+    const { active, over } = e;
+    if (!over) { setActiveId(null); return; }
+    const ac = findContainer(active.id);
+    const oc = findContainer(over.id);
+    if (!ac || !oc) { setActiveId(null); return; }
 
-    if (!over) {
-      setActiveId(null);
-      return;
-    }
-
-    const activeId = active.id;
-    const overId = over.id;
-
-    const activeContainer = findContainer(activeId);
-    const overContainer = findContainer(overId);
-
-    if (!activeContainer || !overContainer) {
-      setActiveId(null);
-      return;
-    }
-
-    if (activeContainer === overContainer) {
-      const activeIndex =
-        data.columns[activeContainer].taskIds.indexOf(activeId);
-      const overIndex = data.columns[overContainer].taskIds.indexOf(overId);
-
-      if (activeIndex !== overIndex) {
-        setData((prev) => ({
-          ...prev,
+    if (ac === oc) {
+      const aIdx = data.columns[ac].taskIds.indexOf(active.id);
+      const oIdx = data.columns[oc].taskIds.indexOf(over.id);
+      if (aIdx !== oIdx) {
+        const newData = {
+          ...data,
           columns: {
-            ...prev.columns,
-            [overContainer]: {
-              ...prev.columns[overContainer],
-              taskIds: arrayMove(
-                prev.columns[overContainer].taskIds,
-                activeIndex,
-                overIndex
-              ),
-            },
+            ...data.columns,
+            [oc]: { ...data.columns[oc], taskIds: arrayMove(data.columns[oc].taskIds, aIdx, oIdx) },
           },
-        }));
+        };
+        updateData(newData);
       }
     }
-
     setActiveId(null);
   };
 
   const activeTask = activeId ? data.tasks[activeId] : null;
 
   return (
-    <div className="p-6 bg-gray-50 dark:bg-zinc-900 min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Project Board
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Drag and drop tasks between columns to update their status
-          </p>
+    <div className={className}>
+      <DndContext sensors={sensors} collisionDetection={closestCorners} onDragStart={handleDragStart} onDragOver={handleDragOver} onDragEnd={handleDragEnd}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-5">
+          {data.columnOrder.map((colId) => {
+            const column = data.columns[colId];
+            const tasks = column.taskIds.map((tid) => data.tasks[tid]).filter(Boolean);
+            return <Column key={colId} column={column} tasks={tasks} renderCard={renderCard} onAddTask={onAddTask} />;
+          })}
         </div>
-
-        {/* Kanban Board */}
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCorners}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDragEnd={handleDragEnd}
-        >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {data.columnOrder.map((columnId) => {
-              const column = data.columns[columnId];
-              const tasks = column.taskIds.map((taskId) => data.tasks[taskId]);
-
-              return <Column key={column.id} column={column} tasks={tasks} />;
-            })}
-          </div>
-
-          <DragOverlay>
-            {activeTask ? (
-              <div className="rotate-2 scale-105">
-                <TaskCard task={activeTask} isDragging />
-              </div>
-            ) : null}
-          </DragOverlay>
-        </DndContext>
-      </div>
+        <DragOverlay>
+          {activeTask ? (
+            <div className="rotate-2 scale-105 opacity-90">
+              <TaskCard task={activeTask} renderCard={renderCard} />
+            </div>
+          ) : null}
+        </DragOverlay>
+      </DndContext>
     </div>
   );
 };
 
+KanbanBoard.displayName = "KanbanBoard";
+TaskCard.displayName = "TaskCard";
+Column.displayName = "Column";
+
+export { KanbanBoard, TaskCard };
 export default KanbanBoard;

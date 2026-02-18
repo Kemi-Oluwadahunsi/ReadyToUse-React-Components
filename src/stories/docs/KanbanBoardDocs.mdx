@@ -1,0 +1,61 @@
+{/* src/stories/docs/KanbanBoardDocs.mdx */}
+import { Meta, Story, Canvas, Source, ArgTypes } from "@storybook/addon-docs/blocks";
+import * as KanbanBoardStories from "../KanbanBoard.stories";
+
+<Meta of={KanbanBoardStories} />
+
+# KanbanBoard
+
+A drag-and-drop Kanban board for managing tasks across columns. Supports custom columns, task cards with priorities, assignees, and tags.
+
+## Import
+
+```jsx
+import { KanbanBoard } from "readyui-react";
+```
+
+## Basic Usage
+
+<Canvas of={KanbanBoardStories.Default} />
+
+## With Add Task
+
+<Canvas of={KanbanBoardStories.WithAddTask} />
+
+## Props
+
+<ArgTypes of={KanbanBoardStories} />
+
+## Data Structure
+
+```js
+const columns = [
+  {
+    id: "todo",
+    title: "To Do",
+    color: "#3b82f6",
+    tasks: [
+      {
+        id: "1",
+        title: "Design homepage",
+        description: "Create wireframes",
+        priority: "high",     // "low" | "medium" | "high"
+        assignee: "Alice",
+        tags: ["design"],
+      },
+    ],
+  },
+];
+```
+
+## Accessibility
+
+- Keyboard navigation within columns and between tasks
+- ARIA roles for drag-and-drop regions
+- Focus management after task moves
+
+## Tips
+
+- Provide unique `id` values for both columns and tasks
+- Use the `onTaskMove` callback to sync state with your backend
+- Combine with `ToastNotification` to confirm moves

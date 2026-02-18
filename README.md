@@ -1,95 +1,102 @@
-# Ready-to-Use React Components
+# readyui-react
 
-A modern collection of reusable React components built with Vite, featuring beautiful animations, drag-and-drop functionality, and a sleek UI design.
+A professional collection of 50+ ready-to-use, configurable React UI components with Tailwind CSS, dark mode support, and smooth animations.
 
 ## 🚀 Features
 
-- 🎨 Modern UI components with TailwindCSS
-- ✨ Smooth animations with Framer Motion
-- 🖱️ Drag and drop functionality with DND Kit
-- 🔔 Toast notifications
+- 🎨 50+ production-ready UI components
+- 🌙 Dark mode support across all components
+- ✨ Smooth animations (CSS keyframes, no runtime dependency)
+- ♿ Accessible — ARIA roles, keyboard navigation, focus traps
+- 🖱️ Drag-and-drop (KanbanBoard, Sortable)
 - 📱 Responsive design
-- ⚡ Fast development with Vite
-- 🔍 TypeScript support
-- 🎯 ESLint configuration
+- ⚡ Zero-config — ships a pre-built CSS bundle; no Tailwind install required
+- 🔍 Tree-shakeable ES module + CJS builds
+
+---
 
 ## 📦 Installation
 
-1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/ReadyToUse-React-Components.git
-cd ReadyToUse-React-Components
+npm install readyui-react
 ```
 
-2. Install dependencies:
-```bash
-npm install
+### Import the stylesheet
+
+Add **one** of these imports at the top of your app entry file:
+
+```js
+// Option A — use the pre-built CSS (no Tailwind required in your project)
+import "readyui-react/styles.css";
+
+// Option B — if your project already uses Tailwind CSS v4, you can skip
+// styles.css and let your own Tailwind build scan the library's classes.
+// Just add the readyui-react source to your CSS @source directive:
+//   @source "../node_modules/readyui-react/dist/**/*.js";
 ```
 
-3. Start the development server:
-```bash
-npm run dev
+### Use a component
+
+```jsx
+import { Accordion, ToastNotification, KanbanBoard } from "readyui-react";
+
+export default function App() {
+  return <Accordion items={items} />;
+}
 ```
 
-## 🛠️ Available Scripts
+---
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
+## 🛠️ Available Scripts (for contributors)
+
+| Script | Description |
+|---|---|
+| `npm run dev` | Start the demo app dev server |
+| `npm run build` | Build the demo app for production |
+| `npm run build:lib` | Build the library JS bundles (ES + CJS) |
+| `npm run build:css` | Build the pre-built `dist/styles.css` |
+| `npm run build:pkg` | Build both JS **and** CSS (for publishing) |
+| `npm run lint` | Run ESLint |
+| `npm run preview` | Preview the demo app production build |
 
 ## 🏗️ Project Structure
 
 ```
 src/
-├── assets/        # Static assets
-├── components/    # Reusable React components
-├── contexts/      # React context providers
-├── App.jsx        # Main application component
-├── Home.jsx       # Home page component
-├── main.jsx       # Application entry point
-└── index.css      # Global styles
+├── components/          # All 50+ UI components
+│   ├── injectRuiStyles.js  # Runtime CSS fallback (auto-skips if styles.css loaded)
+│   └── ...
+├── contexts/            # React context providers
+├── lib-styles.css       # Tailwind entry point for dist/styles.css
+└── main.jsx             # Demo app entry
+dist/
+├── readyui-react.es.js  # ES module bundle
+├── readyui-react.cjs.js # CommonJS bundle
+└── styles.css           # Pre-built Tailwind + keyframes CSS
 ```
 
-## 🧩 Available Components
+## 🧩 Components
 
-The project includes various ready-to-use components:
-
-- Drag and Drop Components
-- Animated UI Elements
-- Toast Notifications
-- Navigation Components
-- Form Elements
-- Layout Components
+Accordion · Avatar · Badge · Breadcrumbs · Calendar · ColorPicker · CommandPalette · ConfirmDialog · CopyToClipboard · CustomToggleSwitch · DataTable · DatePicker · Drawer · DualRangeSlider · FileUploader · FilterableGallery · FilterComponent · FloatingActionButton · HoverRevealCard · ImageCropper · InfiniteScroll · InteractiveStepper · KanbanBoard · Modal · MultiSelectTagInput · NotificationBell · OTPInput · Pagination · PasswordStrength · PricingCards · ProgressBarSteps · RangeSlider · RatingInput · ResizableSidebar · ScrollAwareNavbar · ScrollCarousel · SearchBar · Select · Skeleton · Spinner · Tabs · TimeLine · ToastNotification · Tooltip · TreeView · VirtualList · DarkModeToggle
 
 ## 🎨 Styling
 
-This project uses TailwindCSS for styling. The configuration is set up in the project root.
+All components are styled with **Tailwind CSS v4** utility classes. The library ships a pre-built `dist/styles.css` (≈102 KB minified) so consumers don't need Tailwind in their own project.
 
-## 🔧 Configuration
+Custom keyframes (toast slide-in, timeline fade, spinner animations, etc.) are included in the CSS bundle **and** injected at runtime as a fallback via `injectRuiStyles.js`. The runtime injector automatically skips injection when it detects the pre-built stylesheet is loaded.
 
-### Vite Configuration
-The project uses Vite for fast development and building. Configuration can be found in `vite.config.js`.
+## 📚 Peer Dependencies
 
-### ESLint Configuration
-ESLint is configured for code quality and consistency. Configuration can be found in `eslint.config.js`.
+| Package | Required? |
+|---|---|
+| `react` ≥ 18 | **Yes** |
+| `react-dom` ≥ 18 | **Yes** |
+| `tailwindcss` ≥ 4 | Optional — only if you want your own Tailwind build |
 
-## 📚 Dependencies
+### Optional Dependencies
 
-### Core Dependencies
-- React 19.1.0
-- React DOM 19.1.0
-- React Router DOM 7.6.1
-- TailwindCSS 4.1.8
-- Framer Motion 12.16.0
-- DND Kit 6.3.1
-- React Hot Toast 2.5.2
-
-### Development Dependencies
-- Vite 6.3.5
-- ESLint 9.25.0
-- TypeScript types for React
-- Various ESLint plugins
+- `@dnd-kit/core` + `@dnd-kit/sortable` — enables KanbanBoard drag-and-drop
+- `react-hot-toast` — alternative toast provider
 
 ## 🤝 Contributing
 

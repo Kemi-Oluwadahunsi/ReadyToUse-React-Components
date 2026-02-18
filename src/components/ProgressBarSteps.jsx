@@ -1,139 +1,145 @@
-import { useState, useEffect } from "react";
+import { useCallback } from "react";
+import { Check } from "lucide-react";
 
-const steps = [
-  { id: 1, label: "Account", description: "Create your account" },
-  { id: 2, label: "Profile", description: "Complete your profile" },
-  { id: 3, label: "Preferences", description: "Set your preferences" },
-  { id: 4, label: "Verification", description: "Verify your email" },
-  { id: 5, label: "Complete", description: "Setup complete" },
-];
+/**
+ * ProgressBarSteps - A step progress bar with visual indicators and navigation.
+ */
+/*
+ * @param {Object[]} steps - Array of { id, label, description? }
+ * @param {number} currentStep - Current step (1-based)
+ * @param {Function} onStepChange - Callback: (stepId: number) => void
+ * @param {boolean} clickable - Enable click-to-navigate
+ * @param {string} activeColor - Tailwind gradient/bg classes for active state
+ * @param {string} className - Additional CSS classes
+ * @param {boolean} showProgress - Show percentage bar below steps
+ * @param {boolean} showNavButtons - Show prev/next buttons
+ */
+const ProgressBarSteps = ({
+  steps = [],
+  currentStep = 1,
+  onStepChange,
+  clickable = true,
+  activeColor = "bg-blue-600 border-blue-600",
+  className = "",
+  showProgress = true,
+  showNavButtons = true,
+}) => {
+  // Ensure currentStep is always a valid number
+  const step = typeof currentStep === "number" && !isNaN(currentStep)
+    ? Math.max(1, Math.min(currentStep, steps.length || 1))
+    : 1;
 
-const ProgressBarSteps = ({ currentStep = 1, onStepChange }) => {
-  const [progress, setProgress] = useState(0);
+  const progress = steps.length > 1 ? ((step - 1) / (steps.length - 1)) * 100 : 0;
 
-  useEffect(() => {
-    const percentage = ((currentStep - 1) / (steps.length - 1)) * 100;
-    setProgress(percentage);
-  }, [currentStep]);
-
-  const handleStepClick = (stepId) => {
-    onStepChange?.(stepId);
-  };
+  const handleStepClick = useCallback(
+    (stepNumber) => {
+      if (clickable) onStepChange?.(stepNumber);
+    },
+    [clickable, onStepChange]
+  );
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6">
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-          Setup Progress
-        </h2>
-        <p className="text-gray-600 dark:text-gray-400">
-          Complete all steps to finish your setup
-        </p>
-      </div>
-
-      {/* Progress Bar Container */}
-      <div className="relative mb-8">
-        {/* Background Track */}
+    <div className={className}>
+      {/* Step Indicators */}
+      <div className="relative mb-4 sm:mb-6">
         <div className="flex">
-          {steps.map((step, index) => (
-            <div key={step.id} className="flex-1 relative">
+          {steps.map((s, idx) => {
+            const stepNum = idx + 1;
+            return (
+            <div key={s.id || idx} className="flex-1 relative">
               <div className="flex items-center">
-                {/* Step Circle */}
-                <div
-                  className={`relative z-10 w-10 h-10 rounded-full border-2 flex items-center justify-center cursor-pointer transition-all duration-300 ${
-                    currentStep >= step.id
-                      ? "bg-blue-600 border-blue-600 text-white"
-                      : "bg-white dark:bg-zinc-800 border-gray-300 dark:border-zinc-600 text-gray-500 dark:text-gray-400"
+                <button
+                  type="button"
+                  className={`relative z-10 w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+                    clickable ? "cursor-pointer hover:scale-105" : "cursor-default"
+                  } ${
+                    step >= stepNum
+                      ? `${activeColor} text-white`
+                      : "bg-white dark:bg-zinc-800 border-gray-300 dark:border-zinc-600 text-gray-400 dark:text-gray-500"
                   }`}
-                  onClick={() => handleStepClick(step.id)}
+                  onClick={() => handleStepClick(stepNum)}
+                  disabled={!clickable}
                 >
-                  {currentStep > step.id ? (
-                    <svg
-                      className="w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
+                  {step > stepNum ? (
+                    <Check className="w-4 h-4 sm:w-5 sm:h-5" />
                   ) : (
-                    <span className="text-sm font-medium">{step.id}</span>
+                    <span className="text-xs sm:text-sm font-bold">{stepNum}</span>
                   )}
-                </div>
+                </button>
 
-                {/* Connecting Line */}
-                {index < steps.length - 1 && (
-                  <div className="flex-1 h-0.5 mx-2 bg-gray-200 dark:bg-zinc-700 relative">
+                {idx < steps.length - 1 && (
+                  <div className="flex-1 h-0.5 mx-1 sm:mx-2 bg-gray-200 dark:bg-zinc-700 relative overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-500"
                       style={{
-                        width:
-                          currentStep > step.id
-                            ? "100%"
-                            : currentStep === step.id
-                            ? "50%"
-                            : "0%",
+                        width: step > stepNum ? "100%" : step === stepNum ? "50%" : "0%",
                       }}
                     />
                   </div>
                 )}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
-        {/* Step Labels */}
-        <div className="flex mt-4">
-          {steps.map((step) => (
-            <div key={step.id} className="flex-1 text-center">
-              <div className="text-xs font-medium text-gray-900 dark:text-white mt-2">
-                {step.label}
+        {/* Labels */}
+        <div className="flex mt-3">
+          {steps.map((s, idx) => (
+            <div key={s.id || idx} className="flex-1 text-center">
+              <div className={`text-[10px] sm:text-xs font-semibold ${step >= idx + 1 ? "text-gray-900 dark:text-white" : "text-gray-400 dark:text-gray-500"}`}>
+                {s.label}
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                {step.description}
-              </div>
+              {s.description && (
+                <div className="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">{s.description}</div>
+              )}
             </div>
           ))}
         </div>
       </div>
 
-      {/* Progress Percentage */}
-      <div className="text-center">
-        <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-          Progress: {Math.round(progress)}%
+      {/* Progress Bar */}
+      {showProgress && (
+        <div className="mb-6">
+          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1.5">
+            <span>Progress</span>
+            <span className="font-medium">{Math.round(progress)}%</span>
+          </div>
+          <div className="w-full bg-gray-200 dark:bg-zinc-700 rounded-full h-2 overflow-hidden">
+            <div
+              className="bg-gradient-to-r from-blue-500 to-blue-600 h-full rounded-full transition-all duration-500"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
         </div>
-        <div className="w-full bg-gray-200 dark:bg-zinc-700 rounded-full h-2">
-          <div
-            className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-500"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-      </div>
+      )}
 
-      {/* Navigation Buttons */}
-      <div className="flex justify-between mt-8">
-        <button
-          onClick={() => currentStep > 1 && handleStepClick(currentStep - 1)}
-          disabled={currentStep === 1}
-          className="px-4 py-2 bg-gray-200 dark:bg-zinc-700 text-gray-700 dark:text-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300 dark:hover:bg-zinc-600 transition-colors"
-        >
-          Previous
-        </button>
-        <button
-          onClick={() =>
-            currentStep < steps.length && handleStepClick(currentStep + 1)
-          }
-          disabled={currentStep === steps.length}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
-        >
-          {currentStep === steps.length ? "Complete" : "Next"}
-        </button>
-      </div>
+      {/* Navigation */}
+      {showNavButtons && (
+        <div className="flex justify-between">
+          <button
+            type="button"
+            onClick={() => step > 1 && onStepChange?.(step - 1)}
+            disabled={step === 1}
+            className="px-3 sm:px-5 py-1.5 sm:py-2 bg-gray-100 dark:bg-zinc-700 text-gray-700 dark:text-gray-300 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer hover:bg-gray-200 dark:hover:bg-zinc-600 transition-colors text-xs sm:text-sm font-medium"
+          >
+            Previous
+          </button>
+          <button
+            type="button"
+            onClick={() => step < steps.length && onStepChange?.(step + 1)}
+            disabled={step === steps.length}
+            className="px-3 sm:px-5 py-1.5 sm:py-2 bg-blue-600 text-white rounded-lg disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer hover:bg-blue-700 transition-colors text-xs sm:text-sm font-medium"
+          >
+            {step === steps.length ? "Complete" : "Next"}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
 
+ProgressBarSteps.displayName = "ProgressBarSteps";
+
+export { ProgressBarSteps };
 export default ProgressBarSteps;
