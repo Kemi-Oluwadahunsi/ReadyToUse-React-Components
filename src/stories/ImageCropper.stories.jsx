@@ -42,6 +42,13 @@ export default {
   title: "Data Display/ImageCropper",
   component: ImageCropper,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { ImageCropper } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     aspectRatio: { control: { type: "number", min: 0, max: 3, step: 0.1 } },
     circular: { control: "boolean" },

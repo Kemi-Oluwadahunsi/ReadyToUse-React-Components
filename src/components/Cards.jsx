@@ -90,7 +90,7 @@ const ProfileCard = ({ avatar, name, role, bio, coverImage, stats, socials, acti
       {coverImage && <img src={coverImage} alt="" className="w-full h-full object-cover" />}
     </div>
     {/* Avatar */}
-    <div className="flex justify-center -mt-10 sm:-mt-12">
+    <div className="flex justify-center -mt-10 sm:-mt-12 relative z-10">
       {avatar ? (
         <img src={avatar} alt={name || ""} className="w-18 h-18 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full border-4 border-white dark:border-zinc-800 object-cover shadow" />
       ) : (

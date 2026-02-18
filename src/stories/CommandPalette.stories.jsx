@@ -19,6 +19,13 @@ export default {
   title: "Navigation/CommandPalette",
   component: CommandPalette,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { CommandPalette } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     isOpen: { control: "boolean" },
     placeholder: { control: "text" },

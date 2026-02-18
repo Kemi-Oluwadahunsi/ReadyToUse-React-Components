@@ -15,6 +15,13 @@ export default {
   title: "Data Display/VirtualList",
   component: VirtualList,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { VirtualList } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     itemHeight: { control: { type: "number", min: 30, max: 120 } },
     height: { control: { type: "number", min: 200, max: 800 } },

@@ -6,6 +6,13 @@ export default {
   title: "Navigation/InteractiveStepper",
   component: Stepper,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { Stepper } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     currentStep: { control: { type: "number", min: 0 } },
     allowClickNavigation: { control: "boolean" },

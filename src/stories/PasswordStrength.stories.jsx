@@ -5,6 +5,13 @@ export default {
   title: "Inputs/PasswordStrength",
   component: PasswordStrength,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { PasswordStrength } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     showRules: { control: "boolean", description: "Show rule checklist" },
     showMeter: { control: "boolean", description: "Show strength bar" },

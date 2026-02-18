@@ -4,6 +4,13 @@ export default {
   title: "Navigation/ScrollCarousel",
   component: ScrollCarousel,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { ScrollCarousel } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     autoScroll: { control: "boolean" },
     autoScrollInterval: { control: { type: "number", min: 1000, max: 10000 } },

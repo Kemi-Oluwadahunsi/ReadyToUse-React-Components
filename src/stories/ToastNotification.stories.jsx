@@ -26,7 +26,17 @@ export default {
       description: "Auto-dismiss duration in ms (0 = persistent)",
     },
   },
-  parameters: { layout: "fullscreen" },
+  parameters: {
+
+    docs: {
+
+      description: {
+
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { ToastProvider } from \"readyui-react\";\n```",
+
+      },
+
+    }, layout: "fullscreen" },
 };
 
 /* Helper component that uses the toast hook */

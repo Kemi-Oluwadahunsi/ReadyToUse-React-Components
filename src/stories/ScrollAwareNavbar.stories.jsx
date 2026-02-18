@@ -5,6 +5,13 @@ export default {
   title: "Navigation/ScrollAwareNavbar",
   component: ScrollAwareNavbar,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { ScrollAwareNavbar } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     behavior: {
       control: "select",

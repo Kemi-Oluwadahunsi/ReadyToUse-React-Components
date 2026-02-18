@@ -30,7 +30,17 @@ export default {
     offset: { control: "number", description: "Distance from trigger in px" },
     maxWidth: { control: "number", description: "Max width in px" },
   },
-  parameters: { layout: "centered" },
+  parameters: {
+
+    docs: {
+
+      description: {
+
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { Tooltip } from \"readyui-react\";\n```",
+
+      },
+
+    }, layout: "centered" },
 };
 
 /* ── Default ── */

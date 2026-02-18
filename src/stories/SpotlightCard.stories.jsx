@@ -5,6 +5,13 @@ export default {
   title: "Utilities/SpotlightCard",
   component: SpotlightCard,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { SpotlightCard } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     spotlightColor: {
       control: "text",

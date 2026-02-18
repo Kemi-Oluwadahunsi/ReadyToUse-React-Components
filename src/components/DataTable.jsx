@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
-import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Search, X, Check } from "lucide-react";
+import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Search, X, Check, ChevronsLeft, ChevronsRight } from "lucide-react";
 
 /* Module-level SortIcon to avoid re-creation on every render */
 const SortIcon = ({ sortKey: sk, sortDir: sd, colKey }) => {
@@ -124,13 +124,38 @@ const DataTable = ({
 
   const alignClass = (a) => (a === "right" ? "text-right" : a === "center" ? "text-center" : "text-left");
 
+  /* ── scroll-shadow state ── */
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const updateScrollShadows = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 1);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    updateScrollShadows();
+    el.addEventListener("scroll", updateScrollShadows, { passive: true });
+    const ro = new ResizeObserver(updateScrollShadows);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener("scroll", updateScrollShadows);
+      ro.disconnect();
+    };
+  }, [updateScrollShadows, paged]);
+
   return (
-    <div className={`bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl overflow-hidden ${className}`}>
+    <div className={`w-full min-w-0 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl overflow-hidden ${className}`}>
       {/* Toolbar */}
       {(searchable || selectable) && (
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 border-b border-gray-100 dark:border-zinc-800">
           {searchable ? (
-            <div className="relative w-full sm:flex-1 sm:max-w-xs">
+            <div className="relative w-full sm:flex-1 sm:max-w-xs min-w-0">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
@@ -147,97 +172,110 @@ const DataTable = ({
             </div>
           ) : <div />}
           {selectable && selected.size > 0 && (
-            <span className="text-xs text-blue-600 dark:text-blue-400 font-medium">{selected.size} selected</span>
+            <span className="text-xs text-blue-600 dark:text-blue-400 font-medium whitespace-nowrap">{selected.size} selected</span>
           )}
         </div>
       )}
 
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className={stickyHeader ? "sticky top-0 z-10" : ""}>
-            <tr className="bg-gray-50 dark:bg-zinc-800/50">
-              {selectable && (
-                <th className="w-10 px-3 py-3">
-                  <button onClick={toggleAll} className="cursor-pointer">
-                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
-                      selected.size > 0 && selected.size === paged.length
-                        ? "bg-blue-600 border-blue-600"
-                        : "border-gray-300 dark:border-zinc-600"
-                    }`}>
-                      {selected.size > 0 && selected.size === paged.length && <Check className="w-3 h-3 text-white" />}
-                    </div>
-                  </button>
-                </th>
-              )}
-              {columns.map((col) => (
-                <th
-                  key={col.key}
-                  className={`px-2 sm:px-4 py-2 sm:py-3 font-semibold text-[10px] sm:text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 ${alignClass(col.align)} ${
-                    col.sortable !== false ? "cursor-pointer select-none group" : ""
-                  }`}
-                  style={col.width ? { width: col.width } : undefined}
-                  onClick={() => col.sortable !== false && handleSort(col.key)}
-                >
-                  <span className="inline-flex items-center gap-1">
-                    {col.label}
-                    {col.sortable !== false && <SortIcon sortKey={sortKey} sortDir={sortDir} colKey={col.key} />}
-                  </span>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {paged.length === 0 ? (
-              <tr>
-                <td colSpan={columns.length + (selectable ? 1 : 0)} className="py-16 text-center text-gray-400 dark:text-gray-500 text-sm">
-                  {emptyMessage}
-                </td>
-              </tr>
-            ) : (
-              paged.map((row, ri) => {
-                const key = rowKey(row, ri);
-                const isSelected = selected.has(key);
-                return (
-                  <tr
-                    key={key}
-                    onClick={() => onRowClick?.(row)}
-                    className={`border-t border-gray-50 dark:border-zinc-800 transition-colors ${
-                      isSelected ? "bg-blue-50 dark:bg-blue-900/10" : ""
-                    } ${striped && ri % 2 === 1 && !isSelected ? "bg-gray-50/50 dark:bg-zinc-800/20" : ""} ${
-                      hoverable ? "hover:bg-gray-50 dark:hover:bg-zinc-800/40" : ""
-                    } ${onRowClick ? "cursor-pointer" : ""}`}
+      {/* Table — scroll container with shadow hints */}
+      <div className="relative">
+        {/* Left scroll shadow */}
+        {canScrollLeft && (
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-4 z-10 bg-gradient-to-r from-white/80 dark:from-zinc-900/80 to-transparent" />
+        )}
+        {/* Right scroll shadow */}
+        {canScrollRight && (
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-4 z-10 bg-gradient-to-l from-white/80 dark:from-zinc-900/80 to-transparent" />
+        )}
+
+        <div ref={scrollRef} className="overflow-x-auto overscroll-x-contain" style={{ WebkitOverflowScrolling: "touch" }}>
+          <table className="w-full text-sm min-w-[480px]">
+            <thead className={stickyHeader ? "sticky top-0 z-10" : ""}>
+              <tr className="bg-gray-50 dark:bg-zinc-800/50">
+                {selectable && (
+                  <th className="w-8 sm:w-10 px-2 sm:px-3 py-2 sm:py-3">
+                    <button onClick={toggleAll} className="cursor-pointer">
+                      <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
+                        selected.size > 0 && selected.size === paged.length
+                          ? "bg-blue-600 border-blue-600"
+                          : "border-gray-300 dark:border-zinc-600"
+                      }`}>
+                        {selected.size > 0 && selected.size === paged.length && <Check className="w-3 h-3 text-white" />}
+                      </div>
+                    </button>
+                  </th>
+                )}
+                {columns.map((col) => (
+                  <th
+                    key={col.key}
+                    className={`px-2 sm:px-4 py-2 sm:py-3 font-semibold text-[10px] sm:text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 whitespace-nowrap ${alignClass(col.align)} ${
+                      col.sortable !== false ? "cursor-pointer select-none group" : ""
+                    }`}
+                    style={col.width ? { width: col.width, minWidth: col.width } : undefined}
+                    onClick={() => col.sortable !== false && handleSort(col.key)}
                   >
-                    {selectable && (
-                      <td className="px-3 py-3" onClick={(e) => e.stopPropagation()}>
-                        <button onClick={() => toggleRow(key)} className="cursor-pointer">
-                          <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
-                            isSelected ? "bg-blue-600 border-blue-600" : "border-gray-300 dark:border-zinc-600"
-                          }`}>
-                            {isSelected && <Check className="w-3 h-3 text-white" />}
-                          </div>
-                        </button>
-                      </td>
-                    )}
-                    {columns.map((col) => (
-                      <td key={col.key} className={`px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300 ${alignClass(col.align)}`}>
-                        {col.render ? col.render(row[col.key], row) : (row[col.key] ?? "—")}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
+                    <span className="inline-flex items-center gap-1">
+                      {col.label}
+                      {col.sortable !== false && <SortIcon sortKey={sortKey} sortDir={sortDir} colKey={col.key} />}
+                    </span>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {paged.length === 0 ? (
+                <tr>
+                  <td colSpan={columns.length + (selectable ? 1 : 0)} className="py-12 sm:py-16 text-center text-gray-400 dark:text-gray-500 text-xs sm:text-sm">
+                    {emptyMessage}
+                  </td>
+                </tr>
+              ) : (
+                paged.map((row, ri) => {
+                  const key = rowKey(row, ri);
+                  const isSelected = selected.has(key);
+                  return (
+                    <tr
+                      key={key}
+                      onClick={() => onRowClick?.(row)}
+                      className={`border-t border-gray-50 dark:border-zinc-800 transition-colors ${
+                        isSelected ? "bg-blue-50 dark:bg-blue-900/10" : ""
+                      } ${striped && ri % 2 === 1 && !isSelected ? "bg-gray-50/50 dark:bg-zinc-800/20" : ""} ${
+                        hoverable ? "hover:bg-gray-50 dark:hover:bg-zinc-800/40" : ""
+                      } ${onRowClick ? "cursor-pointer" : ""}`}
+                    >
+                      {selectable && (
+                        <td className="px-2 sm:px-3 py-2 sm:py-3" onClick={(e) => e.stopPropagation()}>
+                          <button onClick={() => toggleRow(key)} className="cursor-pointer">
+                            <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
+                              isSelected ? "bg-blue-600 border-blue-600" : "border-gray-300 dark:border-zinc-600"
+                            }`}>
+                              {isSelected && <Check className="w-3 h-3 text-white" />}
+                            </div>
+                          </button>
+                        </td>
+                      )}
+                      {columns.map((col) => (
+                        <td
+                          key={col.key}
+                          className={`px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300 max-w-[180px] sm:max-w-none truncate ${alignClass(col.align)}`}
+                        >
+                          {col.render ? col.render(row[col.key], row) : (row[col.key] ?? "—")}
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Pagination */}
       {paginated && sorted.length > 0 && (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-0 px-3 sm:px-4 py-2 sm:py-3 border-t border-gray-100 dark:border-zinc-800 text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">
-          <div className="flex items-center gap-2">
-            <span className="hidden sm:inline">Rows per page:</span>
-            <span className="sm:hidden">Per page:</span>
+        <div className="flex items-center justify-between gap-2 px-2 sm:px-4 py-2 sm:py-3 border-t border-gray-100 dark:border-zinc-800 text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">
+          <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+            <span className="hidden sm:inline whitespace-nowrap">Rows per page:</span>
             <select
               value={perPage}
               onChange={(e) => setPerPage(Number(e.target.value))}
@@ -246,23 +284,41 @@ const DataTable = ({
               {pageSizeOptions.map((s) => <option key={s} value={s}>{s}</option>)}
             </select>
           </div>
-          <div className="flex items-center gap-3">
-            <span>{page * perPage + 1}–{Math.min((page + 1) * perPage, sorted.length)} of {sorted.length}</span>
+          <div className="flex items-center gap-1.5 sm:gap-3">
+            <span className="whitespace-nowrap tabular-nums">{page * perPage + 1}–{Math.min((page + 1) * perPage, sorted.length)} of {sorted.length}</span>
             {totalPages > 1 && (
-              <div className="flex gap-1">
+              <div className="flex gap-0.5 sm:gap-1">
+                <button
+                  onClick={() => setPage(0)}
+                  disabled={page === 0}
+                  className="hidden sm:block p-1 rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:opacity-30 cursor-pointer disabled:cursor-default"
+                  aria-label="First page"
+                >
+                  <ChevronsLeft className="w-4 h-4" />
+                </button>
                 <button
                   onClick={() => setPage((p) => Math.max(0, p - 1))}
                   disabled={page === 0}
                   className="p-1 rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:opacity-30 cursor-pointer disabled:cursor-default"
+                  aria-label="Previous page"
                 >
-                  <ChevronLeft className="w-4 h-4" />
+                  <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
                 <button
                   onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
                   disabled={page >= totalPages - 1}
                   className="p-1 rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:opacity-30 cursor-pointer disabled:cursor-default"
+                  aria-label="Next page"
                 >
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </button>
+                <button
+                  onClick={() => setPage(totalPages - 1)}
+                  disabled={page >= totalPages - 1}
+                  className="hidden sm:block p-1 rounded hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:opacity-30 cursor-pointer disabled:cursor-default"
+                  aria-label="Last page"
+                >
+                  <ChevronsRight className="w-4 h-4" />
                 </button>
               </div>
             )}

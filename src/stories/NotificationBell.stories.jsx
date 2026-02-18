@@ -71,7 +71,9 @@ export default {
     onClear: { action: "clear" },
     onDelete: { action: "delete" },
   },
-  parameters: { layout: "centered" },
+  parameters: {
+    docs: { description: { component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { NotificationBell } from \"readyui-react\";\n```" }, story: { height: "450px", inline: false } },
+  },
 };
 
 /* Stateful wrapper */
@@ -79,7 +81,7 @@ const BellTemplate = (args) => {
   const [notifications, setNotifications] = useState(args.notifications);
 
   return (
-    <div className="p-8 flex justify-end">
+    <div className="p-8 flex justify-center">
       <NotificationBell
         {...args}
         notifications={notifications}

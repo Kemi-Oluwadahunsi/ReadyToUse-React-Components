@@ -4,6 +4,13 @@ export default {
   title: "Feedback/Spinner",
   component: Spinner,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { Spinner } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     variant: {
       control: "select",

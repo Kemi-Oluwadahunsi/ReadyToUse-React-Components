@@ -21,7 +21,17 @@ export default {
     onConfirm: { action: "confirmed" },
     onCancel: { action: "cancelled" },
   },
-  parameters: { layout: "fullscreen" },
+  parameters: {
+
+    docs: {
+
+      description: {
+
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { ConfirmDialog } from \"readyui-react\";\n```",
+
+      },
+
+    }, layout: "fullscreen" },
 };
 
 /* Reusable wrapper that manages open/close state */

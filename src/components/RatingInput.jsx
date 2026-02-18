@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Star } from "lucide-react";
 
 /**
@@ -15,7 +15,7 @@ import { Star } from "lucide-react";
  * @param {string} emptyColor - Empty star color (default "#d1d5db")
  * @param {boolean} showValue - Show numeric value (default false)
  * @param {string[]} labels - Labels for each star (e.g. ["Terrible","Bad","Ok","Good","Excellent"])
- * @param {Function} renderIcon - Custom icon: (index, { isFilled, isHalf, isHovered }) => JSX
+ * @param {Function} renderIcon - Custom icon: (index, { isFilled, isHalf, isHovered, size }) => JSX
  * @param {boolean} allowClear - Click active star to clear (default true)
  * @param {string} className - Extra CSS
  * @param {number} defaultValue - Initial value if uncontrolled
@@ -78,12 +78,24 @@ const RatingInput = ({
   };
 
   const sizeMap = { sm: 16, md: 24, lg: 32, xl: 40 };
-  const iconSize = sizeMap[size] || sizeMap.md;
+  const mobileSizeMap = { sm: 14, md: 20, lg: 24, xl: 28 };
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Responsive size detection
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 480px)");
+    setIsMobile(mq.matches);
+    const handler = (e) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  const iconSize = (isMobile ? mobileSizeMap : sizeMap)[size] || sizeMap.md;
 
   const label = labels && displayValue > 0 ? labels[Math.ceil(displayValue) - 1] : null;
 
   return (
-    <div className={`inline-flex items-center gap-1 ${className}`}>
+    <div className={`inline-flex flex-wrap items-center gap-1 max-w-full ${className}`}>
       <div
         className="flex items-center"
         onMouseLeave={() => !readOnly && setHovered(0)}
@@ -102,7 +114,7 @@ const RatingInput = ({
                 onClick={(e) => handleClick(idx, e)}
                 className={readOnly ? "" : "cursor-pointer"}
               >
-                {renderIcon(idx, { isFilled: isFull, isHalf, isHovered: isHoveredStar })}
+                {renderIcon(idx, { isFilled: isFull, isHalf, isHovered: isHoveredStar, size: iconSize })}
               </span>
             );
           }

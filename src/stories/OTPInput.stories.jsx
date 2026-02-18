@@ -5,6 +5,13 @@ export default {
   title: "Inputs/OTPInput",
   component: OTPInput,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { OTPInput } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     length: { control: { type: "number", min: 3, max: 8 }, description: "Number of digits" },
     size: { control: "select", options: ["sm", "md", "lg"] },

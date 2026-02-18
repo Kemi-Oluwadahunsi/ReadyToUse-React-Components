@@ -6,6 +6,13 @@ export default {
   title: "Utilities/SortableList",
   component: SortableList,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { SortableList } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     showHandle: {
       control: "boolean",

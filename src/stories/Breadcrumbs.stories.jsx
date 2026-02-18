@@ -5,6 +5,13 @@ export default {
   title: "Navigation/Breadcrumbs",
   component: Breadcrumbs,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { Breadcrumbs } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     maxVisible: {
       control: { type: "number", min: 2, max: 10 },

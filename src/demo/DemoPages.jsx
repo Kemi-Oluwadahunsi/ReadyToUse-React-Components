@@ -63,27 +63,103 @@ export const AccordionDemo = () => (
    ========================================= */
 export const ToggleSwitchDemo = () => {
   const [checked, setChecked] = useState(false);
+  const [ios1, setIos1] = useState(true);
+  const [ios2, setIos2] = useState(false);
+  const [mat, setMat] = useState(true);
+  const [pill, setPill] = useState(false);
+  const [icon1, setIcon1] = useState(false);
+  const [icon2, setIcon2] = useState(true);
+  const [labeled1, setLabeled1] = useState(true);
+  const [labeled2, setLabeled2] = useState(false);
+  const [outline, setOutline] = useState(true);
+  const [slim, setSlim] = useState(false);
   return (
-    <div className="max-w-md mx-auto p-6 space-y-8">
+    <div className="max-w-lg mx-auto p-6 space-y-10">
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Toggle Switch</h2>
-      <div className="space-y-6">
-        <div>
-          <p className="text-sm text-gray-500 mb-2">Small</p>
-          <ToggleSwitch size="sm" label="Notifications" />
+
+      {/* Default */}
+      <section className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Default</h3>
+        <div className="space-y-3">
+          <ToggleSwitch size="sm" label="Small" />
+          <ToggleSwitch checked={checked} onChange={setChecked} label="Medium (controlled)" onColor="bg-indigo-600" />
+          <ToggleSwitch size="lg" label="Large" defaultChecked onColor="bg-emerald-500" />
         </div>
-        <div>
-          <p className="text-sm text-gray-500 mb-2">Medium (controlled)</p>
-          <ToggleSwitch checked={checked} onChange={setChecked} label="Dark Mode" onColor="bg-indigo-600" />
+      </section>
+
+      {/* iOS */}
+      <section className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">iOS Style</h3>
+        <div className="space-y-3">
+          <ToggleSwitch variant="ios" label="Wi-Fi" checked={ios1} onChange={setIos1} />
+          <ToggleSwitch variant="ios" label="Airplane Mode" checked={ios2} onChange={setIos2} onColor="bg-orange-500" />
         </div>
-        <div>
-          <p className="text-sm text-gray-500 mb-2">Large + Right Label</p>
-          <ToggleSwitch size="lg" label="Auto-save" labelPosition="right" onColor="bg-emerald-500" defaultChecked />
+      </section>
+
+      {/* Material */}
+      <section className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Material Design</h3>
+        <div className="space-y-4">
+          <ToggleSwitch variant="material" label="Dark mode" checked={mat} onChange={setMat} />
         </div>
-        <div>
-          <p className="text-sm text-gray-500 mb-2">Disabled</p>
-          <ToggleSwitch disabled label="Locked" defaultChecked />
+      </section>
+
+      {/* Pill */}
+      <section className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Pill</h3>
+        <div className="space-y-3">
+          <ToggleSwitch variant="pill" label="Auto-save" checked={pill} onChange={setPill} onColor="bg-purple-600" />
         </div>
-      </div>
+      </section>
+
+      {/* Icon */}
+      <section className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Icon Toggle</h3>
+        <div className="space-y-3">
+          <ToggleSwitch variant="icon" label="Theme" checked={icon1} onChange={setIcon1} onColor="bg-amber-500" />
+          <ToggleSwitch variant="icon" label="Sound" checked={icon2} onChange={setIcon2} onColor="bg-green-600" />
+        </div>
+      </section>
+
+      {/* Labeled */}
+      <section className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Labeled</h3>
+        <div className="space-y-3">
+          <ToggleSwitch variant="labeled" label="Status" checked={labeled1} onChange={setLabeled1} />
+          <ToggleSwitch variant="labeled" label="Power" checked={labeled2} onChange={setLabeled2} onLabel="I" offLabel="O" onColor="bg-emerald-600" offColor="bg-red-500" />
+        </div>
+      </section>
+
+      {/* Outline */}
+      <section className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Outline</h3>
+        <div className="space-y-3">
+          <ToggleSwitch variant="outline" label="Minimal mode" checked={outline} onChange={setOutline} />
+        </div>
+      </section>
+
+      {/* Slim */}
+      <section className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Slim</h3>
+        <div className="space-y-4">
+          <ToggleSwitch variant="slim" label="Compact toggle" checked={slim} onChange={setSlim} onColor="bg-teal-500" />
+        </div>
+      </section>
+
+      {/* With Description */}
+      <section className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">With Description</h3>
+        <div className="space-y-4">
+          <ToggleSwitch variant="ios" label="Email notifications" description="Receive email updates about your account activity" defaultChecked />
+          <ToggleSwitch variant="outline" label="Location services" description="Allow apps to access your location" />
+        </div>
+      </section>
+
+      {/* Disabled */}
+      <section className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Disabled</h3>
+        <ToggleSwitch disabled label="Locked" defaultChecked />
+      </section>
     </div>
   );
 };
@@ -113,23 +189,83 @@ export const FilterableGalleryDemo = () => (
    FILTER PANEL DEMO
    ========================================= */
 export const FilterPanelDemo = () => {
-  const [filters, setFilters] = useState({});
+  const [filters1, setFilters1] = useState({});
+  const [filters2, setFilters2] = useState({});
+  const [filters3, setFilters3] = useState({});
+  const [filters4, setFilters4] = useState({});
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Filter Panel</h2>
-      <FilterPanel
-        filters={[
-          { id: "category", label: "Category", type: "select", options: ["Electronics", "Clothing", "Books", "Home & Garden"] },
-          { id: "price", label: "Price Range", type: "select", options: ["Under $25", "$25–$50", "$50–$100", "Over $100"] },
-          { id: "rating", label: "Rating", type: "select", options: ["4+ Stars", "3+ Stars", "2+ Stars", "Any"] },
-          { id: "inStock", label: "In Stock Only", type: "toggle" },
-        ]}
-        value={filters}
-        onChange={setFilters}
-        showActiveCount
-      />
-      <div className="mt-4 p-4 bg-gray-50 dark:bg-zinc-800 rounded-xl text-sm text-gray-600 dark:text-gray-300">
-        <strong>Active filters:</strong> {JSON.stringify(filters, null, 2)}
+    <div className="max-w-3xl mx-auto p-6 space-y-10">
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Filter Panel</h2>
+
+      {/* Default Dropdowns */}
+      <section>
+        <h3 className="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300">Dropdown (default)</h3>
+        <FilterPanel
+          filters={[
+            { id: "category", label: "Category", type: "select", options: ["Electronics", "Clothing", "Books", "Home & Garden"] },
+            { id: "price", label: "Price Range", type: "select", options: ["Under $25", "$25–$50", "$50–$100", "Over $100"] },
+            { id: "inStock", label: "In Stock Only", type: "toggle" },
+          ]}
+          value={filters1}
+          onChange={setFilters1}
+          showActiveCount
+        />
+      </section>
+
+      {/* Chips + Segmented */}
+      <section>
+        <h3 className="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300">Chips &amp; Segmented</h3>
+        <FilterPanel
+          filters={{
+            period: { label: "Period", type: "single", variant: "segmented", options: ["Day", "Week", "Month", "Year"] },
+            size: { label: "Size", type: "single", variant: "chips", options: ["XS", "S", "M", "L", "XL", "XXL"] },
+            color: { label: "Color", type: "multiple", variant: "chips", options: ["Red", "Blue", "Green", "Black", "White"] },
+          }}
+          value={filters2}
+          onChange={setFilters2}
+        />
+      </section>
+
+      {/* Vertical Sidebar Layout */}
+      <section>
+        <h3 className="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300">Vertical Layout (sidebar style)</h3>
+        <div className="max-w-xs bg-gray-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-gray-200 dark:border-zinc-700">
+          <FilterPanel
+            filters={{
+              sort: { label: "Sort By", type: "single", variant: "radio", options: ["Newest", "Price: Low → High", "Price: High → Low", "Most Popular"] },
+              features: { label: "Features", type: "multiple", variant: "checkbox", options: ["Wireless", "Waterproof", "Fast Charging", "Noise Cancelling"] },
+              inStock: { label: "In Stock Only", type: "toggle" },
+            }}
+            layout="vertical"
+            title="Refine"
+            value={filters3}
+            onChange={setFilters3}
+          />
+        </div>
+      </section>
+
+      {/* Inline Layout */}
+      <section>
+        <h3 className="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300">Inline Layout (toolbar)</h3>
+        <FilterPanel
+          filters={{
+            status: { label: "Status", type: "single", variant: "inline", options: ["All", "Active", "Pending", "Completed"] },
+            priority: { label: "Priority", type: "single", variant: "segmented", options: ["Low", "Medium", "High"] },
+            mine: { label: "Assigned to Me", type: "toggle" },
+          }}
+          layout="inline"
+          title="Tasks"
+          value={filters4}
+          onChange={setFilters4}
+        />
+      </section>
+
+      {/* Live output */}
+      <div className="p-4 bg-gray-50 dark:bg-zinc-800 rounded-xl text-sm text-gray-600 dark:text-gray-300 font-mono space-y-1">
+        <div><strong>Dropdown:</strong> {JSON.stringify(filters1)}</div>
+        <div><strong>Chips/Seg:</strong> {JSON.stringify(filters2)}</div>
+        <div><strong>Vertical:</strong> {JSON.stringify(filters3)}</div>
+        <div><strong>Inline:</strong> {JSON.stringify(filters4)}</div>
       </div>
     </div>
   );

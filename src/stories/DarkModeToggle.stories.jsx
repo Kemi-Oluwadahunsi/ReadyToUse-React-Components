@@ -5,6 +5,13 @@ export default {
   title: "Utilities/DarkModeToggle",
   component: DarkModeToggle,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { DarkModeToggle } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     mode: {
       control: "select",

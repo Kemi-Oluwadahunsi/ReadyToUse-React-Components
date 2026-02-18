@@ -46,6 +46,13 @@ export default {
   title: "Data Display/InfiniteScroll",
   component: InfiniteScroll,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { InfiniteScroll } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     threshold: { control: { type: "number", min: 50, max: 500 } },
     showScrollTop: { control: "boolean" },

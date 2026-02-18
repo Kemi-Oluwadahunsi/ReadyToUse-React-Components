@@ -5,6 +5,13 @@ export default {
   title: "Utilities/Badge",
   component: Badge,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { Badge } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     content: {
       control: "text",

@@ -5,6 +5,13 @@ export default {
   title: "Inputs/RangeSlider",
   component: RangeSlider,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { RangeSlider } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     min: { control: "number" },
     max: { control: "number" },
@@ -28,7 +35,7 @@ export const Default = {
   render: (args) => {
     const [value, setValue] = useState(40);
     return (
-      <div className="w-80">
+      <div className="w-full max-w-80">
         <RangeSlider {...args} value={value} onChange={setValue} />
       </div>
     );
@@ -62,7 +69,7 @@ export const DualRange = {
   render: (args) => {
     const [value, setValue] = useState([20, 80]);
     return (
-      <div className="w-80">
+      <div className="w-full max-w-80">
         <RangeSlider {...args} value={value} onChange={setValue} />
       </div>
     );
@@ -100,7 +107,7 @@ export const PriceRange = {
   render: (args) => {
     const [value, setValue] = useState([250, 750]);
     return (
-      <div className="w-96">
+      <div className="w-full max-w-96">
         <RangeSlider {...args} value={value} onChange={setValue} />
       </div>
     );

@@ -49,7 +49,7 @@ export default {
     onChange: { action: "changed" },
   },
   parameters: {
-    docs: { story: { height: "350px" } },
+    docs: { description: { component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { Select } from \"readyui-react\";\n```" }, story: { height: "350px" } },
   },
 };
 

@@ -24,6 +24,13 @@ export default {
   title: "Data Display/AvatarGroup",
   component: AvatarGroup,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { AvatarGroup } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     max: { control: { type: "number", min: 1, max: 10 } },
     size: {

@@ -5,6 +5,13 @@ export default {
   title: "Navigation/ProgressBarSteps",
   component: ProgressBarSteps,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { ProgressBarSteps } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     currentStep: { control: { type: "number", min: 1 } },
     clickable: { control: "boolean" },

@@ -31,6 +31,13 @@ export default {
   title: "Data Display/Marquee",
   component: Marquee,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { Marquee } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     direction: {
       control: { type: "select" },

@@ -6,6 +6,13 @@ export default {
   title: "Inputs/RatingInput",
   component: RatingInput,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { RatingInput } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     max: { control: { type: "number", min: 3, max: 10 }, description: "Maximum stars" },
     allowHalf: { control: "boolean", description: "Enable half-star precision" },
@@ -87,11 +94,11 @@ export const CustomHeartIcon = {
     color: "#ec4899",
     emptyColor: "#f9a8d4",
     size: "xl",
-    renderIcon: (idx, { isFilled }) => (
+    renderIcon: (idx, { isFilled, size }) => (
       <Heart
         style={{
-          width: 36,
-          height: 36,
+          width: size,
+          height: size,
           fill: isFilled ? "#ec4899" : "none",
           color: isFilled ? "#ec4899" : "#f9a8d4",
           transition: "all .15s",
@@ -109,10 +116,11 @@ export const CustomHeartIcon = {
   size="xl"
   value={rating}
   onChange={setRating}
-  renderIcon={(idx, { isFilled }) => (
+  renderIcon={(idx, { isFilled, size }) => (
     <Heart
       style={{
-        width: 36, height: 36,
+        width: size,
+        height: size,
         fill: isFilled ? "#ec4899" : "none",
         color: isFilled ? "#ec4899" : "#f9a8d4",
       }}

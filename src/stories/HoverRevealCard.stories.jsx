@@ -4,6 +4,13 @@ export default {
   title: "Utilities/HoverRevealCard",
   component: HoverRevealCard,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { HoverRevealCard } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     title: { control: "text", description: "Card title" },
     description: { control: "text", description: "Card description" },

@@ -4,6 +4,13 @@ export default {
   title: "Inputs/FileUploader",
   component: FileUploader,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { FileUploader } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     multiple: { control: "boolean", description: "Allow multiple files" },
     showPreview: { control: "boolean", description: "Show file previews" },

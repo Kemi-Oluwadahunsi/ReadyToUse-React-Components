@@ -4,6 +4,13 @@ export default {
   title: "Feedback/Skeleton",
   component: Skeleton,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { Skeleton } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     variant: {
       control: "select",

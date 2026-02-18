@@ -5,6 +5,13 @@ export default {
   title: "Navigation/Pagination",
   component: Pagination,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { Pagination } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     currentPage: { control: { type: "number", min: 1 } },
     totalPages: { control: { type: "number", min: 1 } },

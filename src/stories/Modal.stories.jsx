@@ -25,7 +25,17 @@ export default {
     showCloseButton: { control: "boolean" },
     onClose: { action: "closed" },
   },
-  parameters: { layout: "fullscreen" },
+  parameters: {
+
+    docs: {
+
+      description: {
+
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { Modal } from \"readyui-react\";\n```",
+
+      },
+
+    }, layout: "fullscreen" },
 };
 
 /* Reusable wrapper that manages state */

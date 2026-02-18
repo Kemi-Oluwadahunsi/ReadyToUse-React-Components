@@ -142,7 +142,7 @@ const NotificationBell = ({
       {isOpen && (
         <div
           ref={panelRef}
-          className={`absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl shadow-2xl z-50 overflow-hidden ${panelClassName}`}
+          className={`absolute top-full mt-2 right-1/2 translate-x-1/2 sm:right-0 sm:translate-x-0 w-[min(calc(100vw-2rem),24rem)] bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl shadow-2xl z-50 overflow-hidden ${panelClassName}`}
           style={panelStyle}
         >
           {/* Header */}

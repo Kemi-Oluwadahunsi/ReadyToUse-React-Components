@@ -21,7 +21,17 @@ export default {
     onClose: { action: "closed" },
   },
   // Drawers use portals, so we add padding to avoid Storybook canvas clipping
-  parameters: { layout: "fullscreen" },
+  parameters: {
+
+    docs: {
+
+      description: {
+
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { Drawer } from \"readyui-react\";\n```",
+
+      },
+
+    }, layout: "fullscreen" },
 };
 
 /* Helper wrapper that manages open/close state */

@@ -141,7 +141,7 @@ const RangeSlider = ({
     const onUp = () => setDragging(null);
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseup", onUp);
-    window.addEventListener("touchmove", onMove, { passive: true });
+    window.addEventListener("touchmove", onMove, { passive: false });
     window.addEventListener("touchend", onUp);
     return () => {
       window.removeEventListener("mousemove", onMove);
@@ -175,31 +175,35 @@ const RangeSlider = ({
   };
 
   const thumbSize = thumbSizes[size];
+  const thumbHalf = thumbSize / 2;
   const thumbProps = { dragging, hovered, disabled, pct, thumbSize, sc, startDrag, setHovered, showTooltip, formatValue };
 
   return (
-    <div className={`w-full ${disabled ? "opacity-50 pointer-events-none" : ""} ${className}`}>
+    <div className={`w-full min-w-0 overflow-hidden ${disabled ? "opacity-50 pointer-events-none" : ""} ${className}`}>
       {showLabels && (
         <div className="flex justify-between mb-1 text-xs text-gray-500 dark:text-gray-400">
           <span>{formatValue(min)}</span>
           <span>{formatValue(max)}</span>
         </div>
       )}
-      <div
-        ref={trackRef}
-        className={`relative w-full ${trackSizes[size]} bg-gray-200 dark:bg-zinc-700 rounded-full cursor-pointer select-none`}
-        onClick={handleTrackClick}
-      >
-        {/* Filled track */}
+      {/* Outer wrapper with horizontal padding = half thumb so thumbs never overflow */}
+      <div style={{ paddingLeft: thumbHalf, paddingRight: thumbHalf }}>
         <div
-          className={`absolute ${trackSizes[size]} ${sc.bg} rounded-full`}
-          style={{
-            left: range ? `${pct(low)}%` : "0%",
-            right: range ? `${100 - pct(high)}%` : `${100 - pct(low)}%`,
-          }}
-        />
-        <Thumb val={low} handleIdx={0} {...thumbProps} />
-        {range && <Thumb val={high} handleIdx={1} {...thumbProps} />}
+          ref={trackRef}
+          className={`relative w-full ${trackSizes[size]} bg-gray-200 dark:bg-zinc-700 rounded-full cursor-pointer select-none touch-none`}
+          onClick={handleTrackClick}
+        >
+          {/* Filled track */}
+          <div
+            className={`absolute ${trackSizes[size]} ${sc.bg} rounded-full`}
+            style={{
+              left: range ? `${pct(low)}%` : "0%",
+              right: range ? `${100 - pct(high)}%` : `${100 - pct(low)}%`,
+            }}
+          />
+          <Thumb val={low} handleIdx={0} {...thumbProps} />
+          {range && <Thumb val={high} handleIdx={1} {...thumbProps} />}
+        </div>
       </div>
       {showValue && (
         <div className="mt-2 text-center text-sm font-medium text-gray-700 dark:text-gray-300">

@@ -96,6 +96,13 @@ export default {
   title: "Layout/Accordion",
   component: Accordion,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { Accordion } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     variant: {
       control: "select",

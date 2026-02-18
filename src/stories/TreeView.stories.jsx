@@ -83,6 +83,13 @@ export default {
   title: "Data Display/TreeView",
   component: TreeView,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { TreeView } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     multiSelect: { control: "boolean" },
     showIcons: { control: "boolean" },

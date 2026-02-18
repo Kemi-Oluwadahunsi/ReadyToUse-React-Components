@@ -29,7 +29,7 @@ export default {
     onSuggestionSelect: { action: "suggestion-selected" },
   },
   parameters: {
-    docs: { story: { height: "350px" } },
+    docs: { description: { component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { SearchBar } from \"readyui-react\";\n```" }, story: { height: "350px" } },
   },
 };
 
@@ -38,7 +38,7 @@ export const Default = {
   render: (args) => {
     const [query, setQuery] = useState("");
     return (
-      <div className="w-96">
+      <div className="w-full max-w-96">
         <SearchBar {...args} value={query} />
       </div>
     );
@@ -63,7 +63,7 @@ export const Default = {
 /* ── With Recent & Trending ── */
 export const WithRecentAndTrending = {
   render: (args) => (
-    <div className="w-96">
+    <div className="w-full max-w-96">
       <SearchBar {...args} />
     </div>
   ),
@@ -90,7 +90,7 @@ export const WithRecentAndTrending = {
 /* ── Custom Debounce ── */
 export const CustomDebounce = {
   render: (args) => (
-    <div className="w-96">
+    <div className="w-full max-w-96">
       <SearchBar {...args} />
     </div>
   ),

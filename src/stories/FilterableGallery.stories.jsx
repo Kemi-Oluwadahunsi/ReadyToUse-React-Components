@@ -19,6 +19,13 @@ export default {
   title: "Data Display/FilterableGallery",
   component: FilterableGallery,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { FilterableGallery } from \"readyui-react\";\n```",
+      },
+    },
+  },
   argTypes: {
     columns: {
       control: { type: "select" },
