@@ -8,7 +8,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { ScrollAwareNavbar } from \"readyui-react\";\n```",
+        component: "## 📥 Import\n\n```jsx\nimport { ScrollAwareNavbar } from \"readyui-react\";\n```",
       },
     },
   },
@@ -26,7 +26,7 @@ export default {
   decorators: [
     (Story) => (
       <div style={{ minHeight: "200vh", paddingTop: 80 }}>
-        <Story />
+        {Story()}
         <div className="max-w-2xl mx-auto p-6 space-y-6">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">Scroll down to see navbar behavior</h2>
           {Array.from({ length: 12 }, (_, i) => (

@@ -52,7 +52,7 @@ export default {
 
       description: {
 
-        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { ResizableSidebar } from \"readyui-react\";\n```",
+        component: "## 📥 Import\n\n```jsx\nimport { ResizableSidebar } from \"readyui-react\";\n```",
 
       },
 

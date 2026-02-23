@@ -72,7 +72,7 @@ export default {
     onDelete: { action: "delete" },
   },
   parameters: {
-    docs: { description: { component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { NotificationBell } from \"readyui-react\";\n```" }, story: { height: "450px", inline: false } },
+    docs: { description: { component: "## 📥 Import\n\n```jsx\nimport { NotificationBell } from \"readyui-react\";\n```" }, story: { height: "450px", inline: false } },
   },
 };
 

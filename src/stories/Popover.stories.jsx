@@ -28,7 +28,7 @@ export default {
   },
   parameters: {
     layout: "centered",
-    docs: { description: { component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { Popover } from \"readyui-react\";\n```" }, story: { height: "350px" } },
+    docs: { description: { component: "## 📥 Import\n\n```jsx\nimport { Popover } from \"readyui-react\";\n```" }, story: { height: "350px" } },
   },
 };
 
@@ -128,13 +128,13 @@ export const MenuPopover = {
             { icon: Settings, label: "Settings" },
             { icon: HelpCircle, label: "Help" },
             { icon: LogOut, label: "Sign out" },
-          ].map(({ icon: Icon, label }) => (
+          ].map((item) => (
             <button
-              key={label}
+              key={item.label}
               className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700 rounded-lg transition-colors"
             >
-              <Icon className="w-4 h-4" />
-              {label}
+              <item.icon className="w-4 h-4" />
+              {item.label}
             </button>
           ))}
         </div>

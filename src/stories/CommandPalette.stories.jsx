@@ -22,7 +22,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { CommandPalette } from \"readyui-react\";\n```",
+        component: "## 📥 Import\n\n```jsx\nimport { CommandPalette } from \"readyui-react\";\n```",
       },
     },
   },
@@ -124,7 +124,7 @@ export const WithRecentItems = {
           {...args}
           isOpen={open}
           onClose={() => setOpen(false)}
-          onSelect={(item) => setOpen(false)}
+          onSelect={() => setOpen(false)}
         />
       </div>
     );
@@ -171,7 +171,7 @@ export const MinimalActions = {
           {...args}
           isOpen={open}
           onClose={() => setOpen(false)}
-          onSelect={(item) => setOpen(false)}
+          onSelect={() => setOpen(false)}
         />
       </div>
     );

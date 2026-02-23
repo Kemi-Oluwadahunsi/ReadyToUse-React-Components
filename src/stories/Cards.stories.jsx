@@ -29,7 +29,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { BasicCard, ProfileCard, ProductCard, TestimonialCard, BlogCard, StatsCard, TeamCard, FeatureCard, NotificationCard, ImageOverlayCard, HorizontalCard, PricingCardSingle, MetricCard, InteractiveCard, GlassCard } from \"readyui-react\";\n```",
+        component: "## 📥 Import\n\n```jsx\nimport { BasicCard, ProfileCard, ProductCard, TestimonialCard, BlogCard, StatsCard, TeamCard, FeatureCard, NotificationCard, ImageOverlayCard, HorizontalCard, PricingCardSingle, MetricCard, InteractiveCard, GlassCard } from \"readyui-react\";\n```",
       },
     },
   },

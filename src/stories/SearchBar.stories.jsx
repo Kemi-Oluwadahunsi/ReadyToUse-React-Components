@@ -29,14 +29,14 @@ export default {
     onSuggestionSelect: { action: "suggestion-selected" },
   },
   parameters: {
-    docs: { description: { component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { SearchBar } from \"readyui-react\";\n```" }, story: { height: "350px" } },
+    docs: { description: { component: "## 📥 Import\n\n```jsx\nimport { SearchBar } from \"readyui-react\";\n```" }, story: { height: "350px" } },
   },
 };
 
 /* ── Default ── */
 export const Default = {
   render: (args) => {
-    const [query, setQuery] = useState("");
+    const [query] = useState("");
     return (
       <div className="w-full max-w-96">
         <SearchBar {...args} value={query} />

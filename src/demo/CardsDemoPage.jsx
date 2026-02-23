@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   BasicCard,
   ProfileCard,
@@ -37,8 +36,6 @@ const Section = ({ title, children }) => (
 
 /* ─── DEMO ────────────────────────────────── */
 export const CardsDemo = () => {
-  const [flipped, setFlipped] = useState(false);
-
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-2">
       <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Card Variants</h2>

@@ -7,7 +7,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { HoverRevealCard } from \"readyui-react\";\n```",
+        component: "## 📥 Import\n\n```jsx\nimport { HoverRevealCard } from \"readyui-react\";\n```",
       },
     },
   },
@@ -24,7 +24,7 @@ export default {
   decorators: [
     (Story) => (
       <div className="p-8" style={{ maxWidth: 380 }}>
-        <Story />
+        {Story()}
       </div>
     ),
   ],

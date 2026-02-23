@@ -13,7 +13,7 @@ export default {
     onChange: { action: "changed" },
   },
   parameters: {
-    docs: { description: { component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { DatePicker } from \"readyui-react\";\n```" }, story: { height: "420px" } },
+    docs: { description: { component: "## 📥 Import\n\n```jsx\nimport { DatePicker } from \"readyui-react\";\n```" }, story: { height: "420px" } },
   },
 };
 

@@ -86,7 +86,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { TreeView } from \"readyui-react\";\n```",
+        component: "## 📥 Import\n\n```jsx\nimport { TreeView } from \"readyui-react\";\n```",
       },
     },
   },

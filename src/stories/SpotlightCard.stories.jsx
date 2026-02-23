@@ -8,7 +8,7 @@ export default {
   parameters: {
     docs: {
       description: {
-        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { SpotlightCard } from \"readyui-react\";\n```",
+        component: "## 📥 Import\n\n```jsx\nimport { SpotlightCard } from \"readyui-react\";\n```",
       },
     },
   },
@@ -41,7 +41,7 @@ export default {
   decorators: [
     (Story) => (
       <div className="p-8" style={{ maxWidth: 420 }}>
-        <Story />
+        {Story()}
       </div>
     ),
   ],
@@ -140,18 +140,18 @@ export const CardGrid = {
     };
     return (
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ maxWidth: 900 }}>
-        {cards.map(({ icon: Icon, title, desc, color }) => (
+        {cards.map((card) => (
           <SpotlightCard
-            key={title}
-            spotlightColor={colors[color].spot}
-            borderColor={colors[color].border}
+            key={card.title}
+            spotlightColor={colors[card.color].spot}
+            borderColor={colors[card.color].border}
           >
             <div className="p-6">
-              <div className={`p-2 rounded-lg inline-flex mb-3 ${colors[color].bg}`}>
-                <Icon className="h-5 w-5" />
+              <div className={`p-2 rounded-lg inline-flex mb-3 ${colors[card.color].bg}`}>
+                <card.icon className="h-5 w-5" />
               </div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{title}</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{desc}</p>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{card.title}</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{card.desc}</p>
             </div>
           </SpotlightCard>
         ))}

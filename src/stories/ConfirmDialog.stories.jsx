@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ConfirmDialog, useConfirm } from "../components/ConfirmDialog";
+import { ConfirmDialog } from "../components/ConfirmDialog";
 import { Trash2 } from "lucide-react";
 
 export default {
@@ -27,7 +27,7 @@ export default {
 
       description: {
 
-        component: "## 📦 Installation\n\n```bash\nnpm install readyui-react\n```\n\n## 📥 Import\n\n```jsx\nimport { ConfirmDialog } from \"readyui-react\";\n```",
+        component: "## 📥 Import\n\n```jsx\nimport { ConfirmDialog } from \"readyui-react\";\n```",
 
       },
 

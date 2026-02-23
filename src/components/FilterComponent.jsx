@@ -84,6 +84,7 @@ const RadioVariant = ({ filterKey, config, handleFilterChange, isSelected }) => 
         return (
           <label
             key={option.value}
+            onClick={() => handleFilterChange(filterKey, option.value)}
             className="flex items-center gap-2.5 px-2 py-1.5 rounded-md hover:bg-gray-50 dark:hover:bg-zinc-700/50 cursor-pointer transition-colors"
           >
             <span
@@ -111,6 +112,7 @@ const CheckboxVariant = ({ filterKey, config, handleFilterChange, isSelected }) 
         return (
           <label
             key={option.value}
+            onClick={() => handleFilterChange(filterKey, option.value)}
             className="flex items-center gap-2.5 px-2 py-1.5 rounded-md hover:bg-gray-50 dark:hover:bg-zinc-700/50 cursor-pointer transition-colors"
           >
             <span

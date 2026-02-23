@@ -58,6 +58,49 @@ const css = `
 }
 .rui-animate-slide-in { animation: rui-slide-in 0.3s ease; }
 
+/* Toast enter/exit animations — directional */
+@keyframes rui-toast-enter-right {
+  from { opacity: 0; transform: translateX(24px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes rui-toast-enter-left {
+  from { opacity: 0; transform: translateX(-24px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes rui-toast-enter-down {
+  from { opacity: 0; transform: translateY(-16px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes rui-toast-enter-up {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes rui-toast-exit-right {
+  from { opacity: 1; transform: translateX(0) scale(1); }
+  to   { opacity: 0; transform: translateX(24px) scale(0.96); }
+}
+@keyframes rui-toast-exit-left {
+  from { opacity: 1; transform: translateX(0) scale(1); }
+  to   { opacity: 0; transform: translateX(-24px) scale(0.96); }
+}
+@keyframes rui-toast-exit-up {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(-16px) scale(0.96); }
+}
+@keyframes rui-toast-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.rui-toast-enter-right  { animation: rui-toast-enter-right 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.rui-toast-enter-left   { animation: rui-toast-enter-left 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.rui-toast-enter-down   { animation: rui-toast-enter-down 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.rui-toast-enter-up     { animation: rui-toast-enter-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.rui-toast-exit-right   { animation: rui-toast-exit-right 0.25s ease-in forwards; }
+.rui-toast-exit-left    { animation: rui-toast-exit-left 0.25s ease-in forwards; }
+.rui-toast-exit-up      { animation: rui-toast-exit-up 0.25s ease-in forwards; }
+.rui-toast-backdrop-in  { animation: rui-toast-backdrop-in 0.3s ease forwards; }
+
 /* ─── Timeline ─── */
 @keyframes rui-fade-in {
   from { opacity: 0; transform: translateY(12px); }
