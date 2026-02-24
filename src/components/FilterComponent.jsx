@@ -1,10 +1,86 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { ChevronDown, X, Check } from "lucide-react";
 
+/* ── Accent color presets ─────────────────────────────────────────── */
+const colorPresets = {
+  blue: {
+    bg: "bg-blue-600", border: "border-blue-600", text: "text-blue-600 dark:text-blue-400",
+    hoverBorder: "hover:border-blue-400", hoverText: "hover:text-blue-600 dark:hover:text-blue-400",
+    ring: "focus:ring-blue-500", badge: "bg-blue-600",
+    countBg: "bg-blue-100 dark:bg-blue-900/30", countText: "text-blue-700 dark:text-blue-300",
+    tagBg: "bg-blue-50 dark:bg-blue-900/20", tagText: "text-blue-700 dark:text-blue-300",
+    tagHover: "hover:text-blue-900 dark:hover:text-blue-100",
+    dot: "bg-blue-600", inlineBorder: "border-blue-600 dark:border-blue-400",
+  },
+  emerald: {
+    bg: "bg-emerald-600", border: "border-emerald-600", text: "text-emerald-600 dark:text-emerald-400",
+    hoverBorder: "hover:border-emerald-400", hoverText: "hover:text-emerald-600 dark:hover:text-emerald-400",
+    ring: "focus:ring-emerald-500", badge: "bg-emerald-600",
+    countBg: "bg-emerald-100 dark:bg-emerald-900/30", countText: "text-emerald-700 dark:text-emerald-300",
+    tagBg: "bg-emerald-50 dark:bg-emerald-900/20", tagText: "text-emerald-700 dark:text-emerald-300",
+    tagHover: "hover:text-emerald-900 dark:hover:text-emerald-100",
+    dot: "bg-emerald-600", inlineBorder: "border-emerald-600 dark:border-emerald-400",
+  },
+  violet: {
+    bg: "bg-violet-600", border: "border-violet-600", text: "text-violet-600 dark:text-violet-400",
+    hoverBorder: "hover:border-violet-400", hoverText: "hover:text-violet-600 dark:hover:text-violet-400",
+    ring: "focus:ring-violet-500", badge: "bg-violet-600",
+    countBg: "bg-violet-100 dark:bg-violet-900/30", countText: "text-violet-700 dark:text-violet-300",
+    tagBg: "bg-violet-50 dark:bg-violet-900/20", tagText: "text-violet-700 dark:text-violet-300",
+    tagHover: "hover:text-violet-900 dark:hover:text-violet-100",
+    dot: "bg-violet-600", inlineBorder: "border-violet-600 dark:border-violet-400",
+  },
+  rose: {
+    bg: "bg-rose-600", border: "border-rose-600", text: "text-rose-600 dark:text-rose-400",
+    hoverBorder: "hover:border-rose-400", hoverText: "hover:text-rose-600 dark:hover:text-rose-400",
+    ring: "focus:ring-rose-500", badge: "bg-rose-600",
+    countBg: "bg-rose-100 dark:bg-rose-900/30", countText: "text-rose-700 dark:text-rose-300",
+    tagBg: "bg-rose-50 dark:bg-rose-900/20", tagText: "text-rose-700 dark:text-rose-300",
+    tagHover: "hover:text-rose-900 dark:hover:text-rose-100",
+    dot: "bg-rose-600", inlineBorder: "border-rose-600 dark:border-rose-400",
+  },
+  amber: {
+    bg: "bg-amber-600", border: "border-amber-600", text: "text-amber-600 dark:text-amber-400",
+    hoverBorder: "hover:border-amber-400", hoverText: "hover:text-amber-600 dark:hover:text-amber-400",
+    ring: "focus:ring-amber-500", badge: "bg-amber-600",
+    countBg: "bg-amber-100 dark:bg-amber-900/30", countText: "text-amber-700 dark:text-amber-300",
+    tagBg: "bg-amber-50 dark:bg-amber-900/20", tagText: "text-amber-700 dark:text-amber-300",
+    tagHover: "hover:text-amber-900 dark:hover:text-amber-100",
+    dot: "bg-amber-600", inlineBorder: "border-amber-600 dark:border-amber-400",
+  },
+  cyan: {
+    bg: "bg-cyan-600", border: "border-cyan-600", text: "text-cyan-600 dark:text-cyan-400",
+    hoverBorder: "hover:border-cyan-400", hoverText: "hover:text-cyan-600 dark:hover:text-cyan-400",
+    ring: "focus:ring-cyan-500", badge: "bg-cyan-600",
+    countBg: "bg-cyan-100 dark:bg-cyan-900/30", countText: "text-cyan-700 dark:text-cyan-300",
+    tagBg: "bg-cyan-50 dark:bg-cyan-900/20", tagText: "text-cyan-700 dark:text-cyan-300",
+    tagHover: "hover:text-cyan-900 dark:hover:text-cyan-100",
+    dot: "bg-cyan-600", inlineBorder: "border-cyan-600 dark:border-cyan-400",
+  },
+  indigo: {
+    bg: "bg-indigo-600", border: "border-indigo-600", text: "text-indigo-600 dark:text-indigo-400",
+    hoverBorder: "hover:border-indigo-400", hoverText: "hover:text-indigo-600 dark:hover:text-indigo-400",
+    ring: "focus:ring-indigo-500", badge: "bg-indigo-600",
+    countBg: "bg-indigo-100 dark:bg-indigo-900/30", countText: "text-indigo-700 dark:text-indigo-300",
+    tagBg: "bg-indigo-50 dark:bg-indigo-900/20", tagText: "text-indigo-700 dark:text-indigo-300",
+    tagHover: "hover:text-indigo-900 dark:hover:text-indigo-100",
+    dot: "bg-indigo-600", inlineBorder: "border-indigo-600 dark:border-indigo-400",
+  },
+  pink: {
+    bg: "bg-pink-600", border: "border-pink-600", text: "text-pink-600 dark:text-pink-400",
+    hoverBorder: "hover:border-pink-400", hoverText: "hover:text-pink-600 dark:hover:text-pink-400",
+    ring: "focus:ring-pink-500", badge: "bg-pink-600",
+    countBg: "bg-pink-100 dark:bg-pink-900/30", countText: "text-pink-700 dark:text-pink-300",
+    tagBg: "bg-pink-50 dark:bg-pink-900/20", tagText: "text-pink-700 dark:text-pink-300",
+    tagHover: "hover:text-pink-900 dark:hover:text-pink-100",
+    dot: "bg-pink-600", inlineBorder: "border-pink-600 dark:border-pink-400",
+  },
+};
+
 /* ── Variant renderers ────────────────────────────────────────────── */
 
 /** Classic dropdown list (default) */
-const DropdownContent = ({ filterKey, config, currentFilters, handleFilterChange, isSelected, clearFilter }) => {
+const DropdownContent = ({ filterKey, config, currentFilters, handleFilterChange, isSelected, clearFilter, colors }) => {
   if (!config.options?.length) return null;
   return (
     <div className="absolute top-full left-0 right-0 sm:right-auto sm:min-w-[220px] mt-1 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-600 rounded-lg shadow-xl z-20 max-h-60 overflow-y-auto w-[min(calc(100vw-2rem),20rem)] sm:w-auto">
@@ -18,7 +94,7 @@ const DropdownContent = ({ filterKey, config, currentFilters, handleFilterChange
             <div
               className={`w-4 h-4 border-2 rounded mr-3 flex items-center justify-center transition-colors ${
                 isSelected(filterKey, option.value)
-                  ? "bg-blue-600 border-blue-600"
+                  ? `${colors.bg} ${colors.border}`
                   : "border-gray-300 dark:border-zinc-500"
               }`}
             >
@@ -27,10 +103,10 @@ const DropdownContent = ({ filterKey, config, currentFilters, handleFilterChange
           ) : (
             <div
               className={`w-4 h-4 border-2 rounded-full mr-3 flex items-center justify-center transition-colors ${
-                isSelected(filterKey, option.value) ? "border-blue-600" : "border-gray-300 dark:border-zinc-500"
+                isSelected(filterKey, option.value) ? colors.border : "border-gray-300 dark:border-zinc-500"
               }`}
             >
-              {isSelected(filterKey, option.value) && <div className="w-2 h-2 bg-blue-600 rounded-full" />}
+              {isSelected(filterKey, option.value) && <div className={`w-2 h-2 ${colors.dot} rounded-full`} />}
             </div>
           )}
           <span className="text-sm text-gray-900 dark:text-white">{option.label}</span>
@@ -49,7 +125,7 @@ const DropdownContent = ({ filterKey, config, currentFilters, handleFilterChange
 };
 
 /** Clickable chip / pill buttons */
-const ChipsVariant = ({ filterKey, config, handleFilterChange, isSelected }) => {
+const ChipsVariant = ({ filterKey, config, handleFilterChange, isSelected, colors }) => {
   if (!config.options?.length) return null;
   return (
     <div className="flex flex-wrap gap-1.5 sm:gap-2">
@@ -61,8 +137,8 @@ const ChipsVariant = ({ filterKey, config, handleFilterChange, isSelected }) => 
             onClick={() => handleFilterChange(filterKey, option.value)}
             className={`px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs font-medium border transition-all cursor-pointer ${
               active
-                ? "bg-blue-600 border-blue-600 text-white shadow-sm"
-                : "bg-white dark:bg-zinc-800 border-gray-200 dark:border-zinc-600 text-gray-700 dark:text-gray-300 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400"
+                ? `${colors.bg} ${colors.border} text-white shadow-sm`
+                : `bg-white dark:bg-zinc-800 border-gray-200 dark:border-zinc-600 text-gray-700 dark:text-gray-300 ${colors.hoverBorder} ${colors.hoverText}`
             }`}
           >
             {active && <Check className="inline h-3 w-3 mr-1 -ml-0.5" />}
@@ -75,7 +151,7 @@ const ChipsVariant = ({ filterKey, config, handleFilterChange, isSelected }) => 
 };
 
 /** Radio button list (always visible) */
-const RadioVariant = ({ filterKey, config, handleFilterChange, isSelected }) => {
+const RadioVariant = ({ filterKey, config, handleFilterChange, isSelected, colors }) => {
   if (!config.options?.length) return null;
   return (
     <div className="flex flex-col gap-1.5">
@@ -89,10 +165,10 @@ const RadioVariant = ({ filterKey, config, handleFilterChange, isSelected }) => 
           >
             <span
               className={`w-4 h-4 border-2 rounded-full flex items-center justify-center shrink-0 transition-colors ${
-                active ? "border-blue-600" : "border-gray-300 dark:border-zinc-500"
+                active ? colors.border : "border-gray-300 dark:border-zinc-500"
               }`}
             >
-              {active && <span className="w-2 h-2 bg-blue-600 rounded-full" />}
+              {active && <span className={`w-2 h-2 ${colors.dot} rounded-full`} />}
             </span>
             <span className="text-sm text-gray-900 dark:text-white">{option.label}</span>
           </label>
@@ -103,7 +179,7 @@ const RadioVariant = ({ filterKey, config, handleFilterChange, isSelected }) => 
 };
 
 /** Checkbox list (always visible) */
-const CheckboxVariant = ({ filterKey, config, handleFilterChange, isSelected }) => {
+const CheckboxVariant = ({ filterKey, config, handleFilterChange, isSelected, colors }) => {
   if (!config.options?.length) return null;
   return (
     <div className="flex flex-col gap-1.5">
@@ -117,7 +193,7 @@ const CheckboxVariant = ({ filterKey, config, handleFilterChange, isSelected }) 
           >
             <span
               className={`w-4 h-4 border-2 rounded flex items-center justify-center shrink-0 transition-colors ${
-                active ? "bg-blue-600 border-blue-600" : "border-gray-300 dark:border-zinc-500"
+                active ? `${colors.bg} ${colors.border}` : "border-gray-300 dark:border-zinc-500"
               }`}
             >
               {active && <Check className="h-3 w-3 text-white" />}
@@ -156,7 +232,7 @@ const SegmentedVariant = ({ filterKey, config, handleFilterChange, isSelected })
 };
 
 /** Inline underlined text links */
-const InlineVariant = ({ filterKey, config, handleFilterChange, isSelected }) => {
+const InlineVariant = ({ filterKey, config, handleFilterChange, isSelected, colors }) => {
   if (!config.options?.length) return null;
   return (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -168,7 +244,7 @@ const InlineVariant = ({ filterKey, config, handleFilterChange, isSelected }) =>
             onClick={() => handleFilterChange(filterKey, option.value)}
             className={`text-sm transition-colors cursor-pointer py-0.5 ${
               active
-                ? "text-blue-600 dark:text-blue-400 font-semibold border-b-2 border-blue-600 dark:border-blue-400"
+                ? `${colors.text} font-semibold border-b-2 ${colors.inlineBorder}`
                 : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-b-2 border-transparent"
             }`}
           >
@@ -225,6 +301,7 @@ const VARIANT_MAP = {
  * @param {boolean} [showHeader=true] - Show the header with title, count, and clear button.
  * @param {boolean} [showActiveTags=true] - Show removable tags for active filters.
  * @param {string} [title="Filters"] - Header title text.
+ * @param {string} [accentColor="blue"] - Accent color preset: "blue" | "emerald" | "violet" | "rose" | "amber" | "cyan" | "indigo" | "pink".
  */
 const FilterPanel = ({
   filters: filtersProp = {},
@@ -238,6 +315,7 @@ const FilterPanel = ({
   showHeader = true,
   showActiveTags = true,
   title = "Filters",
+  accentColor = "blue",
 }) => {
   /* ── Normalize filters ────────────────────────────────────────── */
   const filters = Array.isArray(filtersProp)
@@ -358,7 +436,8 @@ const FilterPanel = ({
   };
 
   /* ── Variant renderers ────────────────────────────────────────── */
-  const sharedProps = { currentFilters, handleFilterChange, isSelected, clearFilter };
+  const colors = colorPresets[accentColor] || colorPresets.blue;
+  const sharedProps = { currentFilters, handleFilterChange, isSelected, clearFilter, colors };
 
   const renderVariant = (filterKey, config) => {
     const variant = VARIANT_MAP[config.variant] || "dropdown";
@@ -421,12 +500,12 @@ const FilterPanel = ({
           <>
             <button
               onClick={() => toggleDropdown(filterKey)}
-              className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-600 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer w-full sm:w-auto"
+              className={`flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-600 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors focus:outline-none focus:ring-2 ${colors.ring} cursor-pointer w-full sm:w-auto`}
               aria-expanded={openDropdowns.has(filterKey)}
             >
               <span className="text-sm font-medium text-gray-900 dark:text-white">{config.label}</span>
               {currentFilters[filterKey] && (
-                <span className="bg-blue-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center shrink-0">
+                <span className={`${colors.badge} text-white text-xs w-5 h-5 rounded-full flex items-center justify-center shrink-0`}>
                   {Array.isArray(currentFilters[filterKey]) ? currentFilters[filterKey].length : 1}
                 </span>
               )}
@@ -450,12 +529,12 @@ const FilterPanel = ({
         <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
           <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
           {showActiveCount && activeCount > 0 && (
-            <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium px-2.5 py-1 rounded-full">
+            <span className={`${colors.countBg} ${colors.countText} text-xs font-medium px-2.5 py-1 rounded-full`}>
               {activeCount} active
             </span>
           )}
           {activeCount > 0 && (
-            <button onClick={clearAll} className="text-sm text-blue-600 dark:text-blue-400 hover:underline ml-auto cursor-pointer">
+            <button onClick={clearAll} className={`text-sm ${colors.text} hover:underline ml-auto cursor-pointer`}>
               {clearAllLabel}
             </button>
           )}
@@ -469,7 +548,7 @@ const FilterPanel = ({
             getSelectedLabels(key).map((label) => (
               <span
                 key={`${key}-${label}`}
-                className="inline-flex items-center gap-1 px-2 py-0.5 sm:px-3 sm:py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-[11px] sm:text-xs font-medium rounded-full max-w-full"
+                className={`inline-flex items-center gap-1 px-2 py-0.5 sm:px-3 sm:py-1 ${colors.tagBg} ${colors.tagText} text-[11px] sm:text-xs font-medium rounded-full max-w-full`}
               >
                 <span className="truncate">{config.label}: {label}</span>
                 <button
@@ -480,7 +559,7 @@ const FilterPanel = ({
                       if (opt) handleFilterChange(key, opt.value);
                     }
                   }}
-                  className="hover:text-blue-900 dark:hover:text-blue-100 cursor-pointer"
+                  className={`${colors.tagHover} cursor-pointer`}
                 >
                   <X className="h-3 w-3" />
                 </button>
@@ -499,7 +578,7 @@ const FilterPanel = ({
                 onClick={() => handleToggle(filterKey)}
                 className={`flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 border rounded-lg transition-colors cursor-pointer w-full sm:w-auto ${
                   currentFilters[filterKey]
-                    ? "bg-blue-600 border-blue-600 text-white"
+                    ? `${colors.bg} ${colors.border} text-white`
                     : "bg-white dark:bg-zinc-800 border-gray-200 dark:border-zinc-600 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-zinc-700"
                 }`}
               >

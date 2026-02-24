@@ -13,6 +13,7 @@ import { ChevronDown } from "lucide-react";
  * @param {Function} onToggle - Callback: (id, isOpen) => void
  * @param {Array} defaultOpen - Array of IDs for initially open panels
  * @param {"left"|"right"} iconPosition - Chevron icon placement
+ * @param {string} maxWidth - Max width of the accordion (e.g. "sm", "md", "lg", "xl", "full" or a custom CSS value)
  */
 const Accordion = ({
   items = [],
@@ -23,6 +24,7 @@ const Accordion = ({
   onToggle,
   defaultOpen = [],
   iconPosition = "right",
+  maxWidth = "full",
 }) => {
   const [openItems, setOpenItems] = useState(() => new Set(defaultOpen));
 
@@ -52,6 +54,18 @@ const Accordion = ({
     lg: { btn: "px-4 py-3.5 text-base sm:px-6 sm:py-4 md:px-8 md:py-5 md:text-lg", body: "px-4 pb-4 text-base sm:px-6 sm:pb-4 md:px-8 md:pb-5 md:text-lg" },
   };
 
+  const maxWidthMap = {
+    sm: "max-w-sm",
+    md: "max-w-md",
+    lg: "max-w-lg",
+    xl: "max-w-xl",
+    "2xl": "max-w-2xl",
+    "3xl": "max-w-3xl",
+    full: "max-w-full w-full",
+  };
+  const widthClass = maxWidthMap[maxWidth] || "";
+  const widthStyle = !maxWidthMap[maxWidth] && maxWidth !== "full" ? { maxWidth } : undefined;
+
   const variants = {
     default: "bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg shadow-sm",
     bordered: "border border-gray-300 dark:border-zinc-600 rounded-lg",
@@ -62,7 +76,7 @@ const Accordion = ({
   const v = variants[variant] || variants.default;
 
   return (
-    <div className={`space-y-3 ${className}`} role="region">
+    <div className={`space-y-3 ${widthClass} ${className}`} style={widthStyle} role="region">
       {items.map((item) => (
         <div key={item.id} className={`overflow-hidden transition-shadow duration-200 ${v}`}>
           <button

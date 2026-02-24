@@ -17,6 +17,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
  * @param {Function} formatValue - Custom format: (value) => string
  * @param {string} className - Extra CSS
  * @param {Function} onComplete - Called when animation ends
+ * @param {string} size - Responsive size: "sm" | "md" | "lg" | "xl" (default: none, use className). Provides responsive text sizing.
  */
 
 const easings = {
@@ -40,6 +41,7 @@ const AnimatedCounter = ({
   formatValue,
   className = "",
   onComplete,
+  size,
 }) => {
   const [displayValue, setDisplayValue] = useState(start);
   const [hasStarted, setHasStarted] = useState(!triggerOnView);
@@ -109,8 +111,15 @@ const AnimatedCounter = ({
     [formatValue, decimals, separator, prefix, suffix]
   );
 
+  const sizeClasses = {
+    sm: "text-lg sm:text-xl md:text-2xl font-bold",
+    md: "text-xl sm:text-2xl md:text-3xl font-bold",
+    lg: "text-2xl sm:text-3xl md:text-4xl font-bold",
+    xl: "text-3xl sm:text-4xl md:text-5xl font-extrabold",
+  };
+
   return (
-    <span ref={elRef} className={`tabular-nums ${className}`}>
+    <span ref={elRef} className={`tabular-nums ${size ? sizeClasses[size] || "" : ""} ${className}`}>
       {formatNumber(displayValue)}
     </span>
   );

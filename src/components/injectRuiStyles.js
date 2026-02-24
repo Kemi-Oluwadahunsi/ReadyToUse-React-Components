@@ -51,6 +51,13 @@ const css = `
   100% { transform: rotate(360deg) scale(1); }
 }
 
+/* ─── Popover ─── */
+@keyframes rui-popover-enter {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.rui-popover-enter { animation: rui-popover-enter 0.15s cubic-bezier(0.16, 1, 0.3, 1); }
+
 /* ─── Toast ─── */
 @keyframes rui-slide-in {
   from { opacity: 0; transform: translateX(16px); }

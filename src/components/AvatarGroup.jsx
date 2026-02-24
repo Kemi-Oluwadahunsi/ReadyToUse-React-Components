@@ -11,6 +11,7 @@
  * @param {Function} onAvatarClick - (avatar, index) => void
  * @param {Function} onOverflowClick - (hiddenAvatars) => void
  * @param {string} className - Extra CSS
+ * @param {boolean} showStatus - Show status indicator dots (default true)
  */
 import { useState } from "react";
 
@@ -45,7 +46,7 @@ function getInitials(name = "") {
     .toUpperCase();
 }
 
-const Avatar = ({ avatar, index, sz, bordered, onClick }) => {
+const Avatar = ({ avatar, index, sz, bordered, onClick, showStatus = true }) => {
   const [imgError, setImgError] = useState(false);
   const { wh, text, dot } = sz;
   const initials = getInitials(avatar.name);
@@ -71,7 +72,7 @@ const Avatar = ({ avatar, index, sz, bordered, onClick }) => {
           {initials}
         </div>
       )}
-      {avatar.status && (
+      {avatar.status && showStatus && (
         <span
           className={`absolute bottom-0 right-0 rounded-full ${statusColors[avatar.status] || "bg-gray-400"} border-2 border-white dark:border-zinc-900`}
           style={{ width: dot, height: dot }}
@@ -91,6 +92,7 @@ const AvatarGroup = ({
   onAvatarClick,
   onOverflowClick,
   className = "",
+  showStatus = true,
 }) => {
   const sz = sizes[size] || sizes.md;
   const visible = avatars.slice(0, max);
@@ -101,7 +103,7 @@ const AvatarGroup = ({
     return (
       <div className={`flex flex-wrap gap-2 ${className}`}>
         {visible.map((av, i) => (
-          <Avatar key={i} avatar={av} index={i} sz={sz} bordered={bordered} onClick={onAvatarClick} />
+          <Avatar key={i} avatar={av} index={i} sz={sz} bordered={bordered} onClick={onAvatarClick} showStatus={showStatus} />
         ))}
         {hidden.length > 0 && (
           <button
@@ -122,7 +124,7 @@ const AvatarGroup = ({
     <div className={`flex items-center ${className}`}>
       {visible.map((av, i) => (
         <div key={i} style={{ marginLeft: i === 0 ? 0 : overlap }} className="relative z-[1] hover:z-20">
-          <Avatar avatar={av} index={i} sz={sz} bordered={bordered} onClick={onAvatarClick} />
+          <Avatar avatar={av} index={i} sz={sz} bordered={bordered} onClick={onAvatarClick} showStatus={showStatus} />
         </div>
       ))}
       {hidden.length > 0 && (

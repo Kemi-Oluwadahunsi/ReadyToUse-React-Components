@@ -18,6 +18,8 @@ import injectRuiStyles from "./injectRuiStyles";
  * @param {string} panelClassName - Extra CSS on the content panels
  * @param {string} size - "sm" | "md" | "lg" (default "md")
  * @param {boolean} fullWidth - Tabs take full width (default false)
+ * @param {string} tabWidth - Min width of each tab: "auto" | "equal" | custom CSS value (default "auto")
+ * @param {string} fontSize - Custom font size class override (e.g. "text-lg", "text-xs"). Overrides size-based font.
  */
 const Tabs = ({
   tabs = [],
@@ -33,6 +35,8 @@ const Tabs = ({
   panelClassName = "",
   size = "md",
   fullWidth = false,
+  tabWidth = "auto",
+  fontSize,
 }) => {
   injectRuiStyles();
   const uid = useId();
@@ -114,11 +118,25 @@ const Tabs = ({
 
   const isV = orientation === "vertical";
 
-  const sizeClasses = {
-    sm: "text-xs px-3 py-1.5",
-    md: "text-sm px-4 py-2.5",
-    lg: "text-base px-5 py-3",
+  const sizePadding = {
+    sm: "px-3 py-1.5",
+    md: "px-4 py-2.5",
+    lg: "px-5 py-3",
   };
+
+  const sizeFonts = {
+    sm: "text-xs",
+    md: "text-sm",
+    lg: "text-base",
+  };
+
+  // Compute tab style for width and optional font-size override
+  const getTabStyle = () => {
+    if (tabWidth === "auto" || tabWidth === "equal") return undefined;
+    return { minWidth: tabWidth };
+  };
+
+  const tabWidthClass = tabWidth === "equal" ? "flex-1 justify-center" : "";
 
   return (
     <div className={`${isV ? "flex gap-6" : ""} ${className}`}>
@@ -168,8 +186,8 @@ const Tabs = ({
               onClick={() => !tab.disabled && handleChange(tab.key)}
               className={`
                 relative inline-flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer
-                ${sizeClasses[size]}
-                ${fullWidth ? "flex-1 justify-center" : ""}
+                ${fontSize || sizeFonts[size]} ${sizePadding[size]}
+                ${fullWidth || tabWidthClass ? "flex-1 justify-center" : ""}
                 ${tab.disabled ? "opacity-40 cursor-not-allowed" : ""}
                 ${variant === "underline" ? (
                   isActive
@@ -187,8 +205,8 @@ const Tabs = ({
                     : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-800"
                 ) : ""}
               `}
+              style={getTabStyle()}
             >
-              {Icon && (isValidElement(Icon) ? Icon : <Icon className="w-4 h-4" />)}
               {tab.label}
               {tab.badge !== undefined && (
                 <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none ${

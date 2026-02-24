@@ -15,6 +15,8 @@
  * @param {boolean} centered - Vertically center modal (default true)
  * @param {string} className - Extra CSS on modal panel
  * @param {string} overlayClassName - Extra CSS on overlay
+ * @param {number} overlayOpacity - Overlay background opacity 0-1 (default 0.5)
+ * @param {string} overlayColor - Overlay background color (default "black")
  */
 import { useEffect, useCallback, useRef, useState, useId } from "react";
 import { createPortal } from "react-dom";
@@ -42,6 +44,8 @@ const Modal = ({
   centered = true,
   className = "",
   overlayClassName = "",
+  overlayOpacity = 0.5,
+  overlayColor = "black",
 }) => {
   const [visible, setVisible] = useState(false);
   const [show, setShow] = useState(false);
@@ -133,7 +137,8 @@ const Modal = ({
     >
       {/* Overlay */}
       <div
-        className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-200 ${show ? "opacity-100" : "opacity-0"} ${overlayClassName}`}
+        className={`absolute inset-0 backdrop-blur-sm transition-opacity duration-200 ${show ? "opacity-100" : "opacity-0"} ${overlayClassName}`}
+        style={{ backgroundColor: `color-mix(in srgb, ${overlayColor} ${Math.round(overlayOpacity * 100)}%, transparent)` }}
         onClick={handleOverlay}
       />
 

@@ -18,6 +18,7 @@ import injectRuiStyles from "./injectRuiStyles";
  * @param {number} maxZoom - Max zoom (default 3)
  * @param {boolean} showGrid - Show crop grid lines (default true)
  * @param {boolean} circular - Circular crop mask (default false)
+ * @param {boolean} showPreview - Show cropped image preview before confirming (default false)
  * @param {string} className - Extra CSS on the modal
  */
 const ImageCropper = ({
@@ -32,6 +33,7 @@ const ImageCropper = ({
   maxZoom = 3,
   showGrid = true,
   circular = false,
+  showPreview = false,
   className = "",
 }) => {
   injectRuiStyles();
@@ -39,6 +41,7 @@ const ImageCropper = ({
   const [rotation, setRotation] = useState(0);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
+  const [preview, setPreview] = useState(null); // { dataUrl, blob, width, height }
   const dragStart = useRef({ x: 0, y: 0, ox: 0, oy: 0 });
   const imgRef = useRef(null);
   const cropRef = useRef(null);
@@ -48,6 +51,7 @@ const ImageCropper = ({
       setZoom(1);
       setRotation(0);
       setOffset({ x: 0, y: 0 });
+      setPreview(null);
     }
   }, [isOpen, src]);
 
@@ -110,12 +114,17 @@ const ImageCropper = ({
     canvas.toBlob(
       (blob) => {
         const dataUrl = canvas.toDataURL(outputType, quality);
-        onCrop?.({ blob, dataUrl, width: canvas.width, height: canvas.height });
+        const result = { blob, dataUrl, width: canvas.width, height: canvas.height };
+        if (showPreview) {
+          setPreview(result);
+        } else {
+          onCrop?.(result);
+        }
       },
       outputType,
       quality
     );
-  }, [rotation, outputType, quality, onCrop]);
+  }, [rotation, outputType, quality, onCrop, showPreview]);
 
   if (!isOpen) return null;
 
@@ -236,6 +245,36 @@ const ImageCropper = ({
             </div>
           </div>
         </div>
+
+        {/* Preview panel */}
+        {preview && (
+          <div className="p-4 border-t border-zinc-700 space-y-3">
+            <p className="text-sm text-gray-400 text-center">Cropped Preview</p>
+            <div className="flex justify-center">
+              <img
+                src={preview.dataUrl}
+                alt="Cropped preview"
+                className={`max-h-48 object-contain border border-zinc-600 ${circular ? "rounded-full" : "rounded-lg"}`}
+              />
+            </div>
+            <div className="flex justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => setPreview(null)}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm text-gray-300 hover:bg-zinc-800 transition-colors cursor-pointer"
+              >
+                <RotateCw className="w-4 h-4" /> Re-crop
+              </button>
+              <button
+                type="button"
+                onClick={() => { onCrop?.(preview); setPreview(null); }}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm bg-green-600 text-white hover:bg-green-700 transition-colors cursor-pointer"
+              >
+                <Check className="w-4 h-4" /> Accept
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>,
     document.body

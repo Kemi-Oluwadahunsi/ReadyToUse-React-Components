@@ -18,6 +18,7 @@
  * @param {string} className - Extra CSS on content panel
  */
 import { useState, useRef, useEffect, useCallback } from "react";
+import injectRuiStyles from "./injectRuiStyles";
 
 const Popover = ({
   trigger,
@@ -35,6 +36,7 @@ const Popover = ({
   onOpenChange,
   className = "",
 }) => {
+  injectRuiStyles();
   const [internalOpen, setInternalOpen] = useState(false);
   const isControlled = controlledOpen !== undefined;
   const isOpen = isControlled ? controlledOpen : internalOpen;
@@ -168,7 +170,7 @@ const Popover = ({
           ref={contentRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className={`fixed z-50 ${translateMap[placement]} ${transformOrigins[placement]} animate-in fade-in-0 zoom-in-95 ${className}`}
+          className={`fixed z-50 ${translateMap[placement]} ${transformOrigins[placement]} rui-popover-enter ${className}`}
           style={{ top: pos.top, left: pos.left }}
         >
           <div className="relative bg-white dark:bg-zinc-800 rounded-xl shadow-xl border border-gray-200 dark:border-zinc-700 p-4">
