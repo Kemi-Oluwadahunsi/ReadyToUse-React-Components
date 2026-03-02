@@ -83,32 +83,59 @@ const Popover = ({
   // Position calculation
   useEffect(() => {
     if (!isOpen || !triggerRef.current) return;
-    const tr = triggerRef.current.getBoundingClientRect();
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
 
-    let top = 0;
-    let left = 0;
+    const calcPos = () => {
+      const tr = triggerRef.current.getBoundingClientRect();
+      const content = contentRef.current;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
 
-    if (placement === "bottom") {
-      top = tr.bottom + offset;
-      left = align === "start" ? tr.left : align === "end" ? tr.right : tr.left + tr.width / 2;
-    } else if (placement === "top") {
-      top = tr.top - offset;
-      left = align === "start" ? tr.left : align === "end" ? tr.right : tr.left + tr.width / 2;
-    } else if (placement === "left") {
-      top = tr.top + tr.height / 2;
-      left = tr.left - offset;
-    } else {
-      top = tr.top + tr.height / 2;
-      left = tr.right + offset;
-    }
+      let top = 0;
+      let left = 0;
 
-    // Clamp
-    top = Math.max(8, Math.min(top, vh - 8));
-    left = Math.max(8, Math.min(left, vw - 8));
+      if (placement === "bottom") {
+        top = tr.bottom + offset;
+        left = align === "start" ? tr.left : align === "end" ? tr.right : tr.left + tr.width / 2;
+      } else if (placement === "top") {
+        top = tr.top - offset;
+        left = align === "start" ? tr.left : align === "end" ? tr.right : tr.left + tr.width / 2;
+      } else if (placement === "left") {
+        top = tr.top + tr.height / 2;
+        left = tr.left - offset;
+      } else {
+        top = tr.top + tr.height / 2;
+        left = tr.right + offset;
+      }
 
-    setPos({ top, left });
+      // Clamp within viewport with margin
+      const margin = 12;
+      top = Math.max(margin, Math.min(top, vh - margin));
+      left = Math.max(margin, Math.min(left, vw - margin));
+
+      setPos({ top, left });
+
+      // After positioning, clamp the content box to stay in viewport
+      if (content) {
+        const cRect = content.getBoundingClientRect();
+        const maxW = vw - margin * 2;
+        content.style.maxWidth = `${maxW}px`;
+
+        // If overflowing right
+        if (cRect.right > vw - margin) {
+          const shift = cRect.right - (vw - margin);
+          setPos((prev) => ({ ...prev, left: prev.left - shift }));
+        }
+        // If overflowing left
+        if (cRect.left < margin) {
+          const shift = margin - cRect.left;
+          setPos((prev) => ({ ...prev, left: prev.left + shift }));
+        }
+      }
+    };
+
+    // Run twice: first to position, second to adjust overflow
+    calcPos();
+    requestAnimationFrame(calcPos);
   }, [isOpen, placement, align, offset]);
 
   // Click outside
@@ -173,7 +200,7 @@ const Popover = ({
           className={`fixed z-50 ${translateMap[placement]} ${transformOrigins[placement]} rui-popover-enter ${className}`}
           style={{ top: pos.top, left: pos.left }}
         >
-          <div className="relative bg-white dark:bg-zinc-800 rounded-xl shadow-xl border border-gray-200 dark:border-zinc-700 p-4">
+          <div className="relative bg-white dark:bg-zinc-800 rounded-xl shadow-xl border border-gray-200 dark:border-zinc-700 p-3 sm:p-4 max-w-[calc(100vw-24px)] overflow-auto">
             {showArrow && (
               <span
                 className={`absolute w-0 h-0 border-[6px] ${arrowDir[placement]}`}

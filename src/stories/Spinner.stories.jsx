@@ -24,6 +24,10 @@ export default {
         "ripple",
         "square-spin",
         "gradient",
+        "chase",
+        "bounce",
+        "wave",
+        "fold",
       ],
       description: "Spinner animation style",
     },
@@ -71,6 +75,10 @@ export const AllVariants = {
       "ripple",
       "square-spin",
       "gradient",
+      "chase",
+      "bounce",
+      "wave",
+      "fold",
     ];
     return (
       <div className="p-8 flex flex-wrap gap-10 items-end">
@@ -94,7 +102,11 @@ export const AllVariants = {
 <Spinner variant="dual-ring" />
 <Spinner variant="ripple" />
 <Spinner variant="square-spin" />
-<Spinner variant="gradient" />`,
+<Spinner variant="gradient" />
+<Spinner variant="chase" />
+<Spinner variant="bounce" />
+<Spinner variant="wave" />
+<Spinner variant="fold" />`,
       },
     },
   },
