@@ -40,7 +40,7 @@ export default {
   },
   decorators: [
     (Story) => (
-      <div className="p-8" style={{ maxWidth: 420 }}>
+      <div className="p-4 sm:p-8 w-full" style={{ maxWidth: 420 }}>
         {Story()}
       </div>
     ),
@@ -139,7 +139,7 @@ export const CardGrid = {
       purple: { spot: "rgba(168,85,247,0.15)", border: "rgba(168,85,247,0.3)", bg: "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400" },
     };
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4" style={{ maxWidth: 900 }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full" style={{ maxWidth: 900 }}>
         {cards.map((card) => (
           <SpotlightCard
             key={card.title}

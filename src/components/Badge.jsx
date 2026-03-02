@@ -58,7 +58,8 @@ const Badge = ({
 
   const displayContent = (() => {
     if (isDot) return null;
-    if (typeof content === "number" && content > max) return `${max}+`;
+    const num = typeof content === "number" ? content : (typeof content === "string" && /^\d+$/.test(content.trim())) ? Number(content) : null;
+    if (num !== null && num > max) return `${max}+`;
     return content;
   })();
 

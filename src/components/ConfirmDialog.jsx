@@ -29,6 +29,13 @@ const ConfirmDialog = ({
   overlayClassName = "",
   showIcon = true,
   closeOnOverlay = true,
+  showButtons = true,
+  iconColor,
+  iconBgColor,
+  titleColor,
+  messageColor,
+  confirmButtonClassName,
+  cancelButtonClassName,
   children,
 }) => {
   const [mounted, setMounted] = useState(false);
@@ -86,31 +93,33 @@ const ConfirmDialog = ({
       >
         <div className="p-6 text-center">
           {showIcon && (
-            <div className={`inline-flex items-center justify-center w-12 h-12 rounded-full ${v.bg} ${v.text} mb-4`}>
+            <div className={`inline-flex items-center justify-center w-12 h-12 rounded-full ${iconBgColor || v.bg} ${iconColor || v.text} mb-4`}>
               <IconComp className="w-6 h-6" />
             </div>
           )}
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">{title}</h3>
-          {message && <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{message}</p>}
+          <h3 className={`text-lg font-semibold mb-1 ${titleColor || "text-gray-900 dark:text-white"}`}>{title}</h3>
+          {message && <p className={`text-sm leading-relaxed ${messageColor || "text-gray-500 dark:text-gray-400"}`}>{message}</p>}
           {children}
         </div>
 
-        <div className="flex gap-3 px-6 pb-6">
-          <button
-            type="button"
-            onClick={onCancel}
-            className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-zinc-700 hover:bg-gray-200 dark:hover:bg-zinc-600 transition-colors cursor-pointer"
-          >
-            {cancelLabel}
-          </button>
-          <button
-            type="button"
-            onClick={onConfirm}
-            className={`flex-1 px-4 py-2.5 rounded-xl text-sm font-medium text-white ${v.btn} transition-colors cursor-pointer`}
-          >
-            {confirmLabel}
-          </button>
-        </div>
+        {showButtons && (
+          <div className="flex gap-3 px-6 pb-6">
+            <button
+              type="button"
+              onClick={onCancel}
+              className={cancelButtonClassName || "flex-1 px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-zinc-700 hover:bg-gray-200 dark:hover:bg-zinc-600 transition-colors cursor-pointer"}
+            >
+              {cancelLabel}
+            </button>
+            <button
+              type="button"
+              onClick={onConfirm}
+              className={confirmButtonClassName || `flex-1 px-4 py-2.5 rounded-xl text-sm font-medium text-white ${v.btn} transition-colors cursor-pointer`}
+            >
+              {confirmLabel}
+            </button>
+          </div>
+        )}
       </div>
     </div>,
     document.body

@@ -1,5 +1,6 @@
 import { Popover } from "../components/Popover";
 import { Settings, User, LogOut, HelpCircle } from "lucide-react";
+import { useState } from "react";
 
 export default {
   title: "Feedback/Popover",
@@ -38,27 +39,32 @@ export default {
 
 /* ── Default ── */
 export const Default = {
-  render: (args) => (
-    <div className="flex items-center justify-center min-h-[200px]">
-      <Popover
-        {...args}
-        trigger={
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium text-sm cursor-pointer">
-            Open Popover
-          </button>
-        }
-      >
-        <div className="w-56">
-          <p className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-            Popover Title
-          </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            This is a popover with some helpful content.
-          </p>
-        </div>
-      </Popover>
-    </div>
-  ),
+  render: (args) => {
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="flex items-center justify-center min-h-[300px]">
+        <Popover
+          {...args}
+          open={open}
+          onOpenChange={setOpen}
+          trigger={
+            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium text-sm cursor-pointer">
+              Open Popover
+            </button>
+          }
+        >
+          <div className="w-56">
+            <p className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
+              Popover Title
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              This is a popover with some helpful content. Try changing placement and align controls.
+            </p>
+          </div>
+        </Popover>
+      </div>
+    );
+  },
   args: {
     triggerMode: "click",
     placement: "bottom",

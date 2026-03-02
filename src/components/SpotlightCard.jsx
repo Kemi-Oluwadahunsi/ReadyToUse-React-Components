@@ -65,8 +65,10 @@ const SpotlightCard = ({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
+      onTouchStart={() => setIsHovered(true)}
+      onTouchEnd={() => { setIsHovered(false); setTiltStyle({ transform: "perspective(600px) rotateX(0) rotateY(0) scale(1)" }); }}
       onClick={onClick}
-      className={`relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 ${
+      className={`relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 w-full ${
         onClick ? "cursor-pointer" : ""
       } ${className}`}
       style={{

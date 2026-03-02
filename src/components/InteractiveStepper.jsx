@@ -87,7 +87,7 @@ const Stepper = ({
   return (
     <div className={className}>
       {/* Stepper Track */}
-      <div className={`${isVertical ? "flex flex-col space-y-0" : "flex items-start justify-center"} overflow-x-auto`}>
+      <div className={`${isVertical ? "flex flex-col space-y-0" : "flex items-start justify-center px-2 py-3"} overflow-x-auto`}>
         {steps.map((step, idx) => {
           const styles = getStyles(idx);
           const isLast = idx === steps.length - 1;

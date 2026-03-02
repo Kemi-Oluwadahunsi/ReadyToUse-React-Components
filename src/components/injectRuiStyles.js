@@ -9,9 +9,17 @@ let injected = false;
 const css = `
 /* ─── Skeleton ─── */
 .rui-skeleton-wave {
-  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,.15) 50%, transparent 75%);
+  position: relative;
+  overflow: hidden;
+}
+.rui-skeleton-wave::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,.3) 50%, transparent 75%);
   background-size: 200% 100%;
   animation: rui-wave 1.5s ease-in-out infinite;
+  border-radius: inherit;
 }
 @keyframes rui-wave {
   0%   { background-position: 200% 0; }
@@ -49,6 +57,28 @@ const css = `
   50%  { transform: rotate(180deg) scale(1); }
   75%  { transform: rotate(270deg) scale(0.7); }
   100% { transform: rotate(360deg) scale(1); }
+}
+
+/* Spinner – chase dots */
+@keyframes rui-chase-dot {
+  0%, 100% { transform: rotate(var(--angle, 0deg)) translateY(var(--r, -12px)) scale(0.4); opacity: 0.3; }
+  50% { transform: rotate(var(--angle, 0deg)) translateY(var(--r, -12px)) scale(1); opacity: 1; }
+}
+/* Spinner – bounce ball */
+@keyframes rui-bounce-ball {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-120%); }
+}
+/* Spinner – wave bars */
+@keyframes rui-wave-bar {
+  0%, 100% { height: 20%; opacity: 0.4; }
+  50% { height: 100%; opacity: 1; }
+}
+/* Spinner – fold cubes */
+@keyframes rui-fold {
+  0%, 10% { transform: perspective(140px) rotateX(-180deg); opacity: 0; }
+  25%, 75% { transform: perspective(140px) rotateX(0deg); opacity: 1; }
+  90%, 100% { transform: perspective(140px) rotateY(180deg); opacity: 0; }
 }
 
 /* ─── Popover ─── */
@@ -155,6 +185,15 @@ const css = `
 @keyframes rui-tt-in {
   from { opacity: 0; transform: translateY(2px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── ScrollCarousel continuous ─── */
+@keyframes rui-continuous-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.rui-continuous-scroll {
+  animation: rui-continuous-scroll var(--rui-scroll-speed, 20s) linear infinite;
 }
 
 /* ─── VirtualList scrollbar ─── */

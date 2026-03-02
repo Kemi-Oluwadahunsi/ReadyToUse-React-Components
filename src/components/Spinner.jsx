@@ -5,7 +5,7 @@ import injectRuiStyles from "./injectRuiStyles";
  * Spinner - Collection of loading animations with configurable size and color.
  */
 /*
- * @param {string} variant - "ring" | "dots" | "bars" | "orbit" | "pulse" | "dual-ring" | "ripple" | "square-spin" | "gradient" (default "ring")
+ * @param {string} variant - "ring" | "dots" | "bars" | "orbit" | "pulse" | "dual-ring" | "ripple" | "square-spin" | "gradient" | "chase" | "bounce" | "wave" | "fold" (default "ring")
  * @param {number|string} size - Size in px (default 32)
  * @param {string} color - CSS color or Tailwind colour keyword (default "currentColor")
  * @param {number} speed - Animation duration in seconds (default 1)
@@ -227,6 +227,113 @@ const Spinner = ({
               strokeDasharray={`${circ * 0.75} ${circ * 0.25}`}
             />
           </svg>
+        );
+      }
+      case "chase": {
+        const dotSize = typeof size === "number" ? size * 0.18 : 6;
+        const count = 8;
+        return (
+          <div
+            className={`relative ${className}`}
+            role="status"
+            aria-label={label}
+            style={{ width: s, height: s, animation: `rui-dual-spin ${speed * 2}s linear infinite` }}
+          >
+            {Array.from({ length: count }, (_, i) => {
+              const angle = (360 / count) * i;
+              const delay = -(speed / count) * i;
+              return (
+                <span
+                  key={i}
+                  className="absolute rounded-full"
+                  style={{
+                    width: dotSize,
+                    height: dotSize,
+                    backgroundColor: color,
+                    top: "50%",
+                    left: "50%",
+                    marginTop: -dotSize / 2,
+                    marginLeft: -dotSize / 2,
+                    transform: `rotate(${angle}deg) translateY(${-half * 0.7}px)`,
+                    animation: `rui-chase-dot ${speed}s ease-in-out ${delay}s infinite`,
+                  }}
+                />
+              );
+            })}
+          </div>
+        );
+      }
+      case "bounce": {
+        const ballSize = typeof size === "number" ? size * 0.35 : 11;
+        return (
+          <div
+            className={`flex items-end justify-center ${className}`}
+            role="status"
+            aria-label={label}
+            style={{ width: s, height: s }}
+          >
+            <span
+              className="rounded-full"
+              style={{
+                width: ballSize,
+                height: ballSize,
+                backgroundColor: color,
+                animation: `rui-bounce-ball ${speed * 0.8}s ease-in-out infinite`,
+              }}
+            />
+          </div>
+        );
+      }
+      case "wave": {
+        const barW = typeof size === "number" ? Math.max(3, size * 0.1) : 3;
+        const barCount = 5;
+        return (
+          <div
+            className={`flex items-center gap-[2px] ${className}`}
+            role="status"
+            aria-label={label}
+            style={{ height: s }}
+          >
+            {Array.from({ length: barCount }, (_, i) => (
+              <span
+                key={i}
+                className="inline-block rounded-full"
+                style={{
+                  width: barW,
+                  backgroundColor: color,
+                  animation: `rui-wave-bar ${speed}s ease-in-out ${i * 0.1}s infinite`,
+                  height: "40%",
+                }}
+              />
+            ))}
+          </div>
+        );
+      }
+      case "fold": {
+        const cubeSize = typeof size === "number" ? size * 0.4 : 13;
+        return (
+          <div
+            className={`relative ${className}`}
+            role="status"
+            aria-label={label}
+            style={{ width: s, height: s }}
+          >
+            {[0, 1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="absolute"
+                style={{
+                  width: cubeSize,
+                  height: cubeSize,
+                  backgroundColor: color,
+                  left: i % 2 === 0 ? 0 : "50%",
+                  top: i < 2 ? 0 : "50%",
+                  animation: `rui-fold ${speed * 2.4}s linear ${i * (speed * 0.6)}s infinite`,
+                  transformOrigin: "100% 100%",
+                }}
+              />
+            ))}
+          </div>
         );
       }
       default: // ring

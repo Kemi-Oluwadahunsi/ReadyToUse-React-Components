@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import injectRuiStyles from "./injectRuiStyles";
 
 /**
  * ScrollCarousel - A generic, responsive carousel with auto-scroll and snap scrolling.
@@ -22,6 +23,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
  * @param {boolean} scaleActive - Scale the center card up when 3+ items visible (default false)
  * @param {boolean} showEdgeFade - Show gradient fade at left/right edges (default true)
  * @param {string} cardClassName - Additional CSS classes applied to each default card
+ * @param {string} mode - "snap" (default) | "continuous" - continuous creates an infinite marquee scroll
+ * @param {number} continuousSpeed - Speed for continuous scroll in pixels per second (default 40)
  */
 const ScrollCarousel = ({
   items = [],
@@ -37,7 +40,10 @@ const ScrollCarousel = ({
   scaleActive = false,
   showEdgeFade = true,
   cardClassName = "",
+  mode = "snap",
+  continuousSpeed = 40,
 }) => {
+  injectRuiStyles();
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState(autoScroll);
   const [perView, setPerView] = useState(fixedPerView || 1);
@@ -193,6 +199,53 @@ const ScrollCarousel = ({
     4: `calc(25% - ${(gap * 3) / 4}px)`,
   };
   const itemWidth = widthMap[perView] || widthMap[1];
+
+  /* ── Continuous marquee mode ── */
+  if (mode === "continuous" && items.length > 0) {
+    const totalItems = [...items, ...items]; // duplicate for seamless loop
+    return (
+      <div className={`relative overflow-hidden ${className}`}>
+        {showEdgeFade && (
+          <>
+            <div
+              className="pointer-events-none absolute inset-y-0 left-0 z-10"
+              style={{
+                width: 48,
+                background: "linear-gradient(90deg, var(--rui-carousel-bg, rgb(249 250 251)) 0%, transparent 100%)",
+              }}
+            />
+            <div
+              className="pointer-events-none absolute inset-y-0 right-0 z-10"
+              style={{
+                width: 48,
+                background: "linear-gradient(270deg, var(--rui-carousel-bg, rgb(249 250 251)) 0%, transparent 100%)",
+              }}
+            />
+          </>
+        )}
+        <div
+          className="flex rui-continuous-scroll"
+          style={{
+            gap: `${gap}px`,
+            "--rui-scroll-speed": `${Math.max(5, items.length * (200 / continuousSpeed))}s`,
+            width: "max-content",
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.animationPlayState = "paused"}
+          onMouseLeave={(e) => e.currentTarget.style.animationPlayState = "running"}
+        >
+          {totalItems.map((item, idx) => (
+            <div
+              key={`${item.id ?? idx}-${idx}`}
+              className="flex-none"
+              style={{ width: fixedPerView ? itemWidth : undefined, minWidth: fixedPerView ? undefined : 280 }}
+            >
+              {renderItem ? renderItem(item, idx % items.length, false) : defaultRender(item, idx % items.length)}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`relative ${className}`}>

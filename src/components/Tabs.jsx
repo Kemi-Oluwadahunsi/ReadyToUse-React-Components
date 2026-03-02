@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback, useId, isValidElement } from "react";
+import { useState, useRef, useEffect, useCallback, useId } from "react";
 import injectRuiStyles from "./injectRuiStyles";
 
 /**
