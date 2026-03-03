@@ -157,6 +157,11 @@ export default {
     showActiveTags: { control: "boolean", description: "Show removable tags for active filters" },
     title: { control: "text", description: "Header title text" },
     clearAllLabel: { control: "text", description: "Label for clear-all button" },
+    accentColor: {
+      control: "select",
+      options: ["blue", "emerald", "violet", "rose", "amber", "cyan", "indigo", "pink"],
+      description: "Accent color preset for the panel",
+    },
     onChange: { action: "changed" },
   },
   parameters: {
