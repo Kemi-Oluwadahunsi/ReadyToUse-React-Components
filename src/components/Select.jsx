@@ -20,9 +20,9 @@ import { useState, useRef, useEffect, useMemo, useCallback } from "react";
 import { ChevronDown, X, Check, Search } from "lucide-react";
 
 const sizeStyles = {
-  sm: "px-2.5 py-1.5 text-sm min-h-[32px]",
-  md: "px-3 py-2 text-sm min-h-[40px]",
-  lg: "px-4 py-2.5 text-base min-h-[48px]",
+  sm: "px-2 py-1 text-xs sm:px-2.5 sm:py-1.5 sm:text-sm min-h-[28px] sm:min-h-[32px]",
+  md: "px-2.5 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm min-h-[36px] sm:min-h-[40px]",
+  lg: "px-3 py-2 text-sm sm:px-4 sm:py-2.5 sm:text-base min-h-[40px] sm:min-h-[48px]",
 };
 
 const Select = ({
@@ -165,7 +165,7 @@ const Select = ({
         role="option"
         aria-selected={sel}
         onClick={() => selectOption(opt)}
-        className={`w-full text-left px-3 py-2 flex items-center gap-2 text-sm transition-colors
+        className={`w-full text-left px-2.5 py-1.5 sm:px-3 sm:py-2 flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm transition-colors
           ${sel ? "bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300" : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700"}
           ${focusIdx === idx ? "bg-gray-100 dark:bg-zinc-700" : ""}`}
       >
@@ -189,7 +189,7 @@ const Select = ({
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => { if (!disabled) { setOpen(!open); setTimeout(() => inputRef.current?.focus(), 0); } }}
-        className={`w-full flex items-center gap-2 ${sizeStyles[size]} bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-xl transition-colors
+        className={`w-full flex items-center gap-1.5 sm:gap-2 ${sizeStyles[size]} bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-lg sm:rounded-xl transition-colors
           ${open ? "ring-2 ring-blue-500 border-blue-500" : ""}
           ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer hover:border-gray-400 dark:hover:border-zinc-600"}`}
       >
@@ -198,10 +198,10 @@ const Select = ({
             selected.map((v) => (
               <span
                 key={v}
-                className="inline-flex items-center gap-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-md text-xs font-medium"
+                className="inline-flex items-center gap-0.5 sm:gap-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 sm:px-2 rounded-md text-[10px] sm:text-xs font-medium max-w-[120px] sm:max-w-[160px]"
               >
                 {getLabel(v)}
-                <X className="h-3 w-3 cursor-pointer hover:text-blue-900 dark:hover:text-blue-100" onClick={(e) => removeTag(v, e)} />
+                <X className="h-2.5 w-2.5 sm:h-3 sm:w-3 cursor-pointer hover:text-blue-900 dark:hover:text-blue-100 flex-shrink-0" onClick={(e) => removeTag(v, e)} />
               </span>
             ))
           ) : !multiple && selected != null ? (
@@ -218,7 +218,7 @@ const Select = ({
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute z-50 mt-1 w-full bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl shadow-xl overflow-hidden">
+        <div className="absolute z-50 mt-1 w-full bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-lg sm:rounded-xl shadow-xl overflow-hidden max-h-[70vh]">
           {searchable && (
             <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-200 dark:border-zinc-700">
               <Search className="h-4 w-4 text-gray-400" />
@@ -231,7 +231,7 @@ const Select = ({
               />
             </div>
           )}
-          <div ref={listRef} role="listbox" aria-multiselectable={multiple || undefined} className="max-h-60 overflow-y-auto py-1">
+          <div ref={listRef} role="listbox" aria-multiselectable={multiple || undefined} className="max-h-48 sm:max-h-60 overflow-y-auto py-1">
             {flatList.length === 0 ? (
               <p className="px-3 py-4 text-sm text-gray-400 text-center">No options found</p>
             ) : grouped && groupedOptions ? (

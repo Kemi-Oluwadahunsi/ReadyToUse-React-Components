@@ -35,9 +35,9 @@ const strengthLevels = [
 ];
 
 const inputSizes = {
-  sm: "px-3 py-1.5 text-sm",
-  md: "px-3 py-2 text-sm",
-  lg: "px-4 py-2.5 text-base",
+  sm: "px-2.5 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm",
+  md: "px-2.5 py-1.5 text-xs sm:px-3 sm:py-2 sm:text-sm",
+  lg: "px-3 py-2 text-sm sm:px-4 sm:py-2.5 sm:text-base",
 };
 
 const PasswordStrength = ({
@@ -87,24 +87,24 @@ const PasswordStrength = ({
           onChange={(e) => onChange?.(e.target.value)}
           placeholder={placeholder}
           disabled={disabled}
-          className={`w-full ${inputSizes[size]} bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 outline-none transition-colors focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${showToggle ? "pr-10" : ""}`}
+          className={`w-full ${inputSizes[size]} bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-lg sm:rounded-xl text-gray-900 dark:text-white placeholder-gray-400 outline-none transition-colors focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${showToggle ? "pr-8 sm:pr-10" : ""}`}
         />
         {showToggle && (
           <button
             type="button"
             onClick={() => setVisible((v) => !v)}
             tabIndex={-1}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+            className="absolute right-2 sm:right-2.5 top-1/2 -translate-y-1/2 p-0.5 sm:p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
           >
-            {visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            {visible ? <EyeOff className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
           </button>
         )}
       </div>
 
       {/* Strength meter */}
       {showMeter && value && (
-        <div className="mt-2">
-          <div className="h-1.5 w-full bg-gray-200 dark:bg-zinc-700 rounded-full overflow-hidden">
+        <div className="mt-1.5 sm:mt-2">
+          <div className="h-1 sm:h-1.5 w-full bg-gray-200 dark:bg-zinc-700 rounded-full overflow-hidden">
             <div
               className={`h-full ${lvl.color} rounded-full transition-all duration-300`}
               style={{ width: lvl.width }}
@@ -124,15 +124,15 @@ const PasswordStrength = ({
 
       {/* Rules checklist */}
       {showRules && value && (
-        <ul className="mt-3 space-y-1">
+        <ul className="mt-2 sm:mt-3 space-y-0.5 sm:space-y-1">
           {rules.map((rule, i) => {
             const ok = passed[i];
             return (
-              <li key={i} className="flex items-center gap-2 text-xs">
+              <li key={i} className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs">
                 {ok ? (
-                  <Check className="h-3.5 w-3.5 text-green-500 flex-shrink-0" />
+                  <Check className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-green-500 flex-shrink-0" />
                 ) : (
-                  <X className="h-3.5 w-3.5 text-gray-300 dark:text-gray-600 flex-shrink-0" />
+                  <X className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-gray-300 dark:text-gray-600 flex-shrink-0" />
                 )}
                 <span className={ok ? "text-green-600 dark:text-green-400" : "text-gray-500 dark:text-gray-400"}>
                   {rule.label}
