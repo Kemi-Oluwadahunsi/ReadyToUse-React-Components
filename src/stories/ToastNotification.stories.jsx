@@ -317,3 +317,103 @@ export const Persistent = {
     },
   },
 };
+
+/* ════════════════════════════════════════════════
+   STORY: Custom Styling — className, style, titleClassName, messageClassName
+   ════════════════════════════════════════════════ */
+const CustomStyledTriggers = () => {
+  const { addToast } = useToast();
+  return (
+    <div className="p-8 space-y-4">
+      <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+        Customise individual toasts with className, style, titleClassName, and messageClassName:
+      </p>
+      <div className="flex flex-wrap gap-3">
+        <button
+          onClick={() =>
+            addToast({
+              type: "success",
+              title: "Custom Background",
+              message: "This toast has a purple gradient background.",
+              className: "!bg-gradient-to-r !from-purple-600 !to-indigo-600 !border-purple-500",
+              titleClassName: "!text-white",
+              messageClassName: "!text-purple-100",
+            })
+          }
+          className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium text-sm cursor-pointer"
+        >
+          Purple Gradient
+        </button>
+        <button
+          onClick={() =>
+            addToast({
+              type: "info",
+              title: "Inline Style",
+              message: "Using the style prop for a custom background color.",
+              style: { backgroundColor: "#1e293b", borderColor: "#334155" },
+              titleClassName: "!text-cyan-300",
+              messageClassName: "!text-slate-300",
+            })
+          }
+          className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors font-medium text-sm cursor-pointer"
+        >
+          Inline Style
+        </button>
+        <button
+          onClick={() =>
+            addToast({
+              type: "warning",
+              title: "Brand Toast",
+              message: "Match your brand colours with custom classes.",
+              className: "!bg-orange-500 !border-orange-400",
+              titleClassName: "!text-white !text-base",
+              messageClassName: "!text-orange-100",
+            })
+          }
+          className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium text-sm cursor-pointer"
+        >
+          Brand Colors
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export const CustomStyling = {
+  render: (args) => (
+    <ToastProvider {...args}>
+      <CustomStyledTriggers />
+    </ToastProvider>
+  ),
+  args: {
+    variant: "modern",
+    position: "top-right",
+    maxToasts: 5,
+    defaultDuration: 6000,
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `// Custom background with Tailwind classes
+addToast({
+  type: "success",
+  title: "Custom Background",
+  message: "Purple gradient toast.",
+  className: "!bg-gradient-to-r !from-purple-600 !to-indigo-600 !border-purple-500",
+  titleClassName: "!text-white",
+  messageClassName: "!text-purple-100",
+});
+
+// Custom background with inline style
+addToast({
+  type: "info",
+  title: "Inline Style",
+  message: "Using the style prop.",
+  style: { backgroundColor: "#1e293b", borderColor: "#334155" },
+  titleClassName: "!text-cyan-300",
+  messageClassName: "!text-slate-300",
+});`,
+      },
+    },
+  },
+};

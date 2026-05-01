@@ -40,6 +40,12 @@ import injectRuiStyles from "./injectRuiStyles";
  * @param {number} maxToasts - Max visible toasts
  * @param {number} defaultDuration - Auto-dismiss ms (0 = persistent)
  * @param {boolean} backdrop - Show backdrop overlay (best with "center" + "alert")
+ *
+ * addToast options:
+ *   @param {string} className - Custom Tailwind classes for the toast container (e.g. "bg-purple-600 text-white")
+ *   @param {object} style - Inline style object for the toast container (e.g. { backgroundColor: '#7c3aed' })
+ *   @param {string} titleClassName - Custom Tailwind classes for the title text
+ *   @param {string} messageClassName - Custom Tailwind classes for the message text
  */
 
 const ToastContext = createContext(null);
@@ -127,13 +133,14 @@ const getSlideClass = (pos, exiting) => {
    VARIANT 1: MINIMAL — Clean compact toast, left accent
    ═══════════════════════════════════════════════════════ */
 const MinimalToast = ({ toast, onClose, position }) => {
-  const { title, message, type = "info", action, exiting } = toast;
+  const { title, message, type = "info", action, exiting, className: customClass, style: customStyle, titleClassName, messageClassName } = toast;
   const cfg = typeConfig[type] || typeConfig.info;
   const Icon = cfg.icon;
 
   return (
     <div
-      className={`flex items-start gap-3 px-4 py-3 rounded-xl border-l-4 ${cfg.leftBorder} border border-gray-100 dark:border-zinc-700/60 bg-white dark:bg-zinc-800 shadow-lg shadow-black/5 dark:shadow-black/20 transition-all duration-300 ${getSlideClass(position, exiting)}`}
+      className={`flex items-start gap-3 px-4 py-3 rounded-xl border-l-4 ${cfg.leftBorder} border border-gray-100 dark:border-zinc-700/60 bg-white dark:bg-zinc-800 shadow-lg shadow-black/5 dark:shadow-black/20 transition-all duration-300 ${getSlideClass(position, exiting)} ${customClass || ""}`}
+      style={customStyle}
       role="alert"
     >
       <div className="flex-shrink-0 mt-0.5">
@@ -141,12 +148,12 @@ const MinimalToast = ({ toast, onClose, position }) => {
       </div>
       <div className="flex-1 min-w-0">
         {title && (
-          <p className="text-sm font-semibold text-gray-900 dark:text-white leading-tight">
+          <p className={`text-sm font-semibold text-gray-900 dark:text-white leading-tight ${titleClassName || ""}`}>
             {title}
           </p>
         )}
         {message && (
-          <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed">
+          <p className={`text-[13px] text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed ${messageClassName || ""}`}>
             {message}
           </p>
         )}
@@ -174,7 +181,7 @@ const MinimalToast = ({ toast, onClose, position }) => {
    VARIANT 2: MODERN — Gradient accent, progress bar, rich card
    ═══════════════════════════════════════════════════════════════ */
 const ModernToast = ({ toast, onClose, position, duration }) => {
-  const { title, message, type = "info", action, exiting, id } = toast;
+  const { title, message, type = "info", action, exiting, id, className: customClass, style: customStyle, titleClassName, messageClassName } = toast;
   const cfg = typeConfig[type] || typeConfig.info;
   const Icon = cfg.solidIcon;
   const progressRef = useRef(null);
@@ -191,7 +198,8 @@ const ModernToast = ({ toast, onClose, position, duration }) => {
 
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-700/50 shadow-xl shadow-black/8 dark:shadow-black/30 transition-all duration-300 ${getSlideClass(position, exiting)}`}
+      className={`relative overflow-hidden rounded-2xl bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-700/50 shadow-xl shadow-black/8 dark:shadow-black/30 transition-all duration-300 ${getSlideClass(position, exiting)} ${customClass || ""}`}
+      style={customStyle}
       role="alert"
     >
       {/* Top gradient accent bar */}
@@ -207,12 +215,12 @@ const ModernToast = ({ toast, onClose, position, duration }) => {
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">
               {title && (
-                <p className="text-sm font-bold text-gray-900 dark:text-white leading-tight">
+                <p className={`text-sm font-bold text-gray-900 dark:text-white leading-tight ${titleClassName || ""}`}>
                   {title}
                 </p>
               )}
               {message && (
-                <p className="text-[13px] text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+                <p className={`text-[13px] text-gray-500 dark:text-gray-400 mt-1 leading-relaxed ${messageClassName || ""}`}>
                   {message}
                 </p>
               )}
@@ -263,13 +271,14 @@ const ModernToast = ({ toast, onClose, position, duration }) => {
    VARIANT 3: ALERT — Prominent card with backdrop, centerable
    ═══════════════════════════════════════════════════════════════════ */
 const AlertToast = ({ toast, onClose, position }) => {
-  const { title, message, type = "info", action, exiting } = toast;
+  const { title, message, type = "info", action, exiting, className: customClass, style: customStyle, titleClassName, messageClassName } = toast;
   const cfg = typeConfig[type] || typeConfig.info;
   const Icon = cfg.icon;
 
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl ${cfg.bg} border ${cfg.border} shadow-2xl shadow-black/10 dark:shadow-black/40 transition-all duration-300 min-w-[320px] max-w-[440px] ${getSlideClass(position, exiting)}`}
+      className={`relative overflow-hidden rounded-2xl ${cfg.bg} border ${cfg.border} shadow-2xl shadow-black/10 dark:shadow-black/40 transition-all duration-300 min-w-[320px] max-w-[440px] ${getSlideClass(position, exiting)} ${customClass || ""}`}
+      style={customStyle}
       role="alert"
     >
       {/* Decorative background blurs */}
@@ -291,12 +300,12 @@ const AlertToast = ({ toast, onClose, position }) => {
               {cfg.label}
             </span>
             {title && (
-              <p className="text-[15px] font-bold text-gray-900 dark:text-white leading-tight">
+              <p className={`text-[15px] font-bold text-gray-900 dark:text-white leading-tight ${titleClassName || ""}`}>
                 {title}
               </p>
             )}
             {message && (
-              <p className="text-sm text-gray-600 dark:text-gray-300 mt-1.5 leading-relaxed">
+              <p className={`text-sm text-gray-600 dark:text-gray-300 mt-1.5 leading-relaxed ${messageClassName || ""}`}>
                 {message}
               </p>
             )}
@@ -365,10 +374,10 @@ const ToastProvider = ({
   }, []);
 
   const addToast = useCallback(
-    ({ title, message, type = "info", duration, action }) => {
+    ({ title, message, type = "info", duration, action, className, style, titleClassName, messageClassName }) => {
       const id = ++idRef.current;
       const d = duration ?? defaultDuration;
-      const toast = { id, title, message, type, action, exiting: false, duration: d };
+      const toast = { id, title, message, type, action, exiting: false, duration: d, className, style, titleClassName, messageClassName };
       setToasts((prev) => [toast, ...prev].slice(0, maxToasts));
       if (d > 0) {
         const tid = setTimeout(() => removeToast(id), d);

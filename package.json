@@ -1,6 +1,6 @@
 {
   "name": "readyui-react",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "type": "module",
   "description": "A professional collection of 50+ ready-to-use, configurable React UI components with Tailwind CSS, dark mode support, and smooth animations.",
   "keywords": [

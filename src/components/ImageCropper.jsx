@@ -155,6 +155,7 @@ const ImageCropper = ({
           <img
             ref={imgRef}
             src={src}
+            crossOrigin="anonymous"
             onLoad={onImgLoad}
             alt="Crop preview"
             className="absolute select-none pointer-events-none"

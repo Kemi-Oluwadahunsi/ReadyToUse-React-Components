@@ -86,7 +86,7 @@ BasicCard.displayName = "BasicCard";
 const ProfileCard = ({ avatar, name, role, bio, coverImage, stats, socials, actionLabel = "Follow", onAction, className, ...rest }) => (
   <div className={cls("rounded-2xl bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 shadow-sm overflow-hidden", className)} {...rest}>
     {/* Cover */}
-    <div className="h-20 sm:h-24 md:h-28 bg-gradient-to-r from-blue-500 to-indigo-600 relative">
+    <div className="h-20 sm:h-24 md:h-28 bg-gradient-to-r from-blue-500 to-indigo-600 relative z-0">
       {coverImage && <img src={coverImage} alt="" className="w-full h-full object-cover" />}
     </div>
     {/* Avatar */}
