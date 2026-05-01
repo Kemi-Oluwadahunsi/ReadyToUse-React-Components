@@ -40,7 +40,7 @@ export default {
     docs: {
       description: {
         component:
-          '## 📥 Import\n\n```jsx\nimport { ToastProvider, useToast } from "readyui-react";\n```\n\n## Variants\n\n| Variant | Description |\n|---------|-------------|\n| `minimal` | Clean compact toast with colored left border |\n| `modern` | Rich card with gradient accent bar and progress timer |\n| `alert` | Prominent alert card with backdrop support, centerable |',
+          '## 📥 Import\n\n```jsx\nimport { ToastProvider, useToast } from "readyui-react";\n```\n\n## Variants\n\n| Variant | Description |\n|---------|-------------|\n| `minimal` | Clean compact toast with colored left border |\n| `modern` | Rich card with gradient accent bar and progress timer |\n| `alert` | Prominent alert card with backdrop support, centerable |\n\n## addToast Options\n\n| Option | Type | Description |\n|--------|------|-------------|\n| `title` | `string` | Toast heading text |\n| `message` | `string` | Toast body text |\n| `type` | `"success" \\| "error" \\| "warning" \\| "info"` | Semantic type (determines color & icon) |\n| `duration` | `number` | Override auto-dismiss time in ms |\n| `action` | `{ label, onClick }` | Action button config |\n| `className` | `string` | Custom Tailwind classes on the toast container |\n| `style` | `object` | Inline style object on the toast container |\n| `titleClassName` | `string` | Custom Tailwind classes on the title text |\n| `messageClassName` | `string` | Custom Tailwind classes on the message text |',
       },
     },
     layout: "fullscreen",
