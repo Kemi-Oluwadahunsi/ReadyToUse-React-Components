@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build, Test & Lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20, 22]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build package
+        run: npm run build:pkg
+
+      - name: Type check
+        run: npm run typecheck --if-present
+
+      - name: Lint
+        run: npm run lint -- --ignore-pattern storybook-static
+
+      - name: Run tests
+        run: npm test --if-present
+
+  bundle-size:
+    name: Bundle Size Check
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build package
+        run: npm run build:pkg
+
+      - name: Report bundle sizes
+        run: |
+          human_size() {
+            local bytes=$1
+            if [ "$bytes" -ge 1048576 ]; then
+              echo "$(awk "BEGIN {printf \"%.1f\", $bytes/1048576}")MB"
+            elif [ "$bytes" -ge 1024 ]; then
+              echo "$(awk "BEGIN {printf \"%.1f\", $bytes/1024}")KB"
+            else
+              echo "${bytes}B"
+            fi
+          }
+          file_size() {
+            if [ -f "$1" ]; then
+              human_size "$(wc -c < "$1" | xargs)"
+            else
+              echo "n/a"
+            fi
+          }
+          echo "## Bundle Sizes" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Package | ESM | CJS | CSS |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---------|-----|-----|-----|" >> "$GITHUB_STEP_SUMMARY"
+          esm=$(file_size "dist/readyui-react.es.js")
+          cjs=$(file_size "dist/readyui-react.cjs.js")
+          css=$(file_size "dist/styles.css")
+          echo "| readyui-react | $esm | $cjs | $css |" >> "$GITHUB_STEP_SUMMARY"
