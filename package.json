@@ -57,10 +57,12 @@
   "homepage": "https://kemi-oluwadahunsi.github.io/ReadyToUse-React-Components",
   "main": "./dist/readyui-react.cjs.js",
   "module": "./dist/readyui-react.es.js",
+  "types": "./index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/readyui-react.es.js",
-      "require": "./dist/readyui-react.cjs.js"
+      "require": "./dist/readyui-react.cjs.js",
+      "types": "./index.d.ts"
     },
     "./styles.css": "./dist/styles.css"
   },
@@ -68,6 +70,7 @@
     "dist/readyui-react.es.js",
     "dist/readyui-react.cjs.js",
     "dist/styles.css",
+    "index.d.ts",
     "README.md",
     "LICENSE"
   ],
