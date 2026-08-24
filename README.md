@@ -9,7 +9,7 @@ A professional collection of 50+ ready-to-use, configurable React UI components 
 
 ## 🚀 Features
 
-- 🎨 50+ production-ready UI components
+- 🎨 90+ production-ready UI components
 - 🌙 Dark mode support across all components
 - ✨ Smooth animations (CSS keyframes, no runtime dependency)
 - ♿ Accessible — ARIA roles, keyboard navigation, focus traps
@@ -54,15 +54,15 @@ export default function App() {
 
 ## 🛠️ Available Scripts (for contributors)
 
-| Script | Description |
-|---|---|
-| `npm run dev` | Start the demo app dev server |
-| `npm run build` | Build the demo app for production |
-| `npm run build:lib` | Build the library JS bundles (ES + CJS) |
-| `npm run build:css` | Build the pre-built `dist/styles.css` |
+| Script              | Description                                |
+| ------------------- | ------------------------------------------ |
+| `npm run dev`       | Start the demo app dev server              |
+| `npm run build`     | Build the demo app for production          |
+| `npm run build:lib` | Build the library JS bundles (ES + CJS)    |
+| `npm run build:css` | Build the pre-built `dist/styles.css`      |
 | `npm run build:pkg` | Build both JS **and** CSS (for publishing) |
-| `npm run lint` | Run ESLint |
-| `npm run preview` | Preview the demo app production build |
+| `npm run lint`      | Run ESLint                                 |
+| `npm run preview`   | Preview the demo app production build      |
 
 ## 🏗️ Project Structure
 
@@ -92,10 +92,10 @@ Custom keyframes (toast slide-in, timeline fade, spinner animations, etc.) are i
 
 ## 📚 Peer Dependencies
 
-| Package | Required? |
-|---|---|
-| `react` ≥ 18 | **Yes** |
-| `react-dom` ≥ 18 | **Yes** |
+| Package           | Required?                                           |
+| ----------------- | --------------------------------------------------- |
+| `react` ≥ 18      | **Yes**                                             |
+| `react-dom` ≥ 18  | **Yes**                                             |
 | `tailwindcss` ≥ 4 | Optional — only if you want your own Tailwind build |
 
 ### Optional Dependencies
