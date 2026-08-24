@@ -57,6 +57,16 @@ export { Spinner } from "./components/Spinner";
 export { SortableList } from "./components/SortableList";
 export { Badge } from "./components/Badge";
 
+// Batch 4 Components
+export { AIPromptInput, ChatMessageBubble } from "./components/AIPromptInput";
+export { AuthForm } from "./components/AuthForm";
+export { ContributionBarChart, MiniSparkline } from "./components/Charts";
+export { CodeBlock } from "./components/CodeBlock";
+export { SavingsTargetCard, MilestoneGoalCard, DividendIncomeCard } from "./components/KPICard";
+export { LiveCursors } from "./components/LiveCursors";
+export { PricingTable } from "./components/PricingTable";
+export { QRCodeCard } from "./components/QRCodeCard";
+
 // Context & Hooks
 export { DarkModeProvider, useDarkMode } from "./contexts/DarkmodeContext";
 
