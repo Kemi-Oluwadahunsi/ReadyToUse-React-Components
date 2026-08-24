@@ -29,7 +29,7 @@ import { AIPromptInput, ChatMessageBubble } from "../AIPromptInput";
 
 export const HeroShowcase = () => {
   const [toggleVal, setToggleVal] = useState(true);
-  const [radioVal, setRadioVal] = useState("a");
+  const [_radioVal, _setRadioVal] = useState("a");
   const [promptText, setPromptText] = useState("");
   const [chatHistory, setChatHistory] = useState([
     {

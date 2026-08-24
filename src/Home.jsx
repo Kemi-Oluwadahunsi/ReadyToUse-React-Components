@@ -509,7 +509,7 @@ const categories = [
 
 const Home = () => {
   const { mode, setMode } = useDarkMode();
-  const [copiedInstall, setCopiedInstall] = useState(false);
+  const [_copiedInstall, setCopiedInstall] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -532,7 +532,7 @@ const Home = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const copyInstallCommand = () => {
+  const _copyInstallCommand = () => {
     navigator.clipboard.writeText("npm install readyui-react");
     setCopiedInstall(true);
     setTimeout(() => setCopiedInstall(false), 2000);

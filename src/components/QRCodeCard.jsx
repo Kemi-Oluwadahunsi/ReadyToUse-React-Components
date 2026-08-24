@@ -2,7 +2,7 @@ import { useState } from "react";
 import { QrCode, Smartphone, Copy, Check, Share2, Download } from "lucide-react";
 
 export const QRCodeCard = ({
-  title = "Mobile Authentication",
+  _title = "Mobile Authentication",
   subtitle = "Scan to connect your mobile device",
   url = "https://readyui.dev/auth/connect?session=8f9a2b",
   className = "",

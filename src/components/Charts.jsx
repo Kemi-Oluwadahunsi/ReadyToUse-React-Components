@@ -87,7 +87,7 @@ export const MiniSparkline = ({
   name = "Vanguard",
   shares = "450 Shares",
   data = [30, 40, 35, 50, 70, 85],
-  color = "emerald",
+  _color = "emerald",
 }) => {
   return (
     <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200/80 dark:border-zinc-800">
