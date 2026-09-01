@@ -45,7 +45,7 @@ export const Default = {
   },
   args: {
     suggestions,
-    placeholder: "Search documentation…",
+    placeholder: "Search components…",
   },
   parameters: {
     docs: {
@@ -53,7 +53,7 @@ export const Default = {
         code: `<SearchBar
   suggestions={["React components", "Vue 3 API", "Angular signals"]}
   onSearch={(q) => console.log("Search:", q)}
-  placeholder="Search documentation…"
+  placeholder="Search components…"
 />`,
       },
     },

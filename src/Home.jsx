@@ -602,7 +602,7 @@ const Home = () => {
               className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/60 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all text-xs cursor-pointer"
             >
               <Search className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">Search documentation...</span>
+              <span className="hidden md:inline">Search components...</span>
               <kbd className="px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-zinc-800 text-[10px] text-zinc-600 dark:text-zinc-400 font-mono">
                 ⌘K
               </kbd>
