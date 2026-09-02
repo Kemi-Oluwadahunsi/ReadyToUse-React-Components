@@ -7,20 +7,20 @@ A professional collection of 50+ ready-to-use, configurable React UI components 
 
 **[Live Storybook Docs](https://kemi-oluwadahunsi.github.io/ReadyToUse-React-Components)**
 
-## 🚀 Features
+## Features
 
-- 🎨 90+ production-ready UI components
-- 🌙 Dark mode support across all components
-- ✨ Smooth animations (CSS keyframes, no runtime dependency)
-- ♿ Accessible — ARIA roles, keyboard navigation, focus traps
-- 🖱️ Drag-and-drop (KanbanBoard, Sortable)
-- 📱 Responsive design
-- ⚡ Zero-config — ships a pre-built CSS bundle; no Tailwind install required
-- 🔍 Tree-shakeable ES module + CJS builds
+- 90+ production-ready UI components
+- Dark mode support across all components
+- Smooth animations (CSS keyframes, no runtime dependency)
+- Accessible — ARIA roles, keyboard navigation, focus traps
+- Drag-and-drop (KanbanBoard, Sortable)
+- Responsive design
+- Zero-config — ships a pre-built CSS bundle; no Tailwind install required
+- Tree-shakeable ES module + CJS builds
 
 ---
 
-## 📦 Installation
+## Installation
 
 ```bash
 npm install readyui-react
@@ -52,19 +52,19 @@ export default function App() {
 
 ---
 
-## 🛠️ Available Scripts (for contributors)
+## Available Scripts (for contributors)
 
-| Script              | Description                                |
-| ------------------- | ------------------------------------------ |
-| `npm run dev`       | Start the demo app dev server              |
-| `npm run build`     | Build the demo app for production          |
-| `npm run build:lib` | Build the library JS bundles (ES + CJS)    |
-| `npm run build:css` | Build the pre-built `dist/styles.css`      |
-| `npm run build:pkg` | Build both JS **and** CSS (for publishing) |
-| `npm run lint`      | Run ESLint                                 |
-| `npm run preview`   | Preview the demo app production build      |
+| Script                | Description                                     |
+| --------------------- | ----------------------------------------------- |
+| `npm run dev`       | Start the demo app dev server                   |
+| `npm run build`     | Build the demo app for production               |
+| `npm run build:lib` | Build the library JS bundles (ES + CJS)         |
+| `npm run build:css` | Build the pre-built`dist/styles.css`          |
+| `npm run build:pkg` | Build both JS**and** CSS (for publishing) |
+| `npm run lint`      | Run ESLint                                      |
+| `npm run preview`   | Preview the demo app production build           |
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 src/
@@ -80,22 +80,22 @@ dist/
 └── styles.css           # Pre-built Tailwind + keyframes CSS
 ```
 
-## 🧩 Components
+## Components
 
 Accordion · AnimatedCounter · AvatarGroup · Badge · Breadcrumbs · Cards · ColorPicker · CommandPalette · ConfirmDialog · CopyToClipboard · CustomToggleSwitch · DarkModeToggle · DataTable · DatePicker · Drawer · FileUploader · FilterableGallery · FilterComponent · FloatingActionButton · HoverRevealCard · ImageCropper · InfiniteScroll · InteractiveStepper · KanbanBoard · Marquee · Modal · MultiSelectTagInput · NotificationBell · OTPInput · Pagination · PasswordStrength · Popover · ProgressBarSteps · RangeSlider · RatingInput · ResizableSidebar · ScrollAwareNavbar · ScrollCarousel · SearchBar · Select · Skeleton · SortableList · Spinner · SpotlightCard · Tabs · TimeLine · ToastNotification · Tooltip · TreeView · VirtualList · DarkModeToggle
 
-## 🎨 Styling
+## Styling
 
 All components are styled with **Tailwind CSS v4** utility classes. The library ships a pre-built `dist/styles.css` (≈102 KB minified) so consumers don't need Tailwind in their own project.
 
 Custom keyframes (toast slide-in, timeline fade, spinner animations, etc.) are included in the CSS bundle **and** injected at runtime as a fallback via `injectRuiStyles.js`. The runtime injector automatically skips injection when it detects the pre-built stylesheet is loaded.
 
-## 📚 Peer Dependencies
+## Peer Dependencies
 
-| Package           | Required?                                           |
-| ----------------- | --------------------------------------------------- |
-| `react` ≥ 18      | **Yes**                                             |
-| `react-dom` ≥ 18  | **Yes**                                             |
+| Package              | Required?                                            |
+| -------------------- | ---------------------------------------------------- |
+| `react` ≥ 18      | **Yes**                                        |
+| `react-dom` ≥ 18  | **Yes**                                        |
 | `tailwindcss` ≥ 4 | Optional — only if you want your own Tailwind build |
 
 ### Optional Dependencies
@@ -105,21 +105,29 @@ Custom keyframes (toast slide-in, timeline fade, spinner animations, etc.) are i
 
 ## 🤝 Contributing
 
+This project is open source and we're looking for developers to help it grow. That could mean adding new components, improving existing ones, fixing bugs, writing better documentation, or just opening issues when something doesn't work the way it should. Every bit of help counts.
+
+**Hint:** we still need a Table component with different variants. We kindly look forward to seeing that pull request soon.
+
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+5. Open a Pull Request **against the `develop` branch** (not `main`)
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 👥 Authors
+## Authors
 
-- Oluwakemi Oluwadahunsi - KodeMaven
+- Oluwakemi Oluwadahunsi - TechMrs
 
-## 🙏 Acknowledgments
+## Contributors
+
+- 
+
+## Acknowledgments
 
 - [Vite](https://vitejs.dev/)
 - [React](https://reactjs.org/)
